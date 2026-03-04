@@ -756,6 +756,7 @@ Activate the right persona for your task:
 ### Explore Advanced Features
 
 - [Employment Case Walkthrough](tutorials/employment-case-walkthrough.md) - End-to-end tutorial following a wrongful termination case through the full BCC pipeline ([DE](tutorials/arbeitsrecht-fallbeispiel.md) | [FR](tutorials/cas-pratique-droit-du-travail.md) | [IT](tutorials/caso-pratico-diritto-del-lavoro.md))
+- [BetterCallClaude vs. Anthropic Legal Plugin](tutorials/plugin-comparison-keller-case.md) - Side-by-side comparison showing why BetterCallClaude is the right choice for Swiss law
 - [Legal Research Workflow](workflows/research-precedents.md) - Deep dive into BGE precedent research
 - [Case Strategy Workflow](workflows/case-strategy.md) - Advanced litigation strategy development
 - [Document Drafting Workflow](workflows/draft-contracts.md) - Professional document creation

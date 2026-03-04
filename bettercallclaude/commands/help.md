@@ -182,7 +182,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v3.1.0 -- Swiss Legal Intelligence Plugin**
+**BetterCallClaude v4.0.0 -- Swiss Legal Intelligence Plugin**
 
 If the user provided additional input, respond to it in the context of this help reference.
 
