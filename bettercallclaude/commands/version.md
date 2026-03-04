@@ -20,7 +20,7 @@ Output the following formatted block:
   License:      MIT
 ======================================================
 
-  COMMANDS (17)
+  COMMANDS (18)
   -------------
   [x] legal          - Intelligent gateway and router
   [x] research       - BGE/ATF/DTF precedent search
@@ -40,7 +40,7 @@ Output the following formatted block:
   [x] version        - This status display
   [x] help           - Command reference
 
-  AGENTS (18)
+  AGENTS (19)
   -----------
   [x] researcher      [x] strategist     [x] drafter
   [x] citation        [x] compliance     [x] data-protection
@@ -57,15 +57,17 @@ Output the following formatted block:
   [x] federal-law              [x] cantonal-law
   [x] multilingual-law         [x] legal-briefing
 
-  MCP SERVERS (5)
+  MCP SERVERS (6)
   ---------------
-  [ ] entscheidsuche    - Swiss court decision search
-  [ ] bge-search        - Federal Supreme Court decisions
-  [ ] legal-citations   - Citation verification
-  [ ] fedlex-sparql     - Federal legislation database
-  [ ] onlinekommentar   - Legal commentary access
+  [ ] entscheidsuche    - Swiss court decision search        (HTTP)
+  [ ] bge-search        - Federal Supreme Court decisions    (HTTP)
+  [ ] legal-citations   - Citation verification              (HTTP)
+  [ ] fedlex-sparql     - Federal legislation database       (HTTP)
+  [ ] onlinekommentar   - Legal commentary access            (HTTP)
+  [ ] ollama            - Privacy classification             (Local)
 
-  Run /bettercallclaude:setup to configure MCP servers
+  HTTP Service: https://mcp.bettercallclaude.ch
+  Run /bettercallclaude:setup to check connectivity or switch transport
 
   LANGUAGES
   ---------
@@ -82,9 +84,9 @@ Output the following formatted block:
   SYSTEM REQUIREMENTS
   -------------------
   - Claude Code or Cowork with plugin support
-  - MCP servers: optional but recommended for citation verification
-  - No API keys required for core functionality
-  - MCP servers require Node.js 18+ if running locally
+  - MCP servers connect via HTTP (no local setup needed)
+  - No API keys required for any functionality
+  - Node.js 18+ only needed for --local mode or ollama server
 
 ======================================================
   https://github.com/fedec65/BetterCallClaude

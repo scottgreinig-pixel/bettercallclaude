@@ -26,9 +26,9 @@ This guide covers installation, configuration, and verification for both platfor
 | Requirement | Details |
 |-------------|---------|
 | **Claude Code CLI** or **Cowork Desktop** | Latest version of either platform |
-| **Node.js** | Version 18 or later (required for MCP servers) |
+| **Node.js** | Version 18 or later (only required for `--local` mode or the ollama privacy classifier) |
 
-No Python installation, API keys, or external accounts are required.
+No Python installation, API keys, or external accounts are required. The 5 main MCP servers connect via HTTP and need no local setup.
 
 ### Which Platform Are You Using?
 
@@ -60,7 +60,7 @@ claude plugin install bettercallclaude@bettercallclaude-marketplace
    /bettercallclaude:version
    ```
 
-   You should see a status report listing 18 commands, 19 agents, 10 skills, and up to 6 MCP servers.
+   You should see a status report listing 18 commands, 19 agents, 10 skills, and 6 MCP servers (5 HTTP + 1 local).
 
 3. Run the setup command to check MCP server connectivity:
 
@@ -68,7 +68,7 @@ claude plugin install bettercallclaude@bettercallclaude-marketplace
    /bettercallclaude:setup
    ```
 
-   This probes 5 of the 6 MCP servers (the ollama server is local-only and not probed). Each server is reported as connected or not configured.
+   This probes all 6 MCP servers and displays a status table with transport type (HTTP or Local) for each server.
 
 4. Test a command:
 
@@ -140,61 +140,64 @@ claude plugin install bettercallclaude@bettercallclaude-marketplace
 
 **Why the terminal?** The Cowork GUI "Add marketplace from GitHub" dialog has a known networking issue that prevents it from reaching GitHub from within the sandboxed VM ([#26951](https://github.com/anthropics/claude-code/issues/26951), [#28125](https://github.com/anthropics/claude-code/issues/28125), [#28853](https://github.com/anthropics/claude-code/issues/28853)). The terminal method works reliably.
 
-### 3.2 The VM Sandbox Problem
+### 3.2 That's It -- HTTP Servers Work Immediately
 
-Cowork Desktop runs inside a sandboxed virtual machine. This sandbox prevents MCP servers from making outbound network requests to external APIs. Five of the six MCP servers require internet access to reach Swiss legal databases.
+Five of the six MCP servers connect via HTTP to a hosted service at `https://mcp.bettercallclaude.ch`. HTTP requests work through the Cowork VM sandbox with zero additional configuration.
 
-| Server | Needs Internet | Works Inside Cowork VM | Purpose |
-|--------|:-:|:-:|---------|
-| entscheidsuche | Yes | No | Swiss court decision search |
-| bge-search | Yes | No | Federal Supreme Court decisions |
-| legal-citations | Partial | Partial | Citation formatting and verification |
-| fedlex-sparql | Yes | No | Federal legislation database |
-| onlinekommentar | Yes | No | Legal commentary access |
-| ollama | No | Yes | Privacy classification (offline regex) |
+The sixth server (ollama privacy classifier) runs locally using the plugin's bundled files and works inside the VM.
 
-The ollama server works entirely offline using built-in regex patterns for privacy classification. It does not require Ollama to be installed and does not make any network calls.
+No Node.js installation, no file copying, no config editing.
 
-To get full MCP server access in Cowork, the servers must be installed at the **Claude Desktop host level** (outside the VM). The setup command handles this automatically when possible.
+### 3.3 Verify the Installation
 
-### 3.3 Configure MCP Servers
+1. Restart Cowork (or open a new session).
+2. Run the version command:
 
-Run the setup command inside Cowork:
+   ```
+   /bettercallclaude:version
+   ```
 
-```
-/bettercallclaude:setup
-```
+   You should see 18 commands, 19 agents, 10 skills, and 6 MCP servers.
 
-The setup command follows this sequence:
+3. Run the setup command to check connectivity:
 
-1. **Probes each server** to check current connectivity (5 servers tested).
-2. **Displays a status table** showing which servers are connected and which are missing.
-3. **Detects the environment** by checking for the `mcp__Control_your_Mac__osascript` tool.
-4. **Installs servers automatically** using the best available method:
+   ```
+   /bettercallclaude:setup
+   ```
 
-   - **If osascript is available** (Cowork with "Control your Mac" enabled): The command uses AppleScript to copy server files to a stable location on the host Mac (`~/.claude/bettercallclaude-servers/`) and writes the server configuration into Claude Desktop's `claude_desktop_config.json`. A backup of your existing config is created automatically. After installation, restart Claude Desktop and re-run `/bettercallclaude:setup` to verify.
+   All 5 HTTP servers should show as connected. The ollama server should also show as connected (Local transport).
 
-   - **If osascript is not available**: The command attempts direct file system access to write the Claude Desktop config. If this succeeds, restart Claude Desktop and re-run `/bettercallclaude:setup`.
-
-   - **If both methods fail**, the command provides three manual fallback options:
-     - **MCPB bundles**: Download `.mcpb` files from the [latest release](https://github.com/fedec65/BetterCallClaude_Marketplace/releases/latest) and double-click each one to register it with Claude Desktop.
-     - **Install script**: Clone the repository on your host machine and run `bash scripts/install-claude-desktop.sh`.
-     - **Manual config**: Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `~/.config/Claude/claude_desktop_config.json` (Linux) directly. See the CONNECTORS.md file in the plugin for the full JSON.
-
-### 3.4 Verify the Cowork Installation
-
-After configuring MCP servers and restarting Claude Desktop:
-
-1. Open a new Cowork session.
-2. Run `/bettercallclaude:setup` and confirm all 5 servers show as connected.
-3. Run `/bettercallclaude:version` to confirm the full component list.
 4. Test a research command:
 
    ```
    /bettercallclaude:research Art. 97 OR contractual liability
    ```
 
-### 3.5 Working Without MCP Servers
+### 3.4 Why HTTP Transport
+
+Cowork Desktop runs inside a sandboxed virtual machine. In previous versions, MCP servers used stdio transport (local Node.js processes), but the VM sandbox prevented these child processes from making outbound network requests to Swiss legal databases. This required a complex multi-step workaround to install servers on the host machine outside the VM.
+
+With HTTP transport, the MCP client makes standard HTTPS requests to the hosted service. HTTPS works through the VM sandbox the same way any web request does. No workaround is needed.
+
+### 3.5 Advanced: Switch to Local Transport
+
+For lower latency or offline capability, power users can switch the 5 HTTP servers to local stdio transport:
+
+```
+/bettercallclaude:setup --local
+```
+
+This requires:
+- Node.js 18+ installed and accessible
+- The plugin's bundled server files (included with the plugin)
+
+Local servers are registered at user scope and override the plugin's HTTP defaults. To switch back:
+
+```
+/bettercallclaude:setup --restore-http
+```
+
+### 3.6 Working Without MCP Servers
 
 If MCP server configuration is not possible or not needed, BetterCallClaude still works in **reduced mode**:
 
@@ -232,12 +235,7 @@ To ensure every team member who clones your project repository gets prompted to 
 
 Commit this file to your repository. When a team member opens the project with Claude Code or Cowork, they will be prompted to install the plugin.
 
-Each team member still needs to:
-
-1. Accept the plugin installation prompt (or run the two `claude plugin` commands manually).
-2. Run `/bettercallclaude:setup` individually to configure MCP servers for their own environment.
-
-MCP server configuration is per-machine and cannot be shared through the repository.
+MCP servers connect via HTTP by default, so no per-machine server configuration is needed. Team members only need to accept the plugin installation prompt (or run the two `claude plugin` commands manually).
 
 ---
 
@@ -315,12 +313,12 @@ npm run build:mcpb
 ```
 bettercallclaude/              Plugin root (single source of truth)
   .claude-plugin/              Plugin manifest
-  .mcp.json                    MCP server configuration
+  .mcp.json                    MCP server configuration (5 HTTP + 1 local)
   agents/                      19 agent definitions (markdown)
   commands/                    18 slash commands (markdown)
   skills/                      10 auto-activated skills (markdown)
   hooks/                       Privacy detection hook
-  mcp-servers/                 Pre-compiled MCP server bundles
+  mcp-servers/                 Pre-compiled MCP server bundles (used for --local mode and ollama)
 mcp-servers-src/               TypeScript source for MCP servers
   shared/                      Shared infrastructure (database, HTTP, NLP)
   entscheidsuche/              Swiss court decision search
@@ -330,6 +328,7 @@ mcp-servers-src/               TypeScript source for MCP servers
   onlinekommentar/             Legal commentaries
   ollama/                      Privacy classification (offline)
   integration-tests/           Cross-server integration tests
+mcp-servers-http/              HTTP MCP service (deployed to Railway)
 scripts/                       Build and installation scripts
 docs/                          Documentation
 ```
@@ -338,28 +337,36 @@ docs/                          Documentation
 
 ## 6. MCP Server Reference
 
-BetterCallClaude includes six pre-compiled MCP servers. All servers are self-contained Node.js applications with no external dependencies beyond `@modelcontextprotocol/sdk`. No API keys or external accounts are required.
+BetterCallClaude includes six MCP servers. Five connect via HTTP to a hosted service; one runs locally. All servers require no API keys or external accounts.
 
 ### Server Details
 
-| Server | Description | External API | Network Required |
-|--------|-------------|--------------|:---:|
-| **entscheidsuche** | Searches Swiss court decisions across federal and cantonal courts via entscheidsuche.ch. Supports keyword search, language filtering, and court-specific queries. | entscheidsuche.ch | Yes |
-| **bge-search** | Searches Federal Supreme Court (BGE/ATF/DTF) decisions. Supports keyword search, article reference filtering, date ranges, and section filtering. | bger.ch | Yes |
-| **legal-citations** | Validates citation format and existence. Converts citations between DE/FR/IT/EN formats (BGE/ATF/DTF). | Partial (format validation is local; existence checks require network) | Partial |
-| **fedlex-sparql** | Queries Swiss federal legislation via the Fedlex SPARQL endpoint. Retrieves statutes by SR number, searches legislation, finds related acts, gets article text. Has built-in retry logic (3 attempts, 2-second delay). | fedlex.data.admin.ch | Yes |
-| **onlinekommentar** | Searches Swiss legal commentaries (Kommentare). Finds scholarly analysis by article reference, keyword, or legislative act. | onlinekommentar.ch | Yes |
-| **ollama** | Privacy classification using offline regex patterns. Detects privileged (PRIVILEGED) and confidential (CONFIDENTIAL) content in German, French, and Italian. Does not require Ollama to be installed. | None | No |
+| Server | Description | Transport | External API |
+|--------|-------------|-----------|--------------|
+| **entscheidsuche** | Searches Swiss court decisions across federal and cantonal courts via entscheidsuche.ch. Supports keyword search, language filtering, and court-specific queries. | HTTP | entscheidsuche.ch |
+| **bge-search** | Searches Federal Supreme Court (BGE/ATF/DTF) decisions. Supports keyword search, article reference filtering, date ranges, and section filtering. | HTTP | bger.ch |
+| **legal-citations** | Validates citation format and existence. Converts citations between DE/FR/IT/EN formats (BGE/ATF/DTF). | HTTP | Partial (format validation is local; existence checks require network) |
+| **fedlex-sparql** | Queries Swiss federal legislation via the Fedlex SPARQL endpoint. Retrieves statutes by SR number, searches legislation, finds related acts, gets article text. Has built-in retry logic (3 attempts, 2-second delay). | HTTP | fedlex.data.admin.ch |
+| **onlinekommentar** | Searches Swiss legal commentaries (Kommentare). Finds scholarly analysis by article reference, keyword, or legislative act. | HTTP | onlinekommentar.ch |
+| **ollama** | Privacy classification using offline regex patterns. Detects privileged (PRIVILEGED) and confidential (CONFIDENTIAL) content in German, French, and Italian. Does not require Ollama to be installed. | Local | None |
 
 ### How Servers Register
 
-Server registration depends on the platform:
+By default, the 5 main servers connect via HTTP to `https://mcp.bettercallclaude.ch`. This is configured in the plugin's `.mcp.json` file and works automatically on all platforms, including Cowork Desktop's sandboxed VM.
 
-- **Claude Code CLI**: Servers auto-register from the plugin's `.mcp.json` file. The file uses `${CLAUDE_PLUGIN_ROOT}` for portable paths. No manual configuration is needed.
+The ollama server runs locally via stdio using the plugin's bundled files.
 
-- **Cowork Desktop**: The `/bettercallclaude:setup` command detects the environment and installs servers to the host-level Claude Desktop configuration. See [Section 3.3](#33-configure-mcp-servers).
+To switch to local stdio transport for the 5 HTTP servers (requires Node.js 18+):
 
-- **Claude Desktop (standalone)**: Servers must be registered in `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `~/.config/Claude/claude_desktop_config.json` (Linux). The setup command, MCPB bundles, or the install script handle this. See the CONNECTORS.md file for the full JSON configuration.
+```
+/bettercallclaude:setup --local
+```
+
+To switch back to HTTP:
+
+```
+/bettercallclaude:setup --restore-http
+```
 
 ---
 
@@ -398,13 +405,17 @@ If commands are not recognized after installation, restart Claude Code or Cowork
 
 ### MCP Servers Not Connecting
 
-1. **Check Node.js version**: Run `node --version` in your terminal. Version 18 or later is required.
+1. **Check the HTTP service**: Run `/bettercallclaude:setup` to test connectivity. The setup command checks the health endpoint at `https://mcp.bettercallclaude.ch/health` and probes each server.
 
-2. **Cowork VM sandbox**: If you are using Cowork Desktop, MCP servers that require internet access cannot connect from inside the VM. Run `/bettercallclaude:setup` to install servers at the host level. See [Section 3.2](#32-the-vm-sandbox-problem).
+2. **Internet connection**: The 5 HTTP servers require internet access. Verify connectivity: `curl -sf https://mcp.bettercallclaude.ch/health`.
 
-3. **ECONNREFUSED errors**: The server process started but cannot reach the external API. This typically indicates a network or firewall issue. Verify that your machine can reach the relevant domain (e.g., `curl https://entscheidsuche.ch`).
+3. **DNS or firewall**: If the health check fails, check DNS resolution (`nslookup mcp.bettercallclaude.ch`) and ensure HTTPS on port 443 is not blocked.
 
-4. **Run setup again**: After any configuration change, run `/bettercallclaude:setup` to verify the current state.
+4. **Rate limiting**: The HTTP service allows 60 requests per minute per IP. If you see HTTP 429 errors, wait a moment and retry.
+
+5. **Switch to local mode**: If the HTTP service is persistently unreachable, switch to local transport: `/bettercallclaude:setup --local` (requires Node.js 18+).
+
+6. **Ollama not connecting**: The ollama server runs locally and does not use the HTTP service. Ensure Node.js 18+ is available and restart Claude Code or Cowork.
 
 ### Cowork GUI Install Fails
 
@@ -443,8 +454,6 @@ claude plugin update
 
 After updating, run `/bettercallclaude:version` to confirm the new version number.
 
-If you configured MCP servers for Cowork Desktop, re-run `/bettercallclaude:setup` after upgrading to ensure server binaries are up to date.
-
 ### Uninstalling
 
 To remove the plugin:
@@ -453,10 +462,21 @@ To remove the plugin:
 claude plugin uninstall bettercallclaude
 ```
 
-If you installed MCP servers at the Claude Desktop host level (Cowork users), you may also want to:
+If you used `--local` mode, also remove the user-scoped server overrides:
 
-1. Remove the server files: `rm -rf ~/.claude/bettercallclaude-servers/`
-2. Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `~/.config/Claude/claude_desktop_config.json` (Linux) and remove the five `bettercallclaude-*` entries from the `mcpServers` object.
+```
+/bettercallclaude:setup --restore-http
+```
+
+Or manually:
+
+```
+claude mcp remove bettercallclaude-entscheidsuche -s user
+claude mcp remove bettercallclaude-bge-search -s user
+claude mcp remove bettercallclaude-legal-citations -s user
+claude mcp remove bettercallclaude-fedlex-sparql -s user
+claude mcp remove bettercallclaude-onlinekommentar -s user
+```
 
 ---
 

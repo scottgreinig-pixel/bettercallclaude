@@ -117,7 +117,7 @@ claude --plugin-dir bettercallclaude/
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
-| `/bettercallclaude:setup` | Check MCP server status and auto-install servers to Claude Desktop if needed. |
+| `/bettercallclaude:setup` | Check MCP server connectivity and switch between HTTP/local transport. |
 
 ### Usage examples
 
@@ -395,13 +395,13 @@ The plugin includes five pre-compiled MCP servers that provide direct integratio
 | `fedlex-sparql` | Look up Swiss federal legislation via the Fedlex SPARQL endpoint. Retrieve statutes by SR number, search legislation, find related acts, get article text. |
 | `onlinekommentar` | Search and retrieve Swiss legal commentaries (Kommentare). Find scholarly analysis by article reference, keyword, or legislative act. |
 
-### Requirements
+### Transport
 
-- Node.js >= 18
+MCP servers connect via HTTP to a hosted service at `https://mcp.bettercallclaude.ch`. No local Node.js installation or build step is required. Servers work out of the box on all platforms, including Cowork Desktop's sandboxed VM.
 
-MCP servers are pre-compiled and included in the plugin. No build step is required for end users. All server paths are configured in `.mcp.json` using the `${CLAUDE_PLUGIN_ROOT}` variable for portability.
+**Cowork users**: HTTP servers work immediately with zero configuration. No host-level installation needed.
 
-**Cowork users**: Cowork runs in a sandboxed VM, so 4 of 5 MCP servers cannot reach external APIs from inside Cowork. To get full MCP server access, install the servers at the Claude Desktop level using `bash scripts/install-claude-desktop.sh` (requires cloning this repo on your host machine first). Run `/bettercallclaude:setup` for guided configuration.
+For lower latency or offline use, you can optionally switch to local stdio transport with `/bettercallclaude:setup --local` (requires Node.js 18+). Switch back with `/bettercallclaude:setup --restore-http`.
 
 ---
 
@@ -417,15 +417,18 @@ End-to-end tutorial following a wrongful termination case from intake through do
 
 ### Starting a New Case
 
-Copy the case template to your project directory and fill in the case details:
+Claude Code automatically loads a `CLAUDE.md` file from the root of your project directory on every conversation start. This file is how you give Claude persistent instructions, case context, and behavioral rules that apply to every turn — without repeating yourself. For legal work, a well-structured `CLAUDE.md` means the briefing coordinator already knows your jurisdiction, parties, deadlines, privacy mode, and preferred workflow before you type your first question.
+
+We recommend using the [case CLAUDE.md template](docs/templates/case-claude-md.md) to set up each new matter:
 
 ```
 cp docs/templates/case-claude-md.md /path/to/my-case/CLAUDE.md
 cd /path/to/my-case
+# Fill in the [REPLACE: ...] placeholders, then:
 claude
 ```
 
-The template pre-populates case context, privacy settings, and workflow preferences so that BetterCallClaude's agents start with the right information. See [docs/templates/case-claude-md.md](docs/templates/case-claude-md.md) for the template.
+The template covers case profile, privacy settings (strict/balanced/cloud), key dates, statutory framework, workflow preferences, and deliverables — all aligned with BetterCallClaude's agent taxonomy and pipeline templates.
 
 ---
 
@@ -450,7 +453,7 @@ The privacy system supports three modes:
 ## Requirements
 
 - Cowork or Claude Code (latest version)
-- Node.js >= 18 (for MCP servers)
+- Node.js >= 18 (only for `--local` mode or the ollama privacy classifier)
 
 ---
 
@@ -472,7 +475,7 @@ Built with love for the Swiss legal community. [Support the project ☕](https:/
 
 ## For Developers
 
-The `mcp-servers-src/` directory contains the TypeScript source code for all five MCP servers. To build from source:
+The `mcp-servers-src/` directory contains the TypeScript source code for all six MCP servers. To build from source:
 
 ```bash
 # Install dependencies and compile TypeScript
@@ -495,9 +498,9 @@ npm run build:mcpb
 
 ```
 .claude-plugin/plugin.json   Plugin manifest
-.mcp.json                    MCP server configuration
-agents/                      18 agent definitions (markdown)
-commands/                    17 slash commands (markdown)
+.mcp.json                    MCP server configuration (5 HTTP + 1 local)
+agents/                      19 agent definitions (markdown)
+commands/                    18 slash commands (markdown)
 skills/                      10 auto-activated skills (markdown)
 hooks/                       Privacy detection hook
 mcp-servers/                 Pre-compiled MCP server bundles (checked into git)

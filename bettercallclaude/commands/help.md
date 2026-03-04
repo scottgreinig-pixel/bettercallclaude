@@ -58,7 +58,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 | Command | Description |
 |---------|-------------|
 | `/bettercallclaude:cite` | Format and verify individual Swiss legal citations |
-| `/bettercallclaude:setup` | Check MCP server status and configure for Cowork Desktop |
+| `/bettercallclaude:setup` | Check MCP server connectivity and switch between HTTP/local transport |
 | `/bettercallclaude:version` | Display plugin version, components, and system status |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output with length control (--short/--medium/--long) |
 | `/bettercallclaude:help` | This command reference |
@@ -119,14 +119,14 @@ Skills activate automatically when Claude detects relevant context.
 
 ## MCP Servers (6)
 
-| Server | Purpose |
-|--------|---------|
-| entscheidsuche | Swiss court decision search (Bundesgericht + cantonal courts) |
-| bge-search | Federal Supreme Court decision search and validation |
-| legal-citations | Citation verification and multi-lingual formatting |
-| fedlex-sparql | Swiss federal legislation database queries |
-| onlinekommentar | Swiss legal commentary access |
-| ollama | Local LLM processing for privacy-sensitive content |
+| Server | Purpose | Transport |
+|--------|---------|-----------|
+| entscheidsuche | Swiss court decision search (Bundesgericht + cantonal courts) | HTTP |
+| bge-search | Federal Supreme Court decision search and validation | HTTP |
+| legal-citations | Citation verification and multi-lingual formatting | HTTP |
+| fedlex-sparql | Swiss federal legislation database queries | HTTP |
+| onlinekommentar | Swiss legal commentary access | HTTP |
+| ollama | Local privacy classification for privileged content | Local |
 
 ---
 

@@ -1,8 +1,6 @@
 # MCP Server Integration -- CONNECTORS
 
-This document describes the five MCP (Model Context Protocol) servers included with the BetterCallClaude plugin. These servers provide direct integration with Swiss legal databases for precedent search, court decision retrieval, citation verification, federal legislation lookup, and legal commentary access.
-
-All servers are pre-compiled and self-contained (all dependencies bundled inline). No build step or `npm install` is required.
+This document describes the six MCP (Model Context Protocol) servers included with the BetterCallClaude plugin. These servers provide direct integration with Swiss legal databases for precedent search, court decision retrieval, citation verification, federal legislation lookup, legal commentary access, and local privacy classification.
 
 ---
 
@@ -10,64 +8,42 @@ All servers are pre-compiled and self-contained (all dependencies bundled inline
 
 | Server | Purpose | Transport |
 |--------|---------|-----------|
-| `bge-search` | Search and retrieve Federal Supreme Court (BGE/ATF/DTF) decisions | stdio |
-| `entscheidsuche` | Search across Swiss federal and cantonal court databases | stdio |
-| `legal-citations` | Validate citation format and convert between languages | stdio |
-| `fedlex-sparql` | Look up Swiss federal legislation via the Fedlex SPARQL endpoint | stdio |
-| `onlinekommentar` | Search and retrieve Swiss legal commentaries (Kommentare) | stdio |
-
-### Requirements
-
-- Node.js >= 18
+| `bge-search` | Search and retrieve Federal Supreme Court (BGE/ATF/DTF) decisions | HTTP |
+| `entscheidsuche` | Search across Swiss federal and cantonal court databases | HTTP |
+| `legal-citations` | Validate citation format and convert between languages | HTTP |
+| `fedlex-sparql` | Look up Swiss federal legislation via the Fedlex SPARQL endpoint | HTTP |
+| `onlinekommentar` | Search and retrieve Swiss legal commentaries (Kommentare) | HTTP |
+| `ollama` | Privacy classification for privileged content (offline regex) | Local (stdio) |
 
 ### Configuration
 
-#### Claude Code CLI (Automatic)
+#### All platforms (default -- HTTP transport)
 
-All five servers auto-register via the `.mcp.json` file at the plugin root using `${CLAUDE_PLUGIN_ROOT}`:
+Five servers connect to the hosted HTTP MCP service at `https://mcp.bettercallclaude.ch`. The plugin's `.mcp.json` configures these automatically — no local setup, Node.js, or API keys are required.
 
-```json
-{
-  "mcpServers": {
-    "bettercallclaude-entscheidsuche": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/entscheidsuche/dist/index.js"]
-    },
-    "bettercallclaude-bge-search": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/bge-search/dist/index.js"]
-    },
-    "bettercallclaude-legal-citations": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/legal-citations/dist/index.js"]
-    },
-    "bettercallclaude-fedlex-sparql": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/fedlex-sparql/dist/index.js"]
-    },
-    "bettercallclaude-onlinekommentar": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/onlinekommentar/dist/index.js"]
-    }
-  }
-}
+The ollama privacy classifier runs locally via stdio to ensure sensitive content never leaves your machine.
+
+After plugin installation, verify with `/mcp` that all 6 servers appear. Restart Claude Code or Cowork if needed.
+
+#### Local mode (optional -- stdio transport)
+
+For lower latency or offline capability, you can switch the 5 HTTP servers to local stdio transport:
+
+```
+/bettercallclaude:setup --local
 ```
 
-After plugin installation, verify with `/mcp` that all 5 servers appear. Restart Claude Code if needed.
+This registers user-scoped stdio servers that override the plugin's HTTP defaults. Requires Node.js 18+ and the plugin's bundled server files.
 
-#### Cowork Desktop (Guided Setup)
+To switch back to HTTP:
 
-Cowork Desktop may not auto-register MCP servers from the plugin's `.mcp.json`. Run `/bettercallclaude:setup` to:
-
-1. Check which servers are connected
-2. Get a ready-to-paste configuration with absolute paths for your environment
-3. Verify after configuration
-
-The setup command replaces `${CLAUDE_PLUGIN_ROOT}` with the actual plugin installation path on your system.
+```
+/bettercallclaude:setup --restore-http
+```
 
 #### Without MCP Servers
 
-BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:setup` to configure.
+BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:setup` to check connectivity.
 
 ---
 
