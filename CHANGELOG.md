@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.0.1] - 2026-03-11
+
+### Fixed
+- MCP servers now appear in Cowork Desktop after marketplace installation
+- Switched 5 servers from STDIO to HTTP transport (`mcp.bettercallclaude.ch`)
+- Cowork Desktop sandboxed VM environment cannot run STDIO-based MCP servers
+
+### Changed
+- `bettercallclaude/.mcp.json`: 5 servers use HTTP, ollama remains STDIO for privacy
+- Version bumped from 4.0.0 to 4.0.1 across 5 configuration files
+
+### Architecture
+- **HTTP transport** (5 servers): `entscheidsuche`, `bge-search`, `legal-citations`, `fedlex-sparql`, `onlinekommentar`
+- **STDIO transport** (1 server): `ollama` — must run locally for attorney-client privilege detection (Art. 321 StGB / Anwaltsgeheimnis)
+
+---
+
+## [4.0.0] - 2026-03-03
+
+### Added
+- HTTP MCP service deployment at `mcp.bettercallclaude.ch` (Railway)
+- Cowork Desktop installation guide with visual screenshots (`docs/cowork-setup.md`)
+- README badges for version, license, platform, website, MCP support
+
+### Changed
+- HTTP-first MCP transport architecture for zero-config Cowork installation
+- README rewritten with Cowork-first messaging (534→219 lines)
+- ESLint migrated to v9 flat config
+- Repository consolidation: single source of truth in `bettercallclaude/`
+
+---
+
 ## [3.0.0] - 2026-02-14
 
 ### Repository Consolidation
