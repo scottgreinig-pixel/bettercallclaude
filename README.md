@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.0.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.0.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20%7C%20Claude%20Code-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -13,7 +13,7 @@ BetterCallClaude transforms legal research, case strategy, and document drafting
 
 ---
 
-## What's New in v4.0.0
+## What's New in v4.0.1
 
 **HTTP-first MCP transport** -- All five Swiss legal database servers now connect via HTTP to `mcp.bettercallclaude.ch`. No local Node.js installation or build step required.
 
