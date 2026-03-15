@@ -42,4 +42,5 @@ jobs:
             dist/mcpb/*.mcpb \
             dist/*.zip \
             --title "$TAG_NAME" \
-            --generate-notes
+            --generate-notes \
+            --clobber
