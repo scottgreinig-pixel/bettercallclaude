@@ -38,7 +38,7 @@ import {
   buildLookupByAbbreviationQuery,
   buildGetArticleQuery,
   buildGetArticleParagraphQuery,
-  // buildListArticlesQuery, // Reserved for future article listing endpoint
+  buildListArticlesQuery,
   buildSearchQuery,
   buildSearchCountQuery,
   buildSearchByDomainQuery,
@@ -72,6 +72,8 @@ import type {
   FindRelatedResult,
   GetMetadataInput,
   GetMetadataResult,
+  ListArticlesInput,
+  ListArticlesResult,
   SPARQLBinding,
   RelationType,
 } from './types/legislation.js';
@@ -198,6 +200,7 @@ async function getArticle(input: GetArticleInput): Promise<GetArticleResult> {
       return {
         found: false,
         searchTimeMs: Date.now() - startTime,
+        note: "Fedlex only stores modified/amended articles. This article may exist in the original act but has never been modified. Use list_articles to see which articles are available for this SR number.",
       };
     }
 
@@ -265,6 +268,61 @@ async function getArticle(input: GetArticleInput): Promise<GetArticleResult> {
     };
   } catch (error) {
     console.error('Get article failed:', error);
+    throw error;
+  }
+}
+
+/**
+ * List all articles available in Fedlex for a given SR number
+ *
+ * Note: Fedlex only stores modified/amended articles, not all articles.
+ * This is useful when get_article returns not found to see what's available.
+ */
+async function listArticles(input: ListArticlesInput): Promise<ListArticlesResult> {
+  const startTime = Date.now();
+
+  try {
+    const query = buildListArticlesQuery(
+      input.srNumber,
+      input.language,
+      input.limit || 1000
+    );
+
+    const result = await sparqlClient.query(query);
+    const bindings = result.results.bindings;
+
+    if (bindings.length === 0) {
+      return {
+        found: false,
+        srNumber: input.srNumber,
+        searchTimeMs: Date.now() - startTime,
+        note: "No articles found for this SR number. The act may not exist or has no modified articles in Fedlex.",
+      };
+    }
+
+    // Extract act title from first binding
+    const firstBinding = bindings[0];
+    const actTitle = sparqlClient.extractMultilingualValue(bindings, 'actTitle');
+
+    // Extract article numbers and titles
+    const articles = bindings.map((binding: Record<string, SPARQLBinding>) => ({
+      number: sparqlClient.extractValue(binding.articleNumber) || '',
+      title: binding.title
+        ? { [binding.title['xml:lang'] || 'de']: binding.title.value }
+        : undefined,
+    }));
+
+    return {
+      found: true,
+      srNumber: input.srNumber,
+      actTitle,
+      articles,
+      count: articles.length,
+      note: "Fedlex only stores modified/amended articles. This list contains articles that have been changed since consolidation.",
+      searchTimeMs: Date.now() - startTime,
+    };
+  } catch (error) {
+    console.error('List articles failed:', error);
     throw error;
   }
 }
@@ -598,6 +656,37 @@ async function main() {
           },
         },
         {
+          name: "list_articles",
+          description:
+            "List all articles available in Fedlex for a given SR number. Use this when get_article returns 'not found' to see which articles exist in the database. Note: Fedlex only stores modified/amended articles.",
+          annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+          },
+          inputSchema: {
+            type: "object",
+            properties: {
+              srNumber: {
+                type: "string",
+                description: "SR number of the legal act (e.g., '220' for OR, '272' for ZPO)",
+              },
+              language: {
+                type: "string",
+                enum: ["de", "fr", "it", "rm"],
+                description: "Preferred language for results",
+              },
+              limit: {
+                type: "number",
+                minimum: 1,
+                maximum: 2000,
+                default: 1000,
+                description: "Maximum number of articles to return",
+              },
+            },
+            required: ["srNumber"],
+          },
+        },
+        {
           name: "search_legislation",
           description:
             "Search across Swiss federal legislation with full-text search and filters. Supports filtering by legal domain, date range, act type, and language.",
@@ -763,6 +852,19 @@ async function main() {
       if (name === "get_article") {
         const input = args as unknown as GetArticleInput;
         const result = await getArticle(input);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(result, null, 2),
+            },
+          ],
+        };
+      }
+
+      if (name === "list_articles") {
+        const input = args as unknown as ListArticlesInput;
+        const result = await listArticles(input);
         return {
           content: [
             {

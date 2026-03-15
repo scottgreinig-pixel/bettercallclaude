@@ -311,6 +311,12 @@ export interface GetMetadataInput {
   language?: Language;
 }
 
+export interface ListArticlesInput {
+  srNumber: SRNumber;
+  language?: Language;
+  limit?: number;
+}
+
 /**
  * Tool output types
  */
@@ -377,6 +383,19 @@ export interface GetMetadataResult {
   searchTimeMs?: number;
   success?: boolean;
   error?: string;
+}
+
+export interface ListArticlesResult {
+  found: boolean;
+  srNumber?: SRNumber;
+  actTitle?: MultilingualText;
+  articles?: Array<{
+    number: string;
+    title?: MultilingualText;
+  }>;
+  count?: number;
+  note?: string;
+  searchTimeMs?: number;
 }
 
 /**

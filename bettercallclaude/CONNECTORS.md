@@ -409,6 +409,8 @@ Provides access to Swiss federal legislation via the official Fedlex SPARQL endp
 
 **Data source**: https://fedlex.data.admin.ch/sparqlendpoint (CC BY-NC-SA 4.0)
 
+⚠️ **Important Limitation**: Fedlex only stores articles that have been modified or amended since the last consolidation. Original unmodified articles will return `found: false`. Use `list_articles` to see which articles are available for a given SR number, or check fedlex.admin.ch for complete texts.
+
 ### Tools
 
 #### lookup_statute
@@ -465,6 +467,52 @@ Retrieve a specific article within a Swiss legal act, including marginal notes, 
 ```
 
 **Response**: Returns article text, marginal note, paragraphs, and letters in the requested language.
+
+---
+
+#### list_articles
+
+List all articles available in Fedlex for a given SR number. Use this when `get_article` returns `found: false` to discover which articles exist in the database.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `srNumber` | string | Yes | SR number of the legal act (e.g., `"220"` for OR, `"272"` for ZPO). |
+| `language` | string | No | Preferred language for results. One of: `de`, `fr`, `it`, `rm`. |
+| `limit` | number | No | Maximum number of articles to return. Default: `1000`. Maximum: `2000`. |
+
+**Example request:**
+
+```json
+{
+  "tool": "list_articles",
+  "arguments": {
+    "srNumber": "272",
+    "language": "de"
+  }
+}
+```
+
+**Response format:**
+
+```json
+{
+  "found": true,
+  "srNumber": "272",
+  "actTitle": {
+    "de": "Zivilprozessordnung"
+  },
+  "articles": [
+    { "number": "5", "title": { "de": "Anwendungsbereich" } },
+    { "number": "6", "title": { "de": "Rechtsweg" } },
+    { "number": "8", "title": { "de": "Örtliche Zuständigkeit" } }
+  ],
+  "count": 150,
+  "note": "Fedlex only stores modified/amended articles. This list contains articles that have been changed since consolidation.",
+  "searchTimeMs": 450
+}
+```
 
 ---
 
