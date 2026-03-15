@@ -292,7 +292,7 @@ export class CitationFormatter {
     }
 
     // Reverse lookup - find the base statute
-    for (const [baseStatute, translations] of Object.entries(CitationFormatter.STATUTE_NAMES)) {
+    for (const [_baseStatute, translations] of Object.entries(CitationFormatter.STATUTE_NAMES)) {
       for (const translation of Object.values(translations)) {
         if (translation.toUpperCase() === normalizedStatute) {
           return translations[targetLanguage];

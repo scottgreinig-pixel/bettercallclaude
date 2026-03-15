@@ -320,7 +320,7 @@ describe('Database Persistence Integration Tests', () => {
       // Verify file is readable and writable
       try {
         fs.accessSync(testDbPath, fs.constants.R_OK | fs.constants.W_OK);
-      } catch (error) {
+      } catch (_error) {
         fail('Database file is not readable/writable');
       }
 

@@ -155,7 +155,7 @@ export async function checkDatabaseHealth(dataSource: DataSource): Promise<boole
   try {
     await dataSource.query('SELECT 1');
     return true;
-  } catch (error) {
+  } catch (_error) {
     return false;
   }
 }

@@ -128,8 +128,8 @@ export class EntscheidSucheClient extends BaseAPIClient {
     decisions: EntscheidSucheDecision[];
     total: number;
   }> {
-    const size = Math.min(filters.size || 10, 50);
-    const from = filters.from || 0;
+    const _size = Math.min(filters.size || 10, 50);
+    const _from = filters.from || 0;
 
     // Build Elasticsearch query
     const query = this.buildSearchQuery(filters);

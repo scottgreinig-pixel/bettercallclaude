@@ -167,8 +167,8 @@ async function searchBGE(params: SearchParams): Promise<{
 
       const dbResults = await decisionRepo.search({
         query: params.query,
-        courtLevel: "federal" as any,
-        language: params.language as any,
+        courtLevel: "federal",
+        language: params.language as 'de' | 'fr' | 'it' | undefined,
         chamber: params.chambers?.[0],
         legalAreas: params.legalAreas,
         dateFrom: params.dateFrom ? new Date(params.dateFrom) : undefined,
@@ -192,8 +192,8 @@ async function searchBGE(params: SearchParams): Promise<{
         relatedDecisions: d.relatedDecisions || [],
         metadata: d.metadata || {},
         chamber: d.chamber,
-        bgeReference: (d as any).bgeReference,
-        sourceUrl: (d as any).sourceUrl || "",
+        bgeReference: d.bgeReference,
+        sourceUrl: d.sourceUrl || "",
         score: 1.0,
       })) as EntscheidSucheDecision[];
 
@@ -332,7 +332,7 @@ async function getBGEDecision(citation: string): Promise<{
       // Also try searching by citation text in the query
       const searchResults = await decisionRepo.search({
         query: citation,
-        courtLevel: "federal" as any,
+        courtLevel: "federal",
         limit: 1,
       });
       if (searchResults.length > 0) {

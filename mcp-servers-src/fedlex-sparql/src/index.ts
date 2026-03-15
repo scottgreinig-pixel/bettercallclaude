@@ -300,8 +300,7 @@ async function listArticles(input: ListArticlesInput): Promise<ListArticlesResul
       };
     }
 
-    // Extract act title from first binding
-    const firstBinding = bindings[0];
+    // Extract act title from bindings
     const actTitle = sparqlClient.extractMultilingualValue(bindings, 'actTitle');
 
     // Extract article numbers and titles

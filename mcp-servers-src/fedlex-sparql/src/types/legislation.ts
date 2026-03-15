@@ -344,6 +344,7 @@ export interface GetArticleResult {
   searchTimeMs?: number;
   success?: boolean;
   error?: string;
+  note?: string;
 }
 
 export interface SearchLegislationResult {
