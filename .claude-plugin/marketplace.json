@@ -3,7 +3,7 @@
   "name": "bettercallclaude-marketplace",
   "metadata": {
     "description": "Swiss Legal Intelligence plugin for Claude -- BGE/ATF/DTF precedent research, multi-lingual legal analysis, and citation verification for all 26 Swiss cantons",
-    "version": "4.0.1"
+    "version": "4.0.2"
   },
   "owner": {
     "name": "Federico Cesconi"

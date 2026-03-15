@@ -25,6 +25,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 | Command | Description |
 |---------|-------------|
 | `/bettercallclaude:legal` | Intelligent gateway -- analyzes intent, routes to agents, manages workflows |
+| `/bettercallclaude:legal --refine` | Prompt refinement mode -- reformulates vague queries into precise legal prompts |
 | `/bettercallclaude:research` | Search BGE/ATF/DTF precedents, analyze statutes, verify citations |
 | `/bettercallclaude:strategy` | Litigation strategy, risk assessment, settlement evaluation |
 | `/bettercallclaude:draft` | Draft contracts, court submissions, legal opinions |
@@ -164,6 +165,14 @@ Skills activate automatically when Claude detects relevant context.
 /bettercallclaude:briefing --list
 ```
 
+### Prompt Refinement (when queries aren't getting good results)
+```
+/bettercallclaude:legal --refine "my tenant is not paying"
+# → Asks clarifying questions, then reformulates into:
+# "Art. 257d OR -- Mietzinsrückstand, Kündigung und fristlose Räumung,
+#  Kanton Zürich, Vermieterperspektive, Forschungsantwort gewünscht"
+```
+
 ### Multi-Lingual
 ```
 /bettercallclaude:research art. 97 CO violation de contrat
@@ -182,7 +191,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.0.1 -- Swiss Legal Intelligence Plugin**
+**BetterCallClaude v4.0.2 -- Swiss Legal Intelligence Plugin**
 
 If the user provided additional input, respond to it in the context of this help reference.
 
