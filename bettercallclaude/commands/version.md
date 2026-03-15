@@ -14,7 +14,7 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.0.2
+  Version:      4.0.3
   Format:       Claude Code Plugin (Cowork compatible)
   Author:       Federico Cesconi
   License:      MIT

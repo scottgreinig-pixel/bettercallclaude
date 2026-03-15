@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.0.2-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.0.3-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20%7C%20Claude%20Code-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -13,12 +13,15 @@ BetterCallClaude transforms legal research, case strategy, and document drafting
 
 ---
 
-## What's New in v4.0.2
+## What's New in v4.0.3
 
-**Prompt refinement mode** -- New `--refine` flag for `/bettercallclaude:legal` reformulates vague queries into precise legal prompts through clarifying questions.
+**Auto-refine in /briefing** -- The `/bettercallclaude:briefing` command now auto-detects vague queries and offers prompt refinement before the specialist panel. Single entry point for case intake.
 
-- **Interactive refinement**: `/bettercallclaude:legal --refine "my tenant is not paying"` asks targeted questions, then outputs a structured legal prompt with article citations, jurisdiction, and research focus.
-- **Git-subdir marketplace format**: PR [#118](https://github.com/anthropics/knowledge-work-plugins/pull/118) migrated to the newer git-subdir reference format for faster review and merge.
+- **Vagueness detection**: Missing legal question, party position, jurisdiction, or desired outcome triggers refinement offer
+- **Seamless flow**: Accept → refine → continue with panel, or skip and proceed directly
+- **GitHub Actions fix**: Release workflow now idempotent with `--clobber` flag
+
+**v4.0.2 -- Prompt refinement mode** -- `--refine` flag for `/bettercallclaude:legal` reformulates vague queries into precise legal prompts. Git-subdir marketplace format for PR [#118](https://github.com/anthropics/knowledge-work-plugins/pull/118).
 
 **v4.0.1 -- HTTP-first MCP transport** -- All five Swiss legal database servers connect via HTTP to `mcp.bettercallclaude.ch`. Zero-config for Cowork Desktop.
 
