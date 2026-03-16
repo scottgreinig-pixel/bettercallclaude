@@ -11,6 +11,14 @@
 
 BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 19 agents, 18 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
 
+## Overview
+
+### The Framework at a Glance
+
+BetterCallClaude provides a structured methodology for handling legal work with AI assistance. The framework consists of five interconnected phases.
+
+![BetterCallClaude Framework](docs/images/bettercallclaude_framework.png)
+
 ---
 
 ## What's New in v4.0.4
@@ -63,7 +71,13 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 }
 ```
 
-For the full installation guide (troubleshooting, manual install, developer setup), see [docs/INSTALL.md](docs/INSTALL.md).
+For the full installation guide (troubleshooting, manual install, developer setup), see [BetterCallClaude Tutorial](https://github.com/fedec65/bettercallclaude_tutorial).
+
+---
+
+### BetterCallClaude Tutorial
+
+A comprehensive tutorial for Swiss lawyers using BetterCallClaude within the COWORK platform. [CLICK HERE](https://github.com/fedec65/bettercallclaude_tutorial) to access the full tutorial.
 
 ---
 
@@ -163,17 +177,6 @@ BetterCallClaude includes built-in Anwaltsgeheimnis (attorney-client privilege, 
 | French | FR | Official: CC, CO, CP, ATF. Used in GE, VD, and French-speaking cantons. |
 | Italian | IT | Official: CC, CO, CP, DTF. Used in TI and Italian-speaking regions. |
 | English | EN | Working language with Swiss legal term mapping. |
-
----
-
-## Tutorials
-
-- [Employment Case Walkthrough](docs/tutorials/employment-case-walkthrough.md) (English)
-- [Arbeitsrecht-Fallbeispiel](docs/tutorials/arbeitsrecht-fallbeispiel.md) (Deutsch)
-- [Cas pratique droit du travail](docs/tutorials/cas-pratique-droit-du-travail.md) (Francais)
-- [Caso pratico diritto del lavoro](docs/tutorials/caso-pratico-diritto-del-lavoro.md) (Italiano)
-- [BetterCallClaude vs. Anthropic Legal Plugin](docs/tutorials/plugin-comparison-keller-case.md) -- Side-by-side comparison
-- [Case CLAUDE.md Template](docs/templates/case-claude-md.md) -- Set up persistent case context
 
 ---
 
