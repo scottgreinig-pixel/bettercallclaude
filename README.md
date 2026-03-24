@@ -40,8 +40,6 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ### Cowork Desktop (Recommended)
 
-Follow the [visual setup guide](docs/cowork-setup.md) with screenshots, or use three steps:
-
 1. In Cowork, click **Customize** > **Browse plugins** > **Personal** > **+** > **Add marketplace from GitHub**
 2. Enter `fedec65/bettercallclaude` and click **Sync**
 3. Click **Install** on the BetterCallClaude card
@@ -55,7 +53,7 @@ claude plugin install bettercallclaude@bettercallclaude-marketplace
 
 ### Windows
 
-Install [Git for Windows](https://git-scm.com/downloads/win), then install Claude Code (`winget install Anthropic.ClaudeCode` or [other methods](docs/INSTALL.md#windows-installation-claude-code-cli)), then run the CLI commands above.
+Install [Git for Windows](https://git-scm.com/downloads/win), then install Claude Code (`winget install Anthropic.ClaudeCode`), then run the CLI commands above.
 
 ### Team Setup
 
@@ -71,13 +69,7 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 }
 ```
 
-For the full installation guide (troubleshooting, manual install, developer setup), see [BetterCallClaude Tutorial](https://github.com/fedec65/bettercallclaude_tutorial).
-
----
-
-### BetterCallClaude Tutorial
-
-A comprehensive tutorial for Swiss lawyers using BetterCallClaude within the COWORK platform. [CLICK HERE](https://github.com/fedec65/bettercallclaude_tutorial) to access the full tutorial.
+**Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial](https://github.com/fedec65/bettercallclaude_tutorial)
 
 ---
 
@@ -130,7 +122,7 @@ A comprehensive tutorial for Swiss lawyers using BetterCallClaude within the COW
 
 ## Key Features
 
-- **Briefing sessions** -- Complex queries trigger a collaborative intake phase with specialist panels, targeted questions, and structured execution plans before agents start working. Supports `--resume` for cross-session persistence. ([Details](docs/tutorials/employment-case-walkthrough.md))
+- **Briefing sessions** -- Complex queries trigger a collaborative intake phase with specialist panels, targeted questions, and structured execution plans before agents start working. Supports `--resume` for cross-session persistence.
 - **Adversarial analysis** -- Three-agent workflow: advocate builds the case, adversary challenges it, judicial analyst synthesizes using Swiss Erwagung methodology with probability scores.
 - **Multi-agent workflows** -- Predefined pipelines for due diligence, litigation prep, contract lifecycle, and real estate closings.
 - **All 26 cantons** -- Full cantonal coverage with court systems, citation formats, and MCP search via entscheidsuche.ch. Federal law is the default; mentioning a canton triggers cantonal mode.
