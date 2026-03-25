@@ -92,13 +92,14 @@ jobs:
 
       - name: Check compiled bundles exist
         run: |
-          for server in entscheidsuche bge-search legal-citations fedlex-sparql onlinekommentar ollama; do
-            if [ ! -f "bettercallclaude/mcp-servers/$server/dist/index.js" ]; then
-              echo "FAIL: Missing bettercallclaude/mcp-servers/$server/dist/index.js"
-              exit 1
-            fi
-            echo "OK: bettercallclaude/mcp-servers/$server/dist/index.js"
-          done
+          # Only ollama runs locally via STDIO and needs a dist file.
+          # HTTP servers (entscheidsuche, bge-search, fedlex-sparql, legal-citations, onlinekommentar)
+          # run remotely at mcp.bettercallclaude.ch -- no dist files committed.
+          if [ ! -f "bettercallclaude/mcp-servers/ollama/dist/index.js" ]; then
+            echo "FAIL: Missing bettercallclaude/mcp-servers/ollama/dist/index.js"
+            exit 1
+          fi
+          echo "OK: bettercallclaude/mcp-servers/ollama/dist/index.js"
 
       - name: Check .mcp.json
         run: |
