@@ -1,5 +1,4 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "bettercallclaude-marketplace",
   "metadata": {
     "description": "Swiss Legal Intelligence plugin for Claude -- BGE/ATF/DTF precedent research, multi-lingual legal analysis, and citation verification for all 26 Swiss cantons",
