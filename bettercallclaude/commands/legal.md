@@ -16,11 +16,32 @@ The user can specify a mode flag to control behavior:
 
 ## Refine Mode (`--refine`)
 
-When `--refine` is active, act as a prompt engineering specialist for Swiss legal queries:
+When `--refine` is active, analyze the query first to determine the best approach:
 
-### Step 1: Identify Missing Information
+### Step 0: Assess Query Quality
 
-Analyze the query and identify what's missing across these dimensions:
+Calculate two scores:
+1. **Clarity score** (1-10): How clear is the legal question?
+2. **Complexity score** (1-10): How complex is the legal matter?
+
+**Decision logic**:
+- If **clarity < 6** OR **complexity > 4**: Delegate to prompt-engineer agent
+- If **clarity ≥ 6** AND **complexity ≤ 4**: Continue with inline refinement below
+
+When delegating to prompt-engineer, announce:
+```
+💡 Your query could benefit from specialized prompt engineering. I'll route
+you to the prompt-engineer agent for Socratic dialogue and workflow
+recommendations.
+
+Starting prompt refinement session...
+```
+
+Then invoke the prompt-engineer agent to conduct the refinement workflow.
+
+### Step 1: Identify Missing Information (Inline Mode)
+
+For queries that don't need prompt-engineer delegation, identify what's missing:
 
 1. **Jurisdiction**: Which canton? Or federal only?
 2. **Legal domain**: Civil, criminal, administrative, social insurance?
@@ -29,7 +50,7 @@ Analyze the query and identify what's missing across these dimensions:
 5. **Factual context**: Timeline, amounts, prior actions taken?
 6. **Output type**: Research memo, strategy, drafted document, compliance check?
 
-### Step 2: Ask Targeted Questions
+### Step 2: Ask Targeted Questions (Inline Mode)
 
 Ask 2-4 Socratic questions to fill gaps. Be concise. Examples:
 
@@ -38,7 +59,7 @@ Ask 2-4 Socratic questions to fill gaps. Be concise. Examples:
 - "What outcome are you seeking — termination, rent reduction, or damages?"
 - "Do you need a research memo, litigation strategy, or a drafted document?"
 
-### Step 3: Reformulate
+### Step 3: Reformulate (Inline Mode)
 
 Present the refined prompt in a structured format:
 
@@ -55,7 +76,7 @@ Present the refined prompt in a structured format:
 "[Reformulated prompt using proper Swiss legal terminology]"
 ```
 
-### Step 4: Offer Execution
+### Step 4: Offer Execution (Inline Mode)
 
 After presenting the refined prompt, ask:
 
