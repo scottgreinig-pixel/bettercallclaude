@@ -2,23 +2,5 @@
   "name": "bettercallclaude",
   "version": "4.1.1",
   "description": "Swiss Legal Intelligence -- BGE/ATF/DTF precedent research, case strategy, legal drafting, and citation verification across all 26 Swiss cantons with Anwaltsgeheimnis privacy protection.",
-  "author": {
-    "name": "Federico Cesconi",
-    "url": "https://bettercallclaude.ch"
-  },
-  "homepage": "https://bettercallclaude.ch",
-  "repository": "https://github.com/fedec65/bettercallclaude",
-  "license": "AGPL-3.0",
-  "keywords": [
-    "swiss-law",
-    "legal-research",
-    "bge-atf-dtf",
-    "litigation",
-    "legal-drafting",
-    "citation-verification",
-    "multilingual",
-    "compliance",
-    "data-protection",
-    "mcp-servers"
-  ]
+  "author": { "name": "Federico Cesconi" }
 }

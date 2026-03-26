@@ -1,10 +1,3 @@
 {
-  "extraKnownMarketplaces": {
-    "bettercallclaude-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "fedec65/bettercallclaude"
-      }
-    }
-  }
+  "extraKnownMarketplaces": {}
 }
