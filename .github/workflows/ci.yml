@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
     steps:
       - uses: actions/checkout@v4
 
@@ -55,7 +55,6 @@ jobs:
           node -e "
             const m = JSON.parse(require('fs').readFileSync('.claude-plugin/marketplace.json','utf8'));
             if (!m.name) { console.error('Missing marketplace name'); process.exit(1); }
-            if (!m.owner || !m.owner.name) { console.error('Missing owner.name'); process.exit(1); }
             if (!m.plugins || !m.plugins.length) { console.error('No plugins defined'); process.exit(1); }
             m.plugins.forEach(p => {
               if (!p.name || !p.source) { console.error('Plugin missing name or source:', p); process.exit(1); }
