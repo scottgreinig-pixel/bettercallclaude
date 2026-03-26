@@ -14,13 +14,13 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.0.5
+  Version:      4.1.0
   Format:       Claude Code Plugin (Cowork compatible)
   Author:       Federico Cesconi
   License:      MIT
 ======================================================
 
-  COMMANDS (18)
+  COMMANDS (19)
   -------------
   [x] legal          - Intelligent gateway and router
   [x] research       - BGE/ATF/DTF precedent search
@@ -38,9 +38,10 @@ Output the following formatted block:
   [x] translate      - Legal translation DE/FR/IT/EN
   [x] setup          - MCP server configuration
   [x] version        - This status display
+  [x] refine         - Prompt refinement and reformulation
   [x] help           - Command reference
 
-  AGENTS (19)
+  AGENTS (20)
   -----------
   [x] researcher      [x] strategist     [x] drafter
   [x] citation        [x] compliance     [x] data-protection
@@ -48,6 +49,7 @@ Output the following formatted block:
   [x] fiscal          [x] corporate      [x] cantonal
   [x] realestate      [x] advocate       [x] adversary
   [x] judicial        [x] briefing       [x] orchestrator
+  [x] prompt-engineer
 
   SKILLS (10)
   ----------

@@ -18,7 +18,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 ---
 
-## Commands (18)
+## Commands (19)
 
 ### Core Commands
 
@@ -60,13 +60,14 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 |---------|-------------|
 | `/bettercallclaude:cite` | Format and verify individual Swiss legal citations |
 | `/bettercallclaude:setup` | Check MCP server connectivity and switch between HTTP/local transport |
+| `/bettercallclaude:refine` | Refine vague legal queries into precise, effective prompts |
 | `/bettercallclaude:version` | Display plugin version, components, and system status |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output with length control (--short/--medium/--long) |
 | `/bettercallclaude:help` | This command reference |
 
 ---
 
-## Agents (19)
+## Agents (20)
 
 ### Core Pipeline Agents
 
@@ -96,6 +97,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 | briefing | Pre-execution intake, specialist panel consultation, execution plan building |
 | orchestrator | Multi-agent pipeline coordination and workflow management |
 | summarizer | Pipeline output consolidation, deduplication, length-calibrated summaries |
+| prompt-engineer | Prompt refinement — transforms vague queries into precise, effective legal prompts |
 
 ---
 
@@ -191,7 +193,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.0.5 -- Swiss Legal Intelligence Plugin**
+**BetterCallClaude v4.1.0 -- Swiss Legal Intelligence Plugin**
 
 If the user provided additional input, respond to it in the context of this help reference.
 
