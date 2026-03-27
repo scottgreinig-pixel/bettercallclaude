@@ -9,7 +9,7 @@
 
 **Swiss Legal Intelligence Plugin for Cowork and Claude Code**
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 19 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 21 agents, 19 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
 
 ## Overview
 
@@ -21,18 +21,16 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.0.4
+## What's New in v4.1.1
 
-**Auto-refine in /briefing** -- The `/bettercallclaude:briefing` command now auto-detects vague queries and offers prompt refinement before the specialist panel. Single entry point for case intake.
+**Legal Prompt Engineer Agent + /refine command** -- New specialist transforms vague queries into structured legal prompts through Socratic dialogue, with workflow recommendations and multi-lingual terminology guidance.
 
-- **Vagueness detection**: Missing legal question, party position, jurisdiction, or desired outcome triggers refinement offer
-- **Seamless flow**: Accept → refine → continue with panel, or skip and proceed directly
+- **Two invocation paths**: `/bettercallclaude:refine [query]` or `/bettercallclaude:legal --refine [query]`
+- **Socratic refinement**: Interactive dialogue fills gaps (jurisdiction, domain, party position)
+- **Workflow recommendations**: Suggests optimal agent pipelines (e.g., researcher → strategist → drafter)
+- **Mode flags**: `--quick` for fast results, `--optimize` for experienced users
 
-**v4.0.3** -- Skipped (release workflow issue)
-
-**v4.0.2 -- Prompt refinement mode** -- `--refine` flag for `/bettercallclaude:legal` reformulates vague queries into precise legal prompts. Git-subdir marketplace format for PR [#118](https://github.com/anthropics/knowledge-work-plugins/pull/118).
-
-**v4.0.1 -- HTTP-first MCP transport** -- All five Swiss legal database servers connect via HTTP to `mcp.bettercallclaude.ch`. Zero-config for Cowork Desktop.
+[Full changelog →](https://github.com/fedec65/bettercallclaude/blob/main/bettercallclaude/changelog.md)
 
 ---
 
@@ -77,7 +75,8 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 
 | Command | Description |
 |---------|-------------|
-| `/bettercallclaude:legal` | Intelligent gateway -- analyzes intent, routes to the appropriate specialist agent, and manages multi-step legal workflows. |
+| `/bettercallclaude:legal` | Intelligent gateway -- analyzes intent, routes to the appropriate specialist agent, and manages multi-step legal workflows. Use `--refine` to transform vague queries first. |
+| `/bettercallclaude:refine` | Transform vague legal queries into structured prompts through Socratic dialogue. Recommends optimal workflows and introduces Swiss legal terminology. Flags: `--quick` (skip dialogue), `--optimize` (for experienced users). |
 | `/bettercallclaude:research` | Search Swiss legal precedents and compile research memoranda. Supports BGE/ATF/DTF databases, doctrine references, and cross-jurisdictional analysis. |
 | `/bettercallclaude:strategy` | Develop litigation strategy with risk assessment, cost-benefit analysis, and procedural pathway evaluation. |
 | `/bettercallclaude:draft` | Draft Swiss legal documents including contracts, court briefs, legal opinions, and memoranda with proper citation formatting. |
@@ -100,6 +99,10 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 
 ```
 /bettercallclaude:legal I need to assess our exposure under Art. 97 OR for late delivery
+
+/bettercallclaude:refine I have problems with my landlord
+
+/bettercallclaude:refine --quick My employer fired me without notice
 
 /bettercallclaude:research Art. 97 OR contractual liability for late delivery
 
