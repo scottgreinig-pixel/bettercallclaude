@@ -1,5 +1,8 @@
 {
   "name": "bettercallclaude-marketplace",
+  "owner": {
+    "name": "Federico Cesconi"
+  },
   "plugins": [
     {
       "name": "bettercallclaude",
