@@ -18,16 +18,37 @@ If the health check succeeds, the HTTP service is online. If it fails, note the 
 
 ## Step 2: Probe MCP Servers
 
-Attempt to call a tool from each of the 6 MCP servers to determine connectivity. For each server, try listing its available tools or calling a no-op endpoint:
+Check connectivity for each of the 6 MCP servers using a **two-stage non-blocking approach**:
 
-| Server | Test Method |
-|--------|-------------|
-| bettercallclaude-entscheidsuche | Try calling any `search_decisions` or listing tools |
-| bettercallclaude-bge-search | Try calling any `search_bge` or listing tools |
-| bettercallclaude-legal-citations | Try calling any `validate_citation` or listing tools |
-| bettercallclaude-fedlex-sparql | Try calling any `search_legislation` or listing tools |
-| bettercallclaude-onlinekommentar | Try calling any `search_commentaries` or listing tools |
-| bettercallclaude-ollama | Try calling any `ollama_check_status` or listing tools |
+**Stage A — Check tool availability (non-blocking)**
+
+Look at your currently available tools. For each server, check whether its tools appear in your tool list:
+
+| Server | Tools to look for |
+|--------|-------------------|
+| bettercallclaude-entscheidsuche | `search_decisions`, `get_decision_details`, etc. |
+| bettercallclaude-bge-search | `search_bge`, `get_bge_decision`, etc. |
+| bettercallclaude-legal-citations | `validate_citation`, `format_citation`, etc. |
+| bettercallclaude-fedlex-sparql | `search_legislation`, `get_article`, etc. |
+| bettercallclaude-onlinekommentar | `search_commentaries`, `get_commentary`, etc. |
+| bettercallclaude-ollama | `ollama_check_status`, `ollama_list_models`, etc. |
+
+**If a server's tools do not appear in your available tool list, mark it as `[ ] Not connected` immediately and move on — do not attempt to call any of its tools.**
+
+**Stage B — Lightweight call (only for servers confirmed available in Stage A)**
+
+For each server whose tools ARE available, make one lightweight call to confirm it responds:
+
+| Server | Lightweight test |
+|--------|-----------------|
+| bettercallclaude-entscheidsuche | `search_decisions` with a minimal query |
+| bettercallclaude-bge-search | `search_bge` with a minimal query |
+| bettercallclaude-legal-citations | `validate_citation` with a simple citation |
+| bettercallclaude-fedlex-sparql | `search_legislation` with a minimal query |
+| bettercallclaude-onlinekommentar | `search_commentaries` with a minimal query |
+| bettercallclaude-ollama | `ollama_check_status` |
+
+If a tool call does not respond promptly, mark that server as `[ ] Timeout` and continue — do not wait or retry.
 
 ## Step 3: Display Status Table
 
@@ -55,7 +76,7 @@ Output the following formatted status report, replacing status indicators and tr
 ==============================================
 ```
 
-Mark each server as `[x] Connected` or `[ ] Not connected` based on Step 2 results. Show `HTTP` or `Local` in the Transport column.
+Mark each server as `[x] Connected`, `[ ] Not connected`, or `[ ] Timeout` based on Step 2 results. Show `HTTP` or `Local` in the Transport column.
 
 ## Step 4: Provide Guidance Based on Results
 
@@ -74,6 +95,20 @@ The HTTP service is online but the servers are not registering. Suggest:
 The HTTP service is healthy but servers are not connecting.
 Try restarting Claude Code or Cowork to reload the plugin configuration.
 If the issue persists, run: /mcp to check registered servers.
+```
+
+### If servers show `[ ] Timeout`:
+
+The server is registered (tools appear in your tool list) but is not responding to calls. Suggest:
+
+```
+One or more servers are registered but not responding.
+This may indicate a temporary service issue or network timeout.
+
+Try:
+1. Restart your Claude Code or Cowork session
+2. Re-run /bettercallclaude:setup to check again
+3. If the HTTP service health check failed, the service may be temporarily unavailable
 ```
 
 ### If health check failed:
