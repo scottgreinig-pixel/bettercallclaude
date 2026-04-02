@@ -5,9 +5,11 @@
 [![MCP Servers](https://img.shields.io/badge/MCP%20servers-6-purple)](https://mcp.bettercallclaude.ch/health)
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
 
-# BetterCallClaude
+<p align="center">
+  <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="420">
+</p>
 
-**Swiss Legal Intelligence Plugin for Cowork and Claude Code**
+<p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork and Claude Code</strong></p>
 
 BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 21 agents, 19 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
 
@@ -44,6 +46,8 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ## Quick Install
 
+> **Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
+
 ### Cowork Desktop (Recommended)
 
 1. In Cowork, click **Customize** > **Browse plugins** > **Personal** > **+** > **Add marketplace from GitHub**
@@ -75,7 +79,13 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 }
 ```
 
-**Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial](https://github.com/fedec65/bettercallclaude_tutorial)
+---
+
+## Update (issues with Claude Cowork)
+
+If you've noticed that the "Update" button has disappeared from your GitHub-synced marketplace plugins in Claude Cowork, you're not alone. This is a confirmed issue affecting Pro plan users following the February 2026 Cowork platform restructuring.
+
+[How to update BetterCallClaude manually →](docs/plugin-update-guide.md)
 
 ---
 
