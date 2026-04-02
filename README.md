@@ -38,6 +38,8 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ## Quick Install
 
+> **Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
+
 ### Cowork Desktop (Recommended)
 
 1. In Cowork, click **Customize** > **Browse plugins** > **Personal** > **+** > **Add marketplace from GitHub**
@@ -68,8 +70,6 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
   }
 }
 ```
-
-> **Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
 
 ---
 
