@@ -9,7 +9,7 @@
   <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="420">
 </p>
 
-**Swiss Legal Intelligence Plugin for Cowork and Claude Code**
+<p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork and Claude Code</strong></p>
 
 BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 21 agents, 19 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
 
