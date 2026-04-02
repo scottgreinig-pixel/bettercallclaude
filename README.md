@@ -1,13 +1,15 @@
-[![Version](https://img.shields.io/badge/version-4.1.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.1.2-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20%7C%20Claude%20Code-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
 [![MCP Servers](https://img.shields.io/badge/MCP%20servers-6-purple)](https://mcp.bettercallclaude.ch/health)
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
 
-# BetterCallClaude
+<p align="center">
+  <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="420">
+</p>
 
-**Swiss Legal Intelligence Plugin for Cowork and Claude Code**
+<p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork and Claude Code</strong></p>
 
 BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 21 agents, 19 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
 
@@ -20,6 +22,14 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 ![BetterCallClaude Framework](docs/images/bettercallclaude_framework.png)
 
 ---
+
+## What's New in v4.1.2
+
+**Windows 11 fix: cross-platform privacy hook** -- The Anwaltsgeheimnis PreToolUse hook has been rewritten in Node.js (replaces bash script). This fixes `/setup` freezing and commands not loading on Windows 11 Cowork Desktop where `bash` is not natively available.
+
+- **Cross-platform**: hook now runs on Windows, macOS, and Linux without any shell dependency
+- **Same protection**: identical pattern matching (14 Anwaltsgeheimnis patterns, DE/FR/IT + legal refs)
+- **No setup required**: Node.js is always available in Cowork environments
 
 ## What's New in v4.1.1
 
@@ -35,6 +45,8 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 ---
 
 ## Quick Install
+
+> **Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
 
 ### Cowork Desktop (Recommended)
 
@@ -67,7 +79,13 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 }
 ```
 
-**Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial](https://github.com/fedec65/bettercallclaude_tutorial)
+---
+
+## Update (issues with Claude Cowork)
+
+If you've noticed that the "Update" button has disappeared from your GitHub-synced marketplace plugins in Claude Cowork, you're not alone. This is a confirmed issue affecting Pro plan users following the February 2026 Cowork platform restructuring.
+
+[How to update BetterCallClaude manually →](docs/plugin-update-guide.md)
 
 ---
 
