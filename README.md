@@ -5,7 +5,9 @@
 [![MCP Servers](https://img.shields.io/badge/MCP%20servers-6-purple)](https://mcp.bettercallclaude.ch/health)
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
 
-# BetterCallClaude
+<p align="center">
+  <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="420">
+</p>
 
 **Swiss Legal Intelligence Plugin for Cowork and Claude Code**
 
@@ -67,7 +69,15 @@ Add to your project's `.claude/settings.json` so anyone who clones the repo gets
 }
 ```
 
-**Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial](https://github.com/fedec65/bettercallclaude_tutorial)
+> **Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
+
+---
+
+## Update (issues with Claude Cowork)
+
+If you've noticed that the "Update" button has disappeared from your GitHub-synced marketplace plugins in Claude Cowork, you're not alone. This is a confirmed issue affecting Pro plan users following the February 2026 Cowork platform restructuring.
+
+[How to update BetterCallClaude manually →](docs/plugin-update-guide.md)
 
 ---
 
