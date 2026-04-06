@@ -2,6 +2,24 @@
 
 All notable changes to BetterCallClaude will be documented in this file.
 
+---
+
+## [4.1.3] - 2026-04-06
+
+### Changed
+- **Architecture refactoring**: Migrated domain methodology from 13 commands into 14 skills
+- Commands now serve as thin entry points (5-13 lines) that delegate to skills
+- Established single source of truth: skills contain methodology, commands provide slash-command interfaces
+
+### Added
+- **4 new skills**: `swiss-legal-translation`, `swiss-document-analysis`, `output-summarization`, `legal-query-refinement`
+- Skills now total 14 (up from 10)
+
+### Unchanged
+- 6 infrastructure commands remain full-featured: `legal`, `setup`, `help`, `workflow`, `briefing`, `version`
+- All 20 agents unchanged
+- All 6 MCP servers unchanged
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 

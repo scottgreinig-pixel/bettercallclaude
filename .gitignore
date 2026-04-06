@@ -69,6 +69,10 @@ coverage/
 claudedocs/
 .serena/
 
+# Python linter cache
+.ruff_cache/
+
 # Generated installation metadata
 manifest.json
 version.txt
+AGENTS.md

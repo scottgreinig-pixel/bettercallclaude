@@ -101,7 +101,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 ---
 
-## Skills (10)
+## Skills (14)
 
 Skills activate automatically when Claude detects relevant context.
 
@@ -110,12 +110,16 @@ Skills activate automatically when Claude detects relevant context.
 | swiss-legal-research | Legal research queries, BGE/ATF/DTF references |
 | swiss-legal-drafting | Document creation, contract drafting requests |
 | swiss-legal-strategy | Litigation planning, risk assessment questions |
+| swiss-legal-translation | Translation requests between DE/FR/IT/EN legal texts |
+| swiss-document-analysis | Legal document review, clause analysis, compliance checks |
 | swiss-citation-formats | Citation formatting, BGE/ATF/DTF references in text |
 | swiss-jurisdictions | Canton-specific questions, federal vs. cantonal law |
+| adversarial-analysis | Three-agent adversarial legal analysis requests |
+| output-summarization | Multi-agent pipeline output consolidation |
+| legal-query-refinement | Vague legal queries needing Socratic refinement |
+| data-protection-law | DSG/FADP, GDPR adequacy, privacy compliance questions |
+| compliance-frameworks | FINMA, AML/KYC, financial regulatory compliance |
 | privacy-routing | Sensitive client data patterns detected (Anwaltsgeheimnis) |
-| federal-law | Federal statute analysis, BV/ZGB/OR/StGB questions |
-| cantonal-law | Canton-specific legal questions |
-| multilingual-law | Multi-language legal terminology needs |
 | legal-briefing | Complex queries needing structured intake before agent execution |
 
 ---
@@ -193,7 +197,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.1.2 -- Swiss Legal Intelligence Plugin**
+**BetterCallClaude v4.1.3 -- Swiss Legal Intelligence Plugin**
 
 If the user provided additional input, respond to it in the context of this help reference.
 
