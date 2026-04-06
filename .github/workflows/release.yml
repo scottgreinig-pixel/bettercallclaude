@@ -27,9 +27,6 @@ jobs:
       - name: Bundle MCP servers
         run: npm run build:bundle
 
-      - name: Build MCPB bundles
-        run: bash scripts/build-mcpb.sh
-
       - name: Package plugin
         run: bash scripts/package-plugin.sh
 
@@ -40,7 +37,6 @@ jobs:
         run: |
           gh release delete "$TAG_NAME" || true
           gh release create "$TAG_NAME" \
-            dist/mcpb/*.mcpb \
             dist/*.zip \
             --title "$TAG_NAME" \
             --generate-notes
