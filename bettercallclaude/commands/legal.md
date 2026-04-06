@@ -13,6 +13,7 @@ The user can specify a mode flag to control behavior:
 - `--refine` — **Prompt refinement mode**: Do NOT route to specialists. Instead, ask clarifying questions and reformulate the query into a precise legal prompt. Use when the user's question is vague, complex, or not getting good results.
 - `--briefing` — Force full briefing session regardless of complexity.
 - `--skip-briefing` or `--direct` — Bypass briefing entirely and route directly.
+- `--no-framework` — Skip the post-execution framework menu. Output only, no continuation prompt.
 
 ## Refine Mode (`--refine`)
 
@@ -248,6 +249,59 @@ proceeding or client deliverable.
 - Flag uncertainties and information gaps explicitly.
 - Ensure all BGE references are verified before inclusion.
 - Respect Anwaltsgeheimnis: never store or recall confidential client data.
+
+## Post-Execution Framework (Steps 3–5)
+
+After any execution involving 2+ agents or a workflow pipeline, present the framework continuation menu — unless `--no-framework` is set or complexity was 1–3.
+
+### When to Trigger
+
+**Trigger** the framework menu when:
+- A workflow template ran (litigation-prep, due-diligence, contract-lifecycle, etc.)
+- Two or more agents were coordinated
+- Complexity score was 4+
+
+**Do NOT trigger** when:
+- Single agent was routed (complexity 1–3)
+- `--no-framework` flag is active
+- User already chose an option from the framework menu earlier in this session (avoid re-presenting after each interaction reply)
+
+### Framework Menu
+
+Present this immediately after the execution output:
+
+```
+---
+## Continue with the BetterCallClaude Framework
+
+Your analysis is complete. You can continue through the framework:
+
+**3. Interaction** — Ask questions, request clarification, or explore specific aspects of the analysis above
+**4. Adversarial Review** — Stress-test this position with a three-agent advocate/adversary/judicial analysis
+**5. Final Summary** — Generate a consolidated, deduplicated summary of all findings
+
+Type your question to continue the interaction, or choose **4** or **5** to proceed.
+(`--no-framework` to skip these options)
+---
+```
+
+### Handling Each Choice
+
+**Interaction (user asks a question, types "3", or "continue"):**
+- Answer inline with full context of the execution output
+- After responding, offer options 4 and 5 once — do not loop the full menu indefinitely
+
+**Adversarial Review (user types "4", "adversarial", or "stress-test"):**
+- Apply the adversarial-analysis skill methodology to the legal position from the execution output
+- Use the execution findings as the position to stress-test — do not re-ask for input
+- After the adversarial analysis completes, offer option 5 (Final Summary) only
+
+**Final Summary (user types "5", "summary", or "summarize"):**
+- Apply the output-summarization skill to consolidate all output from this session
+- Default to `--medium` length unless `--short` or `--long` was specified earlier in the same query
+- Terminal step — no further menu is presented
+
+---
 
 ## User Query
 
