@@ -51,13 +51,15 @@ Output the following formatted block:
   [x] judicial        [x] briefing       [x] orchestrator
   [x] prompt-engineer
 
-  SKILLS (10)
+  SKILLS (14)
   ----------
   [x] swiss-legal-research     [x] swiss-legal-drafting
   [x] swiss-legal-strategy     [x] swiss-citation-formats
   [x] swiss-jurisdictions      [x] privacy-routing
-  [x] federal-law              [x] cantonal-law
-  [x] multilingual-law         [x] legal-briefing
+  [x] legal-briefing           [x] swiss-document-analysis
+  [x] swiss-legal-translation  [x] adversarial-analysis
+  [x] compliance-frameworks    [x] data-protection-law
+  [x] legal-query-refinement   [x] output-summarization
 
   MCP SERVERS (6)
   ---------------
