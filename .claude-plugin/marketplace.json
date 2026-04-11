@@ -1,12 +1,22 @@
 {
   "name": "bettercallclaude-marketplace",
   "owner": {
-    "name": "Federico Cesconi"
+    "name": "Federico Cesconi",
+    "email": "info@bettercallclaude.ch"
   },
   "plugins": [
     {
       "name": "bettercallclaude",
-      "source": "./bettercallclaude"
+      "description": "Swiss Legal Intelligence -- BGE/ATF/DTF precedent research, case strategy, legal drafting, and citation verification across all 26 Swiss cantons with Anwaltsgeheimnis privacy protection.",
+      "version": "4.1.3",
+      "source": "./bettercallclaude",
+      "author": {
+        "name": "Federico Cesconi"
+      },
+      "homepage": "https://bettercallclaude.ch",
+      "repository": "https://github.com/fedec65/bettercallclaude",
+      "license": "AGPL-3.0",
+      "category": "legal"
     }
   ]
 }
