@@ -20,6 +20,10 @@
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/onlinekommentar/mcp"
     },
+    "swiss-caselaw": {
+      "type": "sse",
+      "url": "https://mcp.opencaselaw.ch"
+    },
     "bettercallclaude-ollama": {
       "command": "node",
       "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/ollama/dist/index.js"]

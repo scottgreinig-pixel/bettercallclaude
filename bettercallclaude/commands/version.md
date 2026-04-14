@@ -61,13 +61,14 @@ Output the following formatted block:
   [x] compliance-frameworks    [x] data-protection-law
   [x] legal-query-refinement   [x] output-summarization
 
-  MCP SERVERS (6)
+  MCP SERVERS (7)
   ---------------
   [ ] entscheidsuche    - Swiss court decision search        (HTTP)
   [ ] bge-search        - Federal Supreme Court decisions    (HTTP)
   [ ] legal-citations   - Citation verification              (HTTP)
   [ ] fedlex-sparql     - Federal legislation database       (HTTP)
   [ ] onlinekommentar   - Legal commentary access            (HTTP)
+  [ ] swiss-caselaw     - Case law, citation graphs, doctrine (SSE)
   [ ] ollama            - Privacy classification             (Local)
 
   HTTP Service: https://mcp.bettercallclaude.ch
