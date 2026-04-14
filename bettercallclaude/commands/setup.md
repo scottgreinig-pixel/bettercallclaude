@@ -18,7 +18,7 @@ If the health check succeeds, the HTTP service is online. If it fails, note the 
 
 ## Step 2: Probe MCP Servers
 
-Check connectivity for each of the 6 MCP servers using a **two-stage non-blocking approach**:
+Check connectivity for each of the 7 MCP servers using a **two-stage non-blocking approach**:
 
 **Stage A — Check tool availability (non-blocking)**
 
@@ -31,6 +31,7 @@ Look at your currently available tools. For each server, check whether its tools
 | bettercallclaude-legal-citations | `validate_citation`, `format_citation`, etc. |
 | bettercallclaude-fedlex-sparql | `search_legislation`, `get_article`, etc. |
 | bettercallclaude-onlinekommentar | `search_commentaries`, `get_commentary`, etc. |
+| swiss-caselaw | `search_decisions`, `find_citations`, `find_appeal_chain`, etc. |
 | bettercallclaude-ollama | `ollama_check_status`, `ollama_list_models`, etc. |
 
 **If a server's tools do not appear in your available tool list, mark it as `[ ] Not connected` immediately and move on — do not attempt to call any of its tools.**
@@ -46,6 +47,7 @@ For each server whose tools ARE available, make one lightweight call to confirm 
 | bettercallclaude-legal-citations | `validate_citation` with a simple citation |
 | bettercallclaude-fedlex-sparql | `search_legislation` with a minimal query |
 | bettercallclaude-onlinekommentar | `search_commentaries` with a minimal query |
+| swiss-caselaw | `search_decisions` with a minimal query |
 | bettercallclaude-ollama | `ollama_check_status` |
 
 If a tool call does not respond promptly, mark that server as `[ ] Timeout` and continue — do not wait or retry.
@@ -68,11 +70,12 @@ Output the following formatted status report, replacing status indicators and tr
   legal-citations           [x] Connected       HTTP
   fedlex-sparql             [x] Connected       HTTP
   onlinekommentar           [x] Connected       HTTP
+  swiss-caselaw             [x] Connected       SSE
   ollama                    [x] Connected       Local
 
   HTTP Service: https://mcp.bettercallclaude.ch
   Health: OK / Unreachable
-  Connected: X/6 servers
+  Connected: X/7 servers
 ==============================================
 ```
 
@@ -80,10 +83,10 @@ Mark each server as `[x] Connected`, `[ ] Not connected`, or `[ ] Timeout` based
 
 ## Step 4: Provide Guidance Based on Results
 
-### If all 6 servers are connected:
+### If all 7 servers are connected:
 
 ```
-All MCP servers are operational. No action needed.
+All 7 MCP servers are operational. No action needed.
 BetterCallClaude is running at full capability.
 ```
 
