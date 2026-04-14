@@ -1,8 +1,8 @@
-[![Version](https://img.shields.io/badge/version-4.1.3-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.1.4-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20%7C%20Claude%20Code-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
-[![MCP Servers](https://img.shields.io/badge/MCP%20servers-6-purple)](https://mcp.bettercallclaude.ch/health)
+[![MCP Servers](https://img.shields.io/badge/MCP%20servers-7-purple)](https://mcp.bettercallclaude.ch/health)
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
 
 <p align="center">
@@ -22,6 +22,14 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 ![BetterCallClaude Framework](docs/images/bettercallclaude_framework.png)
 
 ---
+
+## What's New in v4.1.4
+
+**OpenCaseLaw MCP integration** -- Added `swiss-caselaw` SSE MCP server from [opencaselaw.ch](https://opencaselaw.ch), providing 23 specialized tools with no API key or registration required.
+
+- **New tools**: citation graph analysis, appeal chain resolution, legal trend analysis, doctrine retrieval, exam question generation, mock decision drafting
+- **MCP servers total**: 7 (up from 6)
+- **Zero config**: public server, instant setup
 
 ## What's New in v4.1.3
 
