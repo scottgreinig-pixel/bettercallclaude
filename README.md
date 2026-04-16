@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.2.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.2.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -25,12 +25,13 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.2.0
+## What's New in v4.2.1
+
+**v4.2.1 patch** — Fixed Connectors section disappearing in Cowork Desktop after install. Two post-release bugs corrected: `.mcp.json` must be dot-prefixed (Cowork ignores `mcp.json`), and `plugin.json` must not exist at the plugin root (causes Cowork to skip `.mcp.json` entirely).
 
 **Cowork Desktop dedicated release** -- This repository is now exclusively for Claude Cowork Desktop. The Claude Code CLI version has been split into a separate repository: [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
 - **HTTP-only transport**: all 7 MCP servers connect via `mcp.bettercallclaude.ch` or SSE -- no local Node.js build required
-- **Full plugin manifest**: `plugin.json` at plugin root per Anthropic official format
 - **Simplified setup**: `/setup` checks connectivity only -- no transport switching needed in Cowork
 
 [Full changelog →](CHANGELOG.md)

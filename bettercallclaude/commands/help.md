@@ -198,7 +198,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.2.0 -- Swiss Legal Intelligence for Cowork Desktop**
+**BetterCallClaude v4.2.1 -- Swiss Legal Intelligence for Cowork Desktop**
 
 If the user provided additional input, respond to it in the context of this help reference.
 
