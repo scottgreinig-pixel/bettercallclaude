@@ -4,6 +4,18 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.2.0] - 2026-04-16
+
+### Changed
+- Split Claude Code CLI into separate repository (fedec65/bettercallclaude-cli)
+- This repository is now Cowork Desktop only
+- Removed local stdio transport options -- HTTP transport only
+- Shortened MCP server key names (dropped `bettercallclaude-` prefix)
+- Added full `plugin.json` manifest at plugin root (Anthropic official format)
+- Renamed `.mcp.json` to `mcp.json` (Anthropic official format)
+
+---
+
 ## [4.1.3] - 2026-04-06
 
 ### Changed

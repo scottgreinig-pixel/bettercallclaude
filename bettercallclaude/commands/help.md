@@ -59,7 +59,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 | Command | Description |
 |---------|-------------|
 | `/bettercallclaude:cite` | Format and verify individual Swiss legal citations |
-| `/bettercallclaude:setup` | Check MCP server connectivity and switch between HTTP/local transport |
+| `/bettercallclaude:setup` | Check MCP server connectivity |
 | `/bettercallclaude:refine` | Refine vague legal queries into precise, effective prompts |
 | `/bettercallclaude:version` | Display plugin version, components, and system status |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output with length control (--short/--medium/--long) |
@@ -198,7 +198,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.1.4 -- Swiss Legal Intelligence Plugin**
+**BetterCallClaude v4.2.0 -- Swiss Legal Intelligence for Cowork Desktop**
 
 If the user provided additional input, respond to it in the context of this help reference.
 

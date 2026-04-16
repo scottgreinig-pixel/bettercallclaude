@@ -1,6 +1,6 @@
-[![Version](https://img.shields.io/badge/version-4.1.4-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.2.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Cowork%20%7C%20Claude%20Code-orange)](https://claude.ai)
+[![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
 [![MCP Servers](https://img.shields.io/badge/MCP%20servers-7-purple)](https://mcp.bettercallclaude.ch/health)
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
@@ -9,13 +9,15 @@
   <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="420">
 </p>
 
-<p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork and Claude Code</strong></p>
+<p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 21 agents, 19 commands, 10 skills, and 6 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 19 commands, 14 skills, and 7 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
+
+> **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
+
+---
 
 ## Overview
-
-### The Framework at a Glance
 
 BetterCallClaude provides a structured methodology for handling legal work with AI assistance. The framework consists of five interconnected phases.
 
@@ -23,85 +25,27 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.1.4
+## What's New in v4.2.0
 
-**OpenCaseLaw MCP integration** -- Added `swiss-caselaw` SSE MCP server from [opencaselaw.ch](https://opencaselaw.ch), providing 23 specialized tools with no API key or registration required.
+**Cowork Desktop dedicated release** -- This repository is now exclusively for Claude Cowork Desktop. The Claude Code CLI version has been split into a separate repository: [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
-- **New tools**: citation graph analysis, appeal chain resolution, legal trend analysis, doctrine retrieval, exam question generation, mock decision drafting
-- **MCP servers total**: 7 (up from 6)
-- **Zero config**: public server, instant setup
+- **HTTP-only transport**: all 7 MCP servers connect via `mcp.bettercallclaude.ch` or SSE -- no local Node.js build required
+- **Full plugin manifest**: `plugin.json` at plugin root per Anthropic official format
+- **Simplified setup**: `/setup` checks connectivity only -- no transport switching needed in Cowork
 
-## What's New in v4.1.3
-
-**Architecture refactoring: commands → skills single source of truth** -- Domain methodology migrated from 13 commands into 14 skills. Commands now serve as thin entry points (5-13 lines) that delegate to skills.
-
-- **4 new skills**: `swiss-legal-translation`, `swiss-document-analysis`, `output-summarization`, `legal-query-refinement`
-- **Skills total**: 14 (up from 10)
-- **Infrastructure commands unchanged**: `legal`, `setup`, `help`, `workflow`, `briefing`, `version` remain full-featured
-
-## What's New in v4.1.2
-
-**Windows 11 fix: cross-platform privacy hook** -- The Anwaltsgeheimnis PreToolUse hook has been rewritten in Node.js (replaces bash script). This fixes `/setup` freezing and commands not loading on Windows 11 Cowork Desktop where `bash` is not natively available.
-
-- **Cross-platform**: hook now runs on Windows, macOS, and Linux without any shell dependency
-- **Same protection**: identical pattern matching (14 Anwaltsgeheimnis patterns, DE/FR/IT + legal refs)
-- **No setup required**: Node.js is always available in Cowork environments
-
-## What's New in v4.1.1
-
-**Legal Prompt Engineer Agent + /refine command** -- New specialist transforms vague queries into structured legal prompts through Socratic dialogue, with workflow recommendations and multi-lingual terminology guidance.
-
-- **Two invocation paths**: `/bettercallclaude:refine [query]` or `/bettercallclaude:legal --refine [query]`
-- **Socratic refinement**: Interactive dialogue fills gaps (jurisdiction, domain, party position)
-- **Workflow recommendations**: Suggests optimal agent pipelines (e.g., researcher → strategist → drafter)
-- **Mode flags**: `--quick` for fast results, `--optimize` for experienced users
-
-[Full changelog →](https://github.com/fedec65/bettercallclaude/blob/main/bettercallclaude/changelog.md)
+[Full changelog →](CHANGELOG.md)
 
 ---
 
-## Quick Install
+## Installation
 
-> **Full installation guide, visual setup, and tutorials:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
-
-### Cowork Desktop (Recommended)
+> **Full installation guide with screenshots:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
 
 1. In Cowork, click **Customize** > **Browse plugins** > **Personal** > **+** > **Add marketplace from GitHub**
 2. Enter `fedec65/bettercallclaude` and click **Sync**
 3. Click **Install** on the BetterCallClaude card
 
-### Claude Code CLI
-
-```
-claude plugin marketplace add fedec65/bettercallclaude
-claude plugin install bettercallclaude@bettercallclaude-marketplace
-```
-
-### Windows
-
-Install [Git for Windows](https://git-scm.com/downloads/win), then install Claude Code (`winget install Anthropic.ClaudeCode`), then run the CLI commands above.
-
-### Team Setup
-
-Add to your project's `.claude/settings.json` so anyone who clones the repo gets prompted to install:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "bettercallclaude-marketplace": {
-      "source": { "source": "github", "repo": "fedec65/bettercallclaude" }
-    }
-  }
-}
-```
-
----
-
-## Update (issues with Claude Cowork)
-
-If you've noticed that the "Update" button has disappeared from your GitHub-synced marketplace plugins in Claude Cowork, you're not alone. This is a confirmed issue affecting Pro plan users following the February 2026 Cowork platform restructuring.
-
-[How to update BetterCallClaude manually →](docs/plugin-update-guide.md)
+MCP servers connect automatically via HTTP. No Node.js, no local setup, no API keys required.
 
 ---
 
@@ -110,7 +54,7 @@ If you've noticed that the "Update" button has disappeared from your GitHub-sync
 | Command | Description |
 |---------|-------------|
 | `/bettercallclaude:legal` | Intelligent gateway -- analyzes intent, routes to the appropriate specialist agent, and manages multi-step legal workflows. Use `--refine` to transform vague queries first. |
-| `/bettercallclaude:refine` | Transform vague legal queries into structured prompts through Socratic dialogue. Recommends optimal workflows and introduces Swiss legal terminology. Flags: `--quick` (skip dialogue), `--optimize` (for experienced users). |
+| `/bettercallclaude:refine` | Transform vague legal queries into structured prompts through Socratic dialogue. Recommends optimal workflows and introduces Swiss legal terminology. |
 | `/bettercallclaude:research` | Search Swiss legal precedents and compile research memoranda. Supports BGE/ATF/DTF databases, doctrine references, and cross-jurisdictional analysis. |
 | `/bettercallclaude:strategy` | Develop litigation strategy with risk assessment, cost-benefit analysis, and procedural pathway evaluation. |
 | `/bettercallclaude:draft` | Draft Swiss legal documents including contracts, court briefs, legal opinions, and memoranda with proper citation formatting. |
@@ -120,12 +64,12 @@ If you've noticed that the "Update" button has disappeared from your GitHub-sync
 | `/bettercallclaude:federal` | Analyze a legal question under federal Swiss law (ZGB, OR, StGB, BV, and related federal statutes). |
 | `/bettercallclaude:cantonal` | Analyze a legal question under cantonal law for a specific canton. |
 | `/bettercallclaude:adversarial` | Run three-agent adversarial analysis -- advocate builds the case, adversary challenges it, judicial analyst synthesizes. |
-| `/bettercallclaude:briefing` | Structured pre-execution briefing session -- assembles a specialist panel, collects case context, and builds an execution plan before agents start working. |
+| `/bettercallclaude:briefing` | Structured pre-execution briefing -- assembles a specialist panel, collects case context, and builds an execution plan before agents start working. |
 | `/bettercallclaude:workflow` | Define and execute multi-agent legal workflows (due diligence, litigation prep, contract lifecycle, real estate closing). |
 | `/bettercallclaude:translate` | Translate Swiss legal documents between DE, FR, IT, and EN while preserving legal terminology precision. |
 | `/bettercallclaude:doc-analyze` | Analyze Swiss legal documents -- identify legal issues, extract key clauses, verify citations, assess compliance. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
-| `/bettercallclaude:setup` | Check MCP server connectivity and switch between HTTP/local transport. |
+| `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 7 servers. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
 
@@ -135,8 +79,6 @@ If you've noticed that the "Update" button has disappeared from your GitHub-sync
 /bettercallclaude:legal I need to assess our exposure under Art. 97 OR for late delivery
 
 /bettercallclaude:refine I have problems with my landlord
-
-/bettercallclaude:refine --quick My employer fired me without notice
 
 /bettercallclaude:research Art. 97 OR contractual liability for late delivery
 
@@ -167,7 +109,9 @@ If you've noticed that the "Update" button has disappeared from your GitHub-sync
 
 ---
 
-## MCP Servers & Transport
+## MCP Servers
+
+All servers connect automatically after installation. No configuration required.
 
 | Server | Purpose | Transport |
 |--------|---------|-----------|
@@ -176,11 +120,10 @@ If you've noticed that the "Update" button has disappeared from your GitHub-sync
 | `legal-citations` | Citation verification and formatting | HTTP |
 | `fedlex-sparql` | Federal legislation database (SPARQL) | HTTP |
 | `onlinekommentar` | Swiss legal commentaries | HTTP |
-| `ollama` | Local privacy classification | Local (stdio) |
+| `swiss-caselaw` | Case law, citation graphs, appeal chains (opencaselaw.ch) | SSE |
+| `ollama` | Local privacy classification for Anwaltsgeheimnis | Local |
 
-The five HTTP servers connect to `https://mcp.bettercallclaude.ch` (rate limit: 60 req/min per IP). No API keys required. The ollama server runs locally for Anwaltsgeheimnis detection.
-
-To switch to local stdio transport: `/bettercallclaude:setup --local` (requires Node.js 18+). Switch back: `/bettercallclaude:setup --restore-http`.
+The five HTTP servers connect to `https://mcp.bettercallclaude.ch` (rate limit: 60 req/min per IP). The `swiss-caselaw` server connects to `https://mcp.opencaselaw.ch`. No API keys required for any server.
 
 See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for detailed API documentation.
 
@@ -211,8 +154,14 @@ BetterCallClaude includes built-in Anwaltsgeheimnis (attorney-client privilege, 
 
 ## Requirements
 
-- Cowork or Claude Code (latest version)
-- Node.js >= 18 (only for `--local` mode or the ollama privacy classifier)
+- Claude Cowork Desktop (latest version)
+- Node.js >= 18 (for the ollama privacy classifier only -- all other servers connect via HTTP)
+
+---
+
+## CLI Version
+
+Prefer working from the terminal? **[BetterCallClaude CLI](https://github.com/fedec65/bettercallclaude-cli)** is the Claude Code CLI edition with local stdio MCP transport, configurable HTTP fallback, and the same 20 agents, 19 commands, and 14 skills.
 
 ---
 
@@ -230,7 +179,7 @@ AGPL-3.0 -- See [LICENSE](LICENSE) for full terms.
 
 ## For Developers
 
-The `mcp-servers-src/` directory contains TypeScript source for all six MCP servers. The `mcp-servers-http/` directory contains the HTTP transport wrapper deployed to Railway.
+The `mcp-servers-src/` directory contains TypeScript source for the MCP servers. The `mcp-servers-http/` directory contains the HTTP transport wrapper deployed to Railway at `mcp.bettercallclaude.ch`.
 
 ```bash
 npm run build          # Compile TypeScript
@@ -239,7 +188,7 @@ npm test               # Run tests
 npm run package        # Create distributable plugin zip
 ```
 
-Compiled bundles in `bettercallclaude/mcp-servers/*/dist/` are checked into git so end users don't need build tooling. See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for MCP server API documentation.
+See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for MCP server API documentation.
 
 ---
 
