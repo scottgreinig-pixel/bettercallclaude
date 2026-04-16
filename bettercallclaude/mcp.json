@@ -1,22 +1,22 @@
 {
   "mcpServers": {
-    "bettercallclaude-entscheidsuche": {
+    "entscheidsuche": {
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/entscheidsuche/mcp"
     },
-    "bettercallclaude-bge-search": {
+    "bge-search": {
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/bge-search/mcp"
     },
-    "bettercallclaude-legal-citations": {
+    "legal-citations": {
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/legal-citations/mcp"
     },
-    "bettercallclaude-fedlex-sparql": {
+    "fedlex-sparql": {
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/fedlex-sparql/mcp"
     },
-    "bettercallclaude-onlinekommentar": {
+    "onlinekommentar": {
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/onlinekommentar/mcp"
     },
@@ -24,7 +24,7 @@
       "type": "sse",
       "url": "https://mcp.opencaselaw.ch"
     },
-    "bettercallclaude-ollama": {
+    "ollama": {
       "command": "node",
       "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-servers/ollama/dist/index.js"]
     }
