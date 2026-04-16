@@ -14,10 +14,10 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.1.4
-  Format:       Claude Code Plugin (Cowork compatible)
+  Version:      4.2.0
+  Format:       Claude Code Plugin (Cowork Desktop)
   Author:       Federico Cesconi
-  License:      MIT
+  License:      AGPL-3.0
 ======================================================
 
   COMMANDS (19)
@@ -36,12 +36,13 @@ Output the following formatted block:
   [x] workflow       - Multi-agent pipeline execution
   [x] briefing       - Structured pre-execution briefing
   [x] translate      - Legal translation DE/FR/IT/EN
-  [x] setup          - MCP server configuration
+  [x] setup          - MCP server connectivity check
   [x] version        - This status display
   [x] refine         - Prompt refinement and reformulation
+  [x] summarize      - Consolidate multi-agent output
   [x] help           - Command reference
 
-  AGENTS (20)
+  AGENTS (21)
   -----------
   [x] researcher      [x] strategist     [x] drafter
   [x] citation        [x] compliance     [x] data-protection
@@ -49,7 +50,7 @@ Output the following formatted block:
   [x] fiscal          [x] corporate      [x] cantonal
   [x] realestate      [x] advocate       [x] adversary
   [x] judicial        [x] briefing       [x] orchestrator
-  [x] prompt-engineer
+  [x] summarizer      [x] prompt-engineer
 
   SKILLS (14)
   ----------
@@ -72,7 +73,7 @@ Output the following formatted block:
   [ ] ollama            - Privacy classification             (Local)
 
   HTTP Service: https://mcp.bettercallclaude.ch
-  Run /bettercallclaude:setup to check connectivity or switch transport
+  Run /bettercallclaude:setup to check connectivity
 
   LANGUAGES
   ---------
@@ -91,7 +92,7 @@ Output the following formatted block:
   - Claude Code or Cowork with plugin support
   - MCP servers connect via HTTP (no local setup needed)
   - No API keys required for any functionality
-  - Node.js 18+ only needed for --local mode or ollama server
+  - Node.js 18+ required for ollama server
 
 ======================================================
   https://github.com/fedec65/BetterCallClaude

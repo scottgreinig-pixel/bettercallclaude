@@ -1,5 +1,5 @@
 ---
-description: "Check MCP server connectivity and switch between HTTP/local transport"
+description: "Check MCP server connectivity"
 ---
 
 # BetterCallClaude MCP Server Setup
@@ -18,7 +18,7 @@ If the health check succeeds, the HTTP service is online. If it fails, note the 
 
 ## Step 2: Probe MCP Servers
 
-Check connectivity for each of the 6 MCP servers using a **two-stage non-blocking approach**:
+Check connectivity for each of the 7 MCP servers using a **two-stage non-blocking approach**:
 
 **Stage A — Check tool availability (non-blocking)**
 
@@ -26,12 +26,13 @@ Look at your currently available tools. For each server, check whether its tools
 
 | Server | Tools to look for |
 |--------|-------------------|
-| bettercallclaude-entscheidsuche | `search_decisions`, `get_decision_details`, etc. |
-| bettercallclaude-bge-search | `search_bge`, `get_bge_decision`, etc. |
-| bettercallclaude-legal-citations | `validate_citation`, `format_citation`, etc. |
-| bettercallclaude-fedlex-sparql | `search_legislation`, `get_article`, etc. |
-| bettercallclaude-onlinekommentar | `search_commentaries`, `get_commentary`, etc. |
-| bettercallclaude-ollama | `ollama_check_status`, `ollama_list_models`, etc. |
+| entscheidsuche | `search_decisions`, `get_decision_details`, etc. |
+| bge-search | `search_bge`, `get_bge_decision`, etc. |
+| legal-citations | `validate_citation`, `format_citation`, etc. |
+| fedlex-sparql | `search_legislation`, `get_article`, etc. |
+| onlinekommentar | `search_commentaries`, `get_commentary`, etc. |
+| swiss-caselaw | `search_decisions`, `find_citations`, `find_appeal_chain`, etc. |
+| ollama | `ollama_check_status`, `ollama_list_models`, etc. |
 
 **If a server's tools do not appear in your available tool list, mark it as `[ ] Not connected` immediately and move on — do not attempt to call any of its tools.**
 
@@ -41,18 +42,19 @@ For each server whose tools ARE available, make one lightweight call to confirm 
 
 | Server | Lightweight test |
 |--------|-----------------|
-| bettercallclaude-entscheidsuche | `search_decisions` with a minimal query |
-| bettercallclaude-bge-search | `search_bge` with a minimal query |
-| bettercallclaude-legal-citations | `validate_citation` with a simple citation |
-| bettercallclaude-fedlex-sparql | `search_legislation` with a minimal query |
-| bettercallclaude-onlinekommentar | `search_commentaries` with a minimal query |
-| bettercallclaude-ollama | `ollama_check_status` |
+| entscheidsuche | `search_decisions` with a minimal query |
+| bge-search | `search_bge` with a minimal query |
+| legal-citations | `validate_citation` with a simple citation |
+| fedlex-sparql | `search_legislation` with a minimal query |
+| onlinekommentar | `search_commentaries` with a minimal query |
+| swiss-caselaw | `search_decisions` with a minimal query |
+| ollama | `ollama_check_status` |
 
 If a tool call does not respond promptly, mark that server as `[ ] Timeout` and continue — do not wait or retry.
 
 ## Step 3: Display Status Table
 
-For each server, determine the transport type by checking whether the server is configured as HTTP (from `.mcp.json` plugin defaults) or stdio (from a user-scoped override via `claude mcp list`).
+For each server, determine the transport type by checking the server configuration in `mcp.json`.
 
 Output the following formatted status report, replacing status indicators and transport types based on Steps 1-2:
 
@@ -68,11 +70,12 @@ Output the following formatted status report, replacing status indicators and tr
   legal-citations           [x] Connected       HTTP
   fedlex-sparql             [x] Connected       HTTP
   onlinekommentar           [x] Connected       HTTP
+  swiss-caselaw             [x] Connected       SSE
   ollama                    [x] Connected       Local
 
   HTTP Service: https://mcp.bettercallclaude.ch
   Health: OK / Unreachable
-  Connected: X/6 servers
+  Connected: X/7 servers
 ==============================================
 ```
 
@@ -80,7 +83,7 @@ Mark each server as `[x] Connected`, `[ ] Not connected`, or `[ ] Timeout` based
 
 ## Step 4: Provide Guidance Based on Results
 
-### If all 6 servers are connected:
+### If all 7 servers are connected:
 
 ```
 All MCP servers are operational. No action needed.
@@ -122,7 +125,6 @@ Possible causes:
 - Firewall blocking HTTPS on port 443
 - Service temporarily unavailable (check again in a few minutes)
 
-Workaround: Switch to local mode with /bettercallclaude:setup --local
 ```
 
 ### If ollama is not connected:
@@ -137,82 +139,7 @@ This server requires the plugin's bundled files. Try:
 3. Check that Node.js 18+ is available: node --version
 ```
 
-## Step 5: Handle Flags
-
-### `--local` flag
-
-Switch the 5 HTTP servers to local stdio transport by registering user-scoped overrides. This requires Node.js 18+ and the plugin's bundled server files.
-
-**Step 5a: Check Node.js**
-
-```bash
-node --version
-```
-
-Require >= 18.0.0. If not found or too old, stop and tell the user Node.js 18+ is required for local mode.
-
-**Step 5b: Locate server bundles**
-
-```bash
-SERVER_DIR=""
-for candidate in \
-  "${CLAUDE_PLUGIN_ROOT:-}/mcp-servers" \
-  "$(find ~/.claude/plugins -type d -name 'mcp-servers' -path '*bettercallclaude*' 2>/dev/null | head -1)" \
-  "./mcp-servers" \
-  "./bettercallclaude/mcp-servers"; do
-  if [ -n "$candidate" ] && [ -f "$candidate/entscheidsuche/dist/index.js" ]; then
-    SERVER_DIR="$candidate"
-    break
-  fi
-done
-echo "SERVER_DIR=$SERVER_DIR"
-```
-
-If `SERVER_DIR` is empty, tell the user the plugin's server bundles could not be found.
-
-**Step 5c: Register stdio servers at user scope**
-
-For each of the 5 servers, run:
-
-```bash
-claude mcp add bettercallclaude-entscheidsuche -s user -- node "$SERVER_DIR/entscheidsuche/dist/index.js"
-claude mcp add bettercallclaude-bge-search -s user -- node "$SERVER_DIR/bge-search/dist/index.js"
-claude mcp add bettercallclaude-legal-citations -s user -- node "$SERVER_DIR/legal-citations/dist/index.js"
-claude mcp add bettercallclaude-fedlex-sparql -s user -- node "$SERVER_DIR/fedlex-sparql/dist/index.js"
-claude mcp add bettercallclaude-onlinekommentar -s user -- node "$SERVER_DIR/onlinekommentar/dist/index.js"
-```
-
-User-scoped servers override the plugin's HTTP defaults. Tell the user:
-
-```
-Switched to local transport. 5 servers registered at user scope.
-Restart Claude Code or Cowork to apply the change.
-Re-run /bettercallclaude:setup to verify.
-
-To switch back to HTTP: /bettercallclaude:setup --restore-http
-```
-
-### `--restore-http` flag
-
-Remove user-scoped stdio overrides, restoring the plugin's HTTP defaults:
-
-```bash
-claude mcp remove bettercallclaude-entscheidsuche -s user
-claude mcp remove bettercallclaude-bge-search -s user
-claude mcp remove bettercallclaude-legal-citations -s user
-claude mcp remove bettercallclaude-fedlex-sparql -s user
-claude mcp remove bettercallclaude-onlinekommentar -s user
-```
-
-Tell the user:
-
-```
-Restored HTTP transport. User-scoped overrides removed.
-Restart Claude Code or Cowork to apply the change.
-Re-run /bettercallclaude:setup to verify.
-```
-
-## Step 6: Backend Error Diagnostics
+## Step 5: Backend Error Diagnostics
 
 If a server connects but returns errors during use, consult this diagnostic guide:
 
