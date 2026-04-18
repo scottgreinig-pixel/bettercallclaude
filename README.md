@@ -6,7 +6,7 @@
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
 
 <p align="center">
-  <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="420">
+  <img src="docs/images/bettercallclaude_logo.png" alt="BetterCallClaude" width="480">
 </p>
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
