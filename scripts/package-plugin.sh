@@ -55,9 +55,14 @@ for dir in "${REQUIRED_DIRS[@]}"; do
   fi
 done
 
-# Verify compiled MCP servers
-SERVERS=("entscheidsuche" "bge-search" "legal-citations" "fedlex-sparql" "onlinekommentar")
-for server in "${SERVERS[@]}"; do
+# Verify compiled MCP servers.
+#
+# Since v4.2.1 five of the six Swiss-law servers (entscheidsuche, bge-search,
+# legal-citations, fedlex-sparql, onlinekommentar) are HTTP/SSE-only and are
+# reached via URLs declared in .mcp.json — they ship no local JS. Only ollama
+# is bundled as a STDIO server, so only its compiled output is required here.
+BUNDLED_SERVERS=("ollama")
+for server in "${BUNDLED_SERVERS[@]}"; do
   if [ ! -f "$PLUGIN_ROOT/mcp-servers/$server/dist/index.js" ]; then
     echo "ERROR: Missing compiled server: mcp-servers/$server/dist/index.js"
     echo "Run 'npm run build:bundle' first."
@@ -83,24 +88,42 @@ cp -r "$PLUGIN_ROOT/hooks" "$STAGING_DIR/"
 
 # Copy MCP servers (only dist/ contents, not source)
 mkdir -p "$STAGING_DIR/mcp-servers"
-for server in "${SERVERS[@]}"; do
+for server in "${BUNDLED_SERVERS[@]}"; do
   mkdir -p "$STAGING_DIR/mcp-servers/$server/dist"
-  cp "$PLUGIN_ROOT/mcp-servers/$server/dist/index.js" "$STAGING_DIR/mcp-servers/$server/dist/"
+  cp "$PLUGIN_ROOT/mcp-servers/$server/dist/"*.js "$STAGING_DIR/mcp-servers/$server/dist/"
   # Copy WASM files if present
   if [ -f "$PLUGIN_ROOT/mcp-servers/$server/dist/sql-wasm.wasm" ]; then
     cp "$PLUGIN_ROOT/mcp-servers/$server/dist/sql-wasm.wasm" "$STAGING_DIR/mcp-servers/$server/dist/"
   fi
+  # Copy package.json so the STDIO subprocess has its declared deps if any
+  if [ -f "$PLUGIN_ROOT/mcp-servers/$server/package.json" ]; then
+    cp "$PLUGIN_ROOT/mcp-servers/$server/package.json" "$STAGING_DIR/mcp-servers/$server/"
+  fi
 done
 
-# Copy scripts needed at runtime
+# Copy scripts needed at runtime.
+# The canonical PreToolUse hook is bettercallclaude/scripts/privacy-check.js
+# (the shell variant privacy-check.sh was removed in PR #12 when the hook
+# switched to matching MCP tool calls / MultiEdit / WebFetch and reading the
+# canonical {tool_name, tool_input:{…}} JSON payload on stdin).
 mkdir -p "$STAGING_DIR/scripts"
-cp "$REPO_ROOT/scripts/privacy-check.sh" "$STAGING_DIR/scripts/"
+if [ -f "$PLUGIN_ROOT/scripts/privacy-check.js" ]; then
+  cp "$PLUGIN_ROOT/scripts/privacy-check.js" "$STAGING_DIR/scripts/"
+else
+  echo "ERROR: Missing required hook script: bettercallclaude/scripts/privacy-check.js"
+  exit 1
+fi
 cp "$REPO_ROOT/scripts/fetch-onlinekommentar-data.js" "$STAGING_DIR/scripts/" 2>/dev/null || true
 
-# Copy documentation from repo root
-cp "$REPO_ROOT/CONNECTORS.md" "$STAGING_DIR/" 2>/dev/null || true
-cp "$REPO_ROOT/README.md" "$STAGING_DIR/" 2>/dev/null || true
-cp "$REPO_ROOT/LICENSE" "$STAGING_DIR/"
+# Copy plugin-facing documentation. Prefer the copies inside bettercallclaude/
+# (they are written for end users of the plugin); fall back to repo-root files.
+for doc in README.md CONNECTORS.md LICENSE; do
+  if [ -f "$PLUGIN_ROOT/$doc" ]; then
+    cp "$PLUGIN_ROOT/$doc" "$STAGING_DIR/"
+  elif [ -f "$REPO_ROOT/$doc" ]; then
+    cp "$REPO_ROOT/$doc" "$STAGING_DIR/"
+  fi
+done
 
 # Create zip
 mkdir -p "$OUTPUT_DIR"
