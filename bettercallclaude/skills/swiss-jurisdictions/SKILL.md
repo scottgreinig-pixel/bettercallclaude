@@ -1,4 +1,5 @@
 ---
+name: swiss-jurisdictions
 description: "Swiss legal jurisdiction detection and routing — federal vs cantonal law determination, all 26 Swiss cantons with court systems and data sources, language-jurisdiction mapping, competence matrix for federal/cantonal law areas, and dynamic context-aware jurisdiction switching"
 ---
 

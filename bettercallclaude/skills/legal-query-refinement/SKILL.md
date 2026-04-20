@@ -1,4 +1,5 @@
 ---
+name: legal-query-refinement
 description: "Swiss legal query refinement through Socratic dialogue -- transforms vague queries into precise structured prompts with workflow recommendations and multi-lingual terminology guidance"
 ---
 

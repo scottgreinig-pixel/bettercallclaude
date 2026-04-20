@@ -1,4 +1,5 @@
 ---
+name: data-protection-law
 description: "Swiss data protection law — nDSG/FADP framework, GDPR adequacy assessment, cantonal data protection laws (IDG/KDSG/LIPAD), DPIA methodology, and cross-border data transfer mechanisms"
 ---
 

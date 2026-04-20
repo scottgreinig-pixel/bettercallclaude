@@ -1,4 +1,5 @@
 ---
+name: adversarial-analysis
 description: "Three-agent adversarial legal analysis methodology — advocate/adversary/judicial workflow, argument scoring, objectivity validation, and Swiss Erwägung synthesis structure"
 ---
 

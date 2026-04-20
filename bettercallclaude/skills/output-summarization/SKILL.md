@@ -1,4 +1,5 @@
 ---
+name: output-summarization
 description: "Multi-agent pipeline output consolidation -- deduplicate disclaimers, terminology tables, and citations while calibrating output length"
 ---
 

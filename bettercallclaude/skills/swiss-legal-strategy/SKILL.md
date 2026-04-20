@@ -1,4 +1,5 @@
 ---
+name: swiss-legal-strategy
 description: "Swiss litigation strategy including case strength analysis, risk assessment, procedural strategy (ZPO), cost-benefit analysis, settlement evaluation, and alternative dispute resolution for Swiss federal and cantonal courts"
 ---
 
