@@ -14,7 +14,7 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.2.1
+  Version:      4.3.0
   Format:       Claude Code Plugin (Cowork Desktop)
   Author:       Federico Cesconi
   License:      AGPL-3.0
@@ -42,7 +42,7 @@ Output the following formatted block:
   [x] summarize      - Consolidate multi-agent output
   [x] help           - Command reference
 
-  AGENTS (21)
+  AGENTS (20)
   -----------
   [x] researcher      [x] strategist     [x] drafter
   [x] citation        [x] compliance     [x] data-protection
