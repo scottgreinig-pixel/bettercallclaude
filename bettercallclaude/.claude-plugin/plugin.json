@@ -4,20 +4,6 @@
   "description": "Swiss Legal Intelligence -- BGE/ATF/DTF precedent research, case strategy, legal drafting, and citation verification across all 26 Swiss cantons with Anwaltsgeheimnis privacy protection.",
   "author": { "name": "Federico Cesconi" },
   "userConfig": {
-    "mcp_base_url": {
-      "type": "string",
-      "title": "Hosted MCP gateway URL",
-      "description": "Base URL for the BetterCallClaude hosted MCP gateway (entscheidsuche, bge-search, legal-citations, fedlex-sparql, onlinekommentar). Override this if you self-host the stack.",
-      "default": "https://mcp.bettercallclaude.ch",
-      "sensitive": false
-    },
-    "caselaw_base_url": {
-      "type": "string",
-      "title": "Swiss caselaw MCP URL",
-      "description": "Base URL for the swiss-caselaw SSE MCP endpoint.",
-      "default": "https://mcp.opencaselaw.ch",
-      "sensitive": false
-    },
     "ollama_host": {
       "type": "string",
       "title": "Ollama host URL",

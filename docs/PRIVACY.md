@@ -82,8 +82,10 @@ The hosted gateway at `mcp.bettercallclaude.ch` is operated by the plugin
 author. Queries arriving there may be logged for operational purposes. If
 that is unacceptable for a given matter:
 
-- Set [`mcp_base_url`](../bettercallclaude/.claude-plugin/plugin.json) to a
-  self-hosted deployment.
+- Fork the plugin and edit [`.mcp.json`](../bettercallclaude/.mcp.json) to
+  point at a self-hosted deployment (the gateway URLs are hardcoded in
+  `.mcp.json` because Cowork's plugin validator currently does not resolve
+  `${user_config.*}` inside `url:` fields).
 - Or disable the plugin for that matter and use only Cowork Desktop +
   the local `ollama` subserver.
 
@@ -125,7 +127,7 @@ Limits of the hook:
 - It does not inspect results flowing back from tools, only outbound calls.
 
 For critical matters, disable the hosted MCP servers in your
-[`.mcp.json`](../bettercallclaude/.mcp.json) (or set `mcp_base_url` to a
+[`.mcp.json`](../bettercallclaude/.mcp.json) (or fork and point the URLs at a
 self-hosted instance) and rely on the local `ollama` subserver plus your own
 research.
 
@@ -151,12 +153,13 @@ Values declared in [`plugin.json` under `userConfig`](../bettercallclaude/.claud
 
 | Key                    | Stored where                                    |
 | ---------------------- | ----------------------------------------------- |
-| `mcp_base_url`         | `settings.json` (plaintext)                     |
-| `caselaw_base_url`     | `settings.json` (plaintext)                     |
 | `ollama_host`          | `settings.json` (plaintext)                     |
 | `default_jurisdiction` | `settings.json` (plaintext)                     |
 | `output_language`      | `settings.json` (plaintext)                     |
 | `api_token`            | OS keychain (macOS Keychain / Windows Credential Manager / libsecret) |
+
+Gateway URLs (`mcp.bettercallclaude.ch`, `mcp.opencaselaw.ch`) are hardcoded
+in [`.mcp.json`](../bettercallclaude/.mcp.json); self-hosters fork and edit.
 
 Only `api_token` is marked sensitive. Cowork Desktop routes sensitive values
 to the platform keychain; non-sensitive values are in plaintext in
@@ -167,8 +170,8 @@ to the platform keychain; non-sensitive values are in plaintext in
 ## 5. What to do before a privileged matter
 
 1. Decide whether the hosted `mcp.bettercallclaude.ch` gateway is acceptable.
-   If not, set `mcp_base_url` to a self-hosted instance or disable the
-   hosted servers.
+   If not, fork the plugin and edit `.mcp.json` to point at a self-hosted
+   instance, or disable the hosted servers.
 2. Decide whether sending prompts to Anthropic is acceptable under your
    cantonal rules and client engagement.
 3. Confirm the `pre-tool-use` hook is present and the agent frontmatter is
