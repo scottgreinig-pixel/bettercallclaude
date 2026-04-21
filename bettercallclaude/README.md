@@ -429,48 +429,27 @@ Built with love for the Swiss legal community. [Support the project ☕](https:/
 
 ## For Developers
 
-The `mcp-servers-src/` directory contains the TypeScript source code for all five MCP servers. To build from source:
+Plugin resources (agents, commands, skills, hooks, `.mcp.json`) live in this repo. MCP server source code lives in the separate [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP) repo; the HTTP aggregator there is deployed to Railway at `mcp.bettercallclaude.ch`, and this plugin's `.mcp.json` points at those remote URLs.
 
 ```bash
-# Install dependencies and compile TypeScript
-npm run build
-
-# Build single-file bundles into mcp-servers/*/dist/
-npm run build:bundle
-
-# Run tests
-npm test
-
-# Create distributable plugin zip
+# Build the distributable plugin zip
 npm run package
-
-# Create .mcpb bundles for Claude Desktop
-npm run build:mcpb
 ```
 
-### Repository Structure
+### Repository Structure (this repo)
 
 ```
 .claude-plugin/plugin.json   Plugin manifest
-.mcp.json                    MCP server configuration
-agents/                      18 agent definitions (markdown)
-commands/                    17 slash commands (markdown)
-skills/                      10 auto-activated skills (markdown)
+.mcp.json                    MCP server configuration (remote URLs + local ollama)
+agents/                      Agent definitions (markdown)
+commands/                    Slash commands (markdown)
+skills/                      Auto-activated skills (markdown)
 hooks/                       Privacy detection hook
-mcp-servers/                 Pre-compiled MCP server bundles (checked into git)
-mcp-servers-src/             TypeScript source for MCP servers
-  shared/                    Shared infrastructure (database, HTTP, NLP)
-  entscheidsuche/            Swiss court decision search
-  bge-search/                Federal Supreme Court search
-  legal-citations/           Citation verification and formatting
-  fedlex-sparql/             Federal legislation via SPARQL
-  onlinekommentar/           Legal commentaries
-  integration-tests/         Cross-server integration tests
-scripts/                     Build and installation scripts
-docs/                        Documentation
+mcp-servers/ollama/          Bundled local STDIO MCP server (dist/ checked in)
+scripts/                     Privacy hook runtime scripts
 ```
 
-Compiled bundles in `mcp-servers/*/dist/` are checked into git so end users don't need Node.js build tooling. After modifying server source, run `npm run build:bundle` and commit the updated dist files.
+The `ollama` STDIO bundle in `mcp-servers/ollama/dist/` is checked into git so end users don't need Node.js build tooling. To change the remote MCP servers (BGE search, entscheidsuche, fedlex-sparql, legal-citations, onlinekommentar, legal-persona, tas-jurisprudence), open a PR in [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP).
 
 ---
 

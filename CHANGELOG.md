@@ -4,6 +4,28 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.4.0] - 2026-04-21
+
+### Changed
+- **Repository split — MCP source code moved out.** All Swiss legal MCP servers (`bge-search`, `entscheidsuche`, `fedlex-sparql`, `legal-citations`, `onlinekommentar`) and the HTTP aggregator are now maintained in the separate [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP) repo. This repo is now plugin-only: agents, commands, skills, hooks, and `.mcp.json` pointing at remote HTTPS endpoints on `mcp.bettercallclaude.ch`. End-user behaviour is unchanged — you're already talking to the same remote MCPs since v4.3.0 (PR #4c5b869 hardcoded the URLs).
+- Canonical HTTP aggregator on Railway now serves **7** MCPs (added `legal-persona` and `tas-jurisprudence` alongside the original five).
+
+### Removed
+- `mcp-servers-src/` (TypeScript source for the 6 Swiss legal MCPs) — moved to `BetterCallClaudeMCP/mcp-servers/`.
+- `mcp-servers-http/` (Express HTTP aggregator) — moved to `BetterCallClaudeMCP/mcp-servers-http/`.
+- `scripts/build-servers.sh` (esbuild bundler) — moved with the source.
+- `package.json` scripts `build`, `build:bundle`, `test` (they targeted the removed directories). `package` remains.
+- CI jobs `test-mcp-servers` and `test-http-server` — those tests now run in the `BetterCallClaudeMCP` repo against the canonical source.
+
+### Notes for maintainers
+- To edit an MCP server's behaviour, open a PR in `BetterCallClaudeMCP`, merge to `main`, Railway auto-redeploys.
+- This plugin repo only needs changes when editing agents, commands, skills, hooks, the local `ollama` STDIO server, or `.mcp.json` (to add/remove remote endpoints).
+
+### Content counts
+- 20 agents, 19 commands, 14 skills, 7 MCP servers in `.mcp.json` (6 remote + `swiss-caselaw` SSE + `ollama` local STDIO). Remote MCPs available at `mcp.bettercallclaude.ch`: bge-search, entscheidsuche, fedlex-sparql, legal-citations, onlinekommentar, legal-persona, tas-jurisprudence.
+
+---
+
 ## [4.3.0] - 2026-04-20
 
 ### Fixed

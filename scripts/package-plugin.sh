@@ -65,7 +65,17 @@ BUNDLED_SERVERS=("ollama")
 for server in "${BUNDLED_SERVERS[@]}"; do
   if [ ! -f "$PLUGIN_ROOT/mcp-servers/$server/dist/index.js" ]; then
     echo "ERROR: Missing compiled server: mcp-servers/$server/dist/index.js"
-    echo "Run 'npm run build:bundle' first."
+    echo ""
+    echo "The ollama bundle is normally checked into git under"
+    echo "bettercallclaude/mcp-servers/ollama/dist/. If you've deleted it or"
+    echo "changed the source, rebuild it by running:"
+    echo ""
+    echo "    npm run build:ollama"
+    echo ""
+    echo "from the repo root, which runs esbuild against"
+    echo "bettercallclaude/mcp-servers/ollama/src/. Other MCP servers are now"
+    echo "hosted remotely — their source lives in"
+    echo "https://github.com/fedec65/BetterCallClaudeMCP."
     exit 1
   fi
 done

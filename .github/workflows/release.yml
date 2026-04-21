@@ -20,13 +20,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        working-directory: mcp-servers-src
-        run: npm ci
-
-      - name: Bundle MCP servers
-        run: npm run build:bundle
-
       - name: Package plugin
         run: bash scripts/package-plugin.sh
 
