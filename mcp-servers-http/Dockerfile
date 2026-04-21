@@ -1,5 +1,0 @@
-FROM node:22-slim
-WORKDIR /app
-COPY dist/ ./dist/
-EXPOSE 3000
-CMD ["node", "dist/index.js"]

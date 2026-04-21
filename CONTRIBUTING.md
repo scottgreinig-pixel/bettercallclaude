@@ -3,46 +3,53 @@
 Thanks for taking the time. This is a small, opinionated project; please read
 this document once before opening a non-trivial PR.
 
-## What lives where
+## Where the code lives
+
+As of v4.4.0 the Swiss-legal MCP server source code and HTTP aggregator have
+been split out into a separate repo:
+
+- **This repo (`fedec65/bettercallclaude`)** — the Cowork Desktop / Claude
+  Code plugin: agents, commands, skills, hooks, and `.mcp.json`. Pointers
+  only — the remote MCPs it talks to are HTTPS URLs on
+  `mcp.bettercallclaude.ch`. One server (`ollama`) is bundled locally as a
+  STDIO subprocess because it talks to the user's own Ollama daemon.
+- **[`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)** —
+  source code for every MCP server (bge-search, entscheidsuche, fedlex-sparql,
+  legal-citations, onlinekommentar, legal-persona, tas-jurisprudence, shared
+  lib, integration tests) and the Express aggregator at `mcp-servers-http/`
+  that Railway deploys to `mcp.bettercallclaude.ch`. To change what an MCP
+  **does**, open a PR there.
+
+## What lives where (this repo)
 
 ```
-bettercallclaude/           The Cowork Desktop plugin itself.
+bettercallclaude/           The Cowork Desktop / Claude Code plugin itself.
 ├── .claude-plugin/         plugin.json + marketplace.json. Schema-validated in CI.
-├── .mcp.json               MCP server declarations. ${user_config.*} interpolation.
+├── .mcp.json               MCP server declarations. Remote URLs + ollama stdio.
 ├── agents/                 20 subagent prompts. YAML frontmatter: name, description, model, tools.
 ├── commands/               19 slash commands.
 ├── skills/                 14 skills (SKILL.md per directory).
 ├── hooks/                  Cowork Desktop hooks. Entrypoint for privacy protection.
 ├── scripts/                privacy-check.js and its test file.
-└── mcp-servers/ollama/     Bundled local MCP server (dist/ committed, only Node STDIO server).
+└── mcp-servers/ollama/     Bundled local STDIO MCP server (dist/ committed).
 
-mcp-servers-src/            Source of the MCP servers, npm workspaces layout.
-├── shared/                 DB layer + common types. TypeORM entities live here.
-├── bge-search/             BGE/ATF/DTF precedent search.
-├── entscheidsuche/         Full-text search over entscheidsuche.ch.
-├── fedlex-sparql/          SPARQL queries against fedlex.admin.ch.
-├── legal-citations/        Citation parser and validator.
-├── onlinekommentar/        Online commentary lookup.
-├── ollama/                 Local summariser/translator via Ollama.
-└── integration-tests/      Cross-workspace tests.
-
-mcp-servers-http/           The Express 5 gateway deployed at mcp.bettercallclaude.ch.
-                            Wraps the HTTP MCP servers in a single Node process.
-
+packages/                   Supplementary agents shared across the plugin.
+scripts/                    Repo-level scripts: fetch-onlinekommentar-data.js,
+                            package-plugin.sh.
 docs/                       Design docs, reviews, specs.
-.github/workflows/          CI. Three jobs: test-mcp-servers (matrix 20,22),
-                            test-http-server (22), validate-plugin (20).
+.github/workflows/          CI (validate-plugin) and Release (tag → zip → GH release).
 ```
 
 ## Prerequisites
 
-- Node.js 20 or 22. (Root / `mcp-servers-src` require `>=20`;
-  `mcp-servers-http` requires `>=22`.)
-- npm 9+.
+- Node.js 20 or 22.
 - For privacy-hook work: nothing extra — `privacy-check.js` uses only the
   Node standard library.
 - For Ollama server work: a local Ollama daemon if you want to run the STDIO
   server end-to-end.
+- For MCP **behaviour** changes: clone
+  [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)
+  and work there instead of this repo.
 
 ## Setup
 
@@ -50,19 +57,14 @@ docs/                       Design docs, reviews, specs.
 git clone https://github.com/fedec65/bettercallclaude.git
 cd bettercallclaude
 
-cd mcp-servers-src
-npm ci
-npm run build
-npm test          # 666 tests, ~30 s
-
-cd ../mcp-servers-http
-npm ci
-npm run typecheck
-npm run build
+# Package the plugin into a distributable zip (exercises the same path CI
+# and Release take).
+npm run package
 ```
 
-The root directory has a convenience `npm run build` / `npm test` that wraps
-`mcp-servers-src`.
+There is no TypeScript to compile in this repo anymore — the only runtime
+code is `scripts/privacy-check.js` (vanilla Node) and the pre-built
+`bettercallclaude/mcp-servers/ollama/dist/`.
 
 ## Branching
 
@@ -97,14 +99,12 @@ German-language document footer). This adds ...
 
 Before marking a PR ready for review:
 
-- [ ] `npm run lint`, `npm run build`, `npm test` all green in `mcp-servers-src`.
-- [ ] `npm run typecheck` + `npm run build` green in `mcp-servers-http` if you
-      touched any file it transitively includes (it reaches into
-      `mcp-servers-src/{legal-citations,fedlex-sparql,onlinekommentar}/src`).
+- [ ] `npm run package` succeeds locally (builds the distributable zip).
+- [ ] `node bettercallclaude/scripts/privacy-check.test.js` is green if you
+      touched the privacy hook.
 - [ ] CI is green on GitHub.
 - [ ] PR description uses the template in `.github/` if present, and has a
       concrete testing section.
-- [ ] No new `continue-on-error` in CI.
 - [ ] No secrets, `.env`, or `settings.json` committed.
 
 ## Style notes specific to this repo
@@ -114,10 +114,6 @@ Before marking a PR ready for review:
   `haiku` for mechanical formatting, `sonnet` for everything else.
 - **Agents that spawn subagents must list `Task` as a tool.** The prompt
   alone is not enough; the subagent-runtime checks the tool list.
-- **Repository classes in `mcp-servers-src/shared/src/database/repositories/`
-  are PascalCase.** The raw-SQL variant is `SqliteCacheRepository`; the
-  TypeORM variant is `CacheRepository`. Do not reintroduce a class named
-  `CacheRepository` outside the TypeORM universe.
 - **Do not use `${user_config.*}` inside `url:` fields in `.mcp.json`.**
   Cowork's server-side plugin validator rejects URL templating before the
   user is prompted for `userConfig` values (see anthropic/claude-code#39455).
@@ -144,8 +140,6 @@ echo '{"tool_name":"Write","tool_input":{"file_path":"/tmp/x","content":"Anwalts
 
 - Behaviour-neutral refactors (renames, reshuffles) are welcome but must be
   isolated from behaviour changes; do not mix.
-- Bumping a dependency in `package.json` should run `npm install` and commit
-  the `package-lock.json` diff in the same PR.
 - Any change to `plugin.json` or `.mcp.json` requires a corresponding note
   in the PR body about user-visible impact (re-prompt on next enable, etc.).
 
