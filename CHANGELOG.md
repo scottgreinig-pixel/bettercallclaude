@@ -7,11 +7,11 @@ All notable changes to BetterCallClaude will be documented in this file.
 ## [4.4.0] - 2026-04-21
 
 ### Changed
-- **Repository split — MCP source code moved out.** All Swiss legal MCP servers (`bge-search`, `entscheidsuche`, `fedlex-sparql`, `legal-citations`, `onlinekommentar`) and the HTTP aggregator are now maintained in the separate [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP) repo. This repo is now plugin-only: agents, commands, skills, hooks, and `.mcp.json` pointing at remote HTTPS endpoints on `mcp.bettercallclaude.ch`. End-user behaviour is unchanged — you're already talking to the same remote MCPs since v4.3.0 (PR #4c5b869 hardcoded the URLs).
+- **Repository split — MCP source code moved out.** All Swiss legal MCP servers (`bge-search`, `entscheidsuche`, `fedlex-sparql`, `legal-citations`, `onlinekommentar`, `legal-persona`, `tas-jurisprudence`) and the HTTP aggregator are now maintained in the separate [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP) repo. This repo is now plugin-only: agents, commands, skills, hooks, and `.mcp.json` pointing at remote HTTPS endpoints on `mcp.bettercallclaude.ch`. End-user behaviour is unchanged for the 5 servers already remote since v4.3.0 (commit 4c5b869 hardcoded the URLs); `legal-persona` and `tas-jurisprudence` are net-new MCP surfaces in this release.
 - Canonical HTTP aggregator on Railway now serves **7** MCPs (added `legal-persona` and `tas-jurisprudence` alongside the original five).
 
 ### Removed
-- `mcp-servers-src/` (TypeScript source for the 6 Swiss legal MCPs) — moved to `BetterCallClaudeMCP/mcp-servers/`.
+- `mcp-servers-src/` (TypeScript source for the 5 Swiss legal MCPs that existed here, plus `ollama` and test fixtures) — legal MCP sources moved to `BetterCallClaudeMCP/mcp-servers/`; `ollama` source restored under `bettercallclaude/mcp-servers/ollama/` (still plugin-local).
 - `mcp-servers-http/` (Express HTTP aggregator) — moved to `BetterCallClaudeMCP/mcp-servers-http/`.
 - `scripts/build-servers.sh` (esbuild bundler) — moved with the source.
 - `package.json` scripts `build`, `build:bundle`, `test` (they targeted the removed directories). `package` remains.
@@ -22,7 +22,7 @@ All notable changes to BetterCallClaude will be documented in this file.
 - This plugin repo only needs changes when editing agents, commands, skills, hooks, the local `ollama` STDIO server, or `.mcp.json` (to add/remove remote endpoints).
 
 ### Content counts
-- 20 agents, 19 commands, 14 skills, 7 MCP servers in `.mcp.json` (6 remote + `swiss-caselaw` SSE + `ollama` local STDIO). Remote MCPs available at `mcp.bettercallclaude.ch`: bge-search, entscheidsuche, fedlex-sparql, legal-citations, onlinekommentar, legal-persona, tas-jurisprudence.
+- 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP + `swiss-caselaw` SSE + `ollama` local STDIO). Remote MCPs available at `mcp.bettercallclaude.ch`: bge-search, entscheidsuche, fedlex-sparql, legal-citations, onlinekommentar, legal-persona, tas-jurisprudence.
 
 ---
 
