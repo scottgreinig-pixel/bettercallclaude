@@ -118,8 +118,13 @@ Before marking a PR ready for review:
   are PascalCase.** The raw-SQL variant is `SqliteCacheRepository`; the
   TypeORM variant is `CacheRepository`. Do not reintroduce a class named
   `CacheRepository` outside the TypeORM universe.
-- **Do not hardcode URLs in `.mcp.json`.** Use `${user_config.mcp_base_url}`
-  and declare new keys in `plugin.json` under `userConfig`.
+- **Do not use `${user_config.*}` inside `url:` fields in `.mcp.json`.**
+  Cowork's server-side plugin validator rejects URL templating before the
+  user is prompted for `userConfig` values (see anthropic/claude-code#39455).
+  Hardcode the gateway URLs (`https://mcp.bettercallclaude.ch/...`,
+  `https://mcp.opencaselaw.ch`) and keep `${user_config.*}` substitution for
+  `env:`, `args:`, and `headers:` only. Self-hosters fork and edit
+  `.mcp.json` directly.
 - **Do not hardcode privacy patterns in the hook's strong list without
   word boundaries.** Weak markers (bare `confidential`, `vertraulich`,
   etc.) must be gated on a discriminator — see

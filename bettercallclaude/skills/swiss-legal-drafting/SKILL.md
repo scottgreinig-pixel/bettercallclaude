@@ -1,4 +1,5 @@
 ---
+name: swiss-legal-drafting
 description: "Swiss legal document drafting including contracts under OR, court submissions (Klageschrift, Klageantwort, Berufung), legal opinions (Gutachten), and multi-lingual document creation (DE/FR/IT/EN) with proper Swiss citation standards"
 ---
 

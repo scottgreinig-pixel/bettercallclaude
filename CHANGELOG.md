@@ -4,6 +4,36 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.3.0] - 2026-04-20
+
+### Fixed
+- **Cowork plugin upload validation** — the v4.2.x zip was rejected by Cowork's server-side plugin validator with a generic "PLUGIN VALIDATION FAILED" toast. Binary-bisected against 11 micro-zips and fixed three distinct manifest issues:
+  - `userConfig` entries in `plugin.json` now declare `type`, `title`, and `default` as required by Anthropic's Zod schema (PR #15, #21).
+  - All 14 `skills/*/SKILL.md` now include the required `name:` frontmatter field (PR #21). The local `claude plugin validate` CLI does not crawl skill frontmatter, so this only surfaces on upload.
+  - All 6 gateway URLs in `.mcp.json` are now hardcoded. Cowork rejects `${user_config.*}` inside `url:` fields because upload validation runs before the user is prompted for config values (see [anthropic/claude-code#39455](https://github.com/anthropics/claude-code/issues/39455)). `${user_config.*}` continues to work in `env:`, `args:`, and `headers:` blocks — `ollama_host` is still templated.
+- **Privacy hook** now covers `MCP`, `MultiEdit`, and `WebFetch` tool calls (previously only `Bash`, `Edit`, `Write`). Weak markers (bare "confidential"/"vertraulich") now require a corroborating strong signal before triggering, reducing false positives on unrelated text (PR #12).
+- **MCP shared code** — resolved duplicate `CacheRepository` class shipped under two files; raw-SQL variant renamed `SqliteCacheRepository` to match its filename (PR #14).
+- **CI** — lint step no longer `continue-on-error`; added dedicated HTTP server build job; aligned `engines.node` and TypeScript versions across all packages (PR #16).
+
+### Changed
+- **Agent model tiers pinned explicitly** — every agent now declares `model: haiku|sonnet|opus` in its frontmatter. Previously agents defaulted silently. Haiku for fast scoped tasks (citation formatting, summarization); Sonnet for the bulk of domain reasoning; Opus reserved for judicial synthesis and workflow orchestration (PR #13).
+- **Orchestrator and briefing agents** gained the `Task` tool so they can actually spawn subagents — previously they could describe workflows but not execute them (PR #13).
+- **`userConfig` surface reduced** from 6 keys to 4: dropped `mcp_base_url` and `caselaw_base_url` (now hardcoded). Remaining: `ollama_host`, `default_jurisdiction`, `output_language`, `api_token`. Self-hosters who need a different gateway fork the repo and edit `.mcp.json` directly.
+
+### Added
+- `docs/PRIVACY.md` — Anwaltsgeheimnis routing architecture, data flow diagrams, and the updated self-hosting trade-off note (PR #17).
+- `SECURITY.md` — responsible disclosure policy and supported-version matrix (PR #17).
+- `CONTRIBUTING.md` — contributor workflow including the firm rule that `${user_config.*}` must not appear in `url:` fields of `.mcp.json` (PR #17).
+- `data/README.md` — documents which files under `data/` are canonical vs. generated (PR #18).
+
+### Removed
+- Dead `install-claude-desktop.sh` (legacy CLI-era script) (PR #18).
+
+### Content counts (unchanged from 4.2.0)
+- 20 agents, 19 commands, 14 skills, 7 MCP servers (6 remote + 1 local STDIO `ollama`).
+
+---
+
 ## [4.2.0] - 2026-04-16
 
 ### Changed

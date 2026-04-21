@@ -1,4 +1,5 @@
 ---
+name: compliance-frameworks
 description: "Swiss financial regulatory compliance frameworks — FINMA supervision, GwG/AMLA anti-money laundering, FIDLEG/FINIG financial institution licensing, banking secrecy, and cross-border compliance requirements"
 ---
 

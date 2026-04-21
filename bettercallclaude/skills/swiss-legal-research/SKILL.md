@@ -1,4 +1,5 @@
 ---
+name: swiss-legal-research
 description: "Swiss legal research including BGE/ATF/DTF precedent analysis, federal and cantonal statute interpretation, multi-lingual legal terminology (DE/FR/IT/EN), and citation verification for Swiss law"
 ---
 
