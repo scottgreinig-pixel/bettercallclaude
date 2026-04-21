@@ -1,4 +1,5 @@
 ---
+name: swiss-document-analysis
 description: "Swiss legal document analysis -- identify legal issues, extract and verify citations, assess key clauses and risks, evaluate compliance with Swiss law"
 ---
 

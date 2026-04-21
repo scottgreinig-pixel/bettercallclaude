@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.2.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.3.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -25,16 +25,28 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.2.1
+## What's New in v4.3.0
 
-**v4.2.1 patch** — Fixed Connectors section disappearing in Cowork Desktop after install. Two post-release bugs corrected: `.mcp.json` must be dot-prefixed (Cowork ignores `mcp.json`), and `plugin.json` must not exist at the plugin root (causes Cowork to skip `.mcp.json` entirely).
+**v4.3.0 — Cowork upload hardening release.** The v4.2.x zip was rejected by Cowork's server-side plugin validator with a generic toast. Bisected against 11 micro-zips and fixed three distinct manifest issues:
 
-**Cowork Desktop dedicated release** -- This repository is now exclusively for Claude Cowork Desktop. The Claude Code CLI version has been split into a separate repository: [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
+- **`userConfig` schema completed** — every entry now declares `type`, `title`, and `default` as required by Anthropic's Zod validator.
+- **Skill frontmatter completed** — all 14 `skills/*/SKILL.md` now include the required `name:` field (previously only `description:` was set; the local `claude plugin validate` CLI does not crawl skill frontmatter).
+- **Gateway URLs hardcoded in `.mcp.json`** — Cowork rejects `${user_config.*}` inside `url:` fields because validation runs before the user is prompted (see anthropic/claude-code#39455). URLs to `mcp.bettercallclaude.ch` and `mcp.opencaselaw.ch` are now baked in; self-hosters fork and edit `.mcp.json` directly. `${user_config.*}` still works in `env:`, `args:`, and `headers:` blocks.
+- **Privacy hook hardened** — covers `MCP`, `MultiEdit`, and `WebFetch` tools; weak markers (bare `confidential`, `vertraulich`) gated on a corroborating signal to reduce false positives.
+- **Agent model tiers pinned** — every agent frontmatter now declares its `model:` explicitly (haiku/sonnet/opus); orchestrator and briefing agents gained the `Task` tool so they can actually spawn subagents.
+- **MCP shared code disambiguated** — resolved duplicate `CacheRepository` class; raw-SQL variant renamed `SqliteCacheRepository`.
+- **Docs** — added `docs/PRIVACY.md`, `SECURITY.md`, `CONTRIBUTING.md`; refreshed plugin README; removed dead `install-claude-desktop.sh`.
+- **CI** — lint no longer `continue-on-error`; added HTTP server job; engines/TypeScript versions aligned across packages.
 
-- **HTTP-only transport**: all 7 MCP servers connect via `mcp.bettercallclaude.ch` or SSE -- no local Node.js build required
-- **Simplified setup**: `/setup` checks connectivity only -- no transport switching needed in Cowork
+**Content counts unchanged**: 20 agents, 19 commands (+1 `/version` infra command), 14 skills, 7 MCP servers (6 remote + 1 local STDIO ollama).
 
 [Full changelog →](CHANGELOG.md)
+
+**Cowork Desktop dedicated release** -- This repository is exclusively for Claude Cowork Desktop. The Claude Code CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
+
+- **HTTP-only transport**: 6 of 7 MCP servers connect via `mcp.bettercallclaude.ch` / `mcp.opencaselaw.ch` -- no local Node.js build required for those
+- **Local STDIO server** (`ollama`): bundled and only touches `http://localhost:11434` for privacy-routed translation/summarisation
+- **Simplified setup**: `/setup` checks connectivity only -- no transport switching needed in Cowork
 
 ---
 

@@ -1,4 +1,5 @@
 ---
+name: legal-briefing
 description: "Auto-activates structured briefing sessions for complex legal queries -- detects when multi-agent coordination benefits from pre-execution intake and plan building"
 ---
 

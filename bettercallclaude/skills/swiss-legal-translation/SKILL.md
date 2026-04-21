@@ -1,4 +1,5 @@
 ---
+name: swiss-legal-translation
 description: "Swiss legal translation between DE, FR, IT, and EN with statutory reference conversion, terminology precision, and citation format adaptation"
 ---
 

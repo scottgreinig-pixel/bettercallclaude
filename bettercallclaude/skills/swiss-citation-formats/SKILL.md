@@ -1,4 +1,5 @@
 ---
+name: swiss-citation-formats
 description: "Swiss legal citation formatting across DE/FR/IT/EN — BGE/ATF/DTF Federal Supreme Court decision formats, statutory article citations (Art./Abs./lit./Ziff.), doctrine references, cantonal court citations, and abbreviation tables for all Swiss official languages"
 ---
 

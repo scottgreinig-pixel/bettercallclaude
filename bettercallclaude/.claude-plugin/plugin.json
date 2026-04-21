@@ -1,6 +1,36 @@
 {
   "name": "bettercallclaude",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "description": "Swiss Legal Intelligence -- BGE/ATF/DTF precedent research, case strategy, legal drafting, and citation verification across all 26 Swiss cantons with Anwaltsgeheimnis privacy protection.",
-  "author": { "name": "Federico Cesconi" }
+  "author": { "name": "Federico Cesconi" },
+  "userConfig": {
+    "ollama_host": {
+      "type": "string",
+      "title": "Ollama host URL",
+      "description": "URL of the Ollama host used by the bundled ollama MCP server for local-only translation and summarisation.",
+      "default": "http://localhost:11434",
+      "sensitive": false
+    },
+    "default_jurisdiction": {
+      "type": "string",
+      "title": "Default Swiss canton",
+      "description": "Default Swiss canton code for cantonal research (e.g. ZH, BE, GE, TI, VD). Leave blank for federal-only queries.",
+      "default": "",
+      "sensitive": false
+    },
+    "output_language": {
+      "type": "string",
+      "title": "Output language",
+      "description": "Preferred output language for agents and drafter output. One of: DE, FR, IT, EN.",
+      "default": "DE",
+      "sensitive": false
+    },
+    "api_token": {
+      "type": "string",
+      "title": "MCP gateway API token (optional)",
+      "description": "Optional bearer token for accessing a protected BetterCallClaude MCP deployment. Leave blank for the public service.",
+      "default": "",
+      "sensitive": true
+    }
+  }
 }
