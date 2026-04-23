@@ -192,16 +192,17 @@ AGPL-3.0 -- See [LICENSE](LICENSE) for full terms.
 
 ## For Developers
 
-The `mcp-servers-src/` directory contains TypeScript source for the MCP servers. The `mcp-servers-http/` directory contains the HTTP transport wrapper deployed to Railway at `mcp.bettercallclaude.ch`.
+This repo contains the plugin only (agents, commands, skills, hooks, `.mcp.json`, and the bundled `ollama` local STDIO server). MCP server source code and the HTTP aggregator deployed to Railway at `mcp.bettercallclaude.ch` live in the separate [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP) repo.
 
 ```bash
-npm run build          # Compile TypeScript
-npm run build:bundle   # Build single-file bundles into mcp-servers/*/dist/
-npm test               # Run tests
 npm run package        # Create distributable plugin zip
 ```
 
-See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for MCP server API documentation.
+To change an MCP server's behaviour, open a PR in
+[`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP).
+Railway auto-redeploys on merge to `main`.
+
+See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for MCP server API documentation and [CONTRIBUTING.md](CONTRIBUTING.md) for the full contributor workflow.
 
 ---
 

@@ -4,14 +4,14 @@ This directory holds seed data used by the MCP shared database layer.
 
 ## `bettercallclaude.db`
 
-A SQLite database used by
-[`mcp-servers-src/shared/src/database/client.ts`](../mcp-servers-src/shared/src/database/client.ts)
-as the default backing store when neither `DB_DATABASE` nor `DATABASE_FILE`
-environment variables are set. It is resolved relative to the process's
-working directory:
+A SQLite database used by the MCP shared database client (source now lives in
+[`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)
+at `mcp-servers/shared/src/database/client.ts`) as the default backing store
+when neither `DB_DATABASE` nor `DATABASE_FILE` environment variables are
+set. It is resolved relative to the process's working directory:
 
 ```ts
-// mcp-servers-src/shared/src/database/client.ts
+// BetterCallClaudeMCP/mcp-servers/shared/src/database/client.ts
 filename: process.env.DATABASE_FILE || join(process.cwd(), 'data', 'bettercallclaude.db'),
 ```
 

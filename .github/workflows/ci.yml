@@ -7,63 +7,6 @@ on:
     branches: [main]
 
 jobs:
-  test-mcp-servers:
-    name: Test MCP Servers
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20, 22]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        working-directory: mcp-servers-src
-        run: npm ci
-
-      - name: Lint
-        working-directory: mcp-servers-src
-        run: npm run lint --if-present
-
-      - name: Build
-        working-directory: mcp-servers-src
-        run: npm run build
-
-      - name: Test
-        working-directory: mcp-servers-src
-        run: npm test
-
-  test-http-server:
-    name: Test HTTP MCP Server
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies (mcp-servers-src for workspace path resolution)
-        working-directory: mcp-servers-src
-        run: npm ci
-
-      - name: Install dependencies (mcp-servers-http)
-        working-directory: mcp-servers-http
-        run: npm ci
-
-      - name: Typecheck
-        working-directory: mcp-servers-http
-        run: npm run typecheck
-
-      - name: Build
-        working-directory: mcp-servers-http
-        run: npm run build
-
   validate-plugin:
     name: Validate Plugin Structure
     runs-on: ubuntu-latest
@@ -118,8 +61,10 @@ jobs:
       - name: Check compiled bundles exist
         run: |
           # Only ollama runs locally via STDIO and needs a dist file.
-          # HTTP servers (entscheidsuche, bge-search, fedlex-sparql, legal-citations, onlinekommentar)
-          # run remotely at mcp.bettercallclaude.ch -- no dist files committed.
+          # HTTP servers (entscheidsuche, bge-search, fedlex-sparql, legal-citations,
+          # onlinekommentar, legal-persona, tas-jurisprudence) run remotely at
+          # mcp.bettercallclaude.ch -- their source lives in the BetterCallClaudeMCP
+          # repo and no dist files are committed here.
           if [ ! -f "bettercallclaude/mcp-servers/ollama/dist/index.js" ]; then
             echo "FAIL: Missing bettercallclaude/mcp-servers/ollama/dist/index.js"
             exit 1
@@ -151,22 +96,5 @@ jobs:
             echo "OK: $skill_file"
           done
 
-      - name: Check command frontmatter
-        run: |
-          for cmd in bettercallclaude/commands/*.md; do
-            if ! head -1 "$cmd" | grep -q "^---"; then
-              echo "FAIL: $cmd missing YAML frontmatter"
-              exit 1
-            fi
-            echo "OK: $cmd"
-          done
-
-      - name: Check agent frontmatter
-        run: |
-          for agent in bettercallclaude/agents/*.md; do
-            if ! head -1 "$agent" | grep -q "^---"; then
-              echo "FAIL: $agent missing YAML frontmatter"
-              exit 1
-            fi
-            echo "OK: $agent"
-          done
+      - name: Package plugin (dry check)
+        run: bash scripts/package-plugin.sh

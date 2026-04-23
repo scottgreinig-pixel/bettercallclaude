@@ -1,13 +1,10 @@
 {
   "name": "bettercallclaude",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "private": true,
   "description": "Swiss Legal Intelligence Plugin for Claude",
   "scripts": {
-    "build": "cd mcp-servers-src && npm ci && npm run build",
-    "build:bundle": "bash scripts/build-servers.sh",
-    "build:mcpb": "bash scripts/build-mcpb.sh",
-    "test": "cd mcp-servers-src && npm test",
+    "build:ollama": "cd bettercallclaude/mcp-servers/ollama && npm install && npm run build:bundle",
     "package": "bash scripts/package-plugin.sh"
   },
   "repository": {

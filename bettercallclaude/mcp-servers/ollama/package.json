@@ -4,16 +4,8 @@
   "description": "MCP server for local LLM processing via Ollama - Swiss legal privacy protection",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npx tsc",
-    "watch": "npx tsc --watch",
-    "dev": "npx tsx watch src/index.ts",
-    "lint": "eslint src/",
-    "test": "vitest run --passWithNoTests",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "clean": "rm -rf dist"
+    "build:bundle": "esbuild src/index.ts --bundle --platform=node --target=node20 --format=esm --outfile=dist/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\" --sourcemap=inline --minify-syntax --log-level=warning"
   },
   "keywords": [
     "mcp",
@@ -27,9 +19,7 @@
     "@modelcontextprotocol/sdk": "^1.26.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
-    "vitest": "^4.0.15"
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.2"
   }
 }

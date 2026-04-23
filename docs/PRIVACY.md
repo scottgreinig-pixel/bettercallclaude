@@ -89,9 +89,10 @@ that is unacceptable for a given matter:
 - Or disable the plugin for that matter and use only Cowork Desktop +
   the local `ollama` subserver.
 
-The gateway source is in
-[`mcp-servers-http/`](../mcp-servers-http/) and
-[`mcp-servers-src/`](../mcp-servers-src/) — you can audit it.
+The gateway source lives in the separate
+[`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)
+repo (directory `mcp-servers-http/` plus the individual MCP packages under
+`mcp-servers/`) — you can audit it.
 
 ---
 
