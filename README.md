@@ -1,8 +1,8 @@
-[![Version](https://img.shields.io/badge/version-4.3.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.4.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
-[![MCP Servers](https://img.shields.io/badge/MCP%20servers-7-purple)](https://mcp.bettercallclaude.ch/health)
+[![MCP Servers](https://img.shields.io/badge/MCP%20servers-9-purple)](https://mcp.bettercallclaude.ch/health)
 [![Buy Me a Coffee](https://img.shields.io/badge/support-Buy%20Me%20a%20Coffee-yellow)](https://buymeacoffee.com/federicocesconi)
 
 <p align="center">
@@ -11,7 +11,7 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 19 commands, 14 skills, and 7 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, and citation verification across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 19 commands, 14 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
@@ -25,26 +25,23 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.3.0
+## What's New in v4.4.0
 
-**v4.3.0 — Cowork upload hardening release.** The v4.2.x zip was rejected by Cowork's server-side plugin validator with a generic toast. Bisected against 11 micro-zips and fixed three distinct manifest issues:
+**v4.4.0 — Repository split + two new MCP servers.** The plugin repo is now plugin-only; MCP server source code lives canonically in a dedicated repository, and two new MCP servers are exposed to users.
 
-- **`userConfig` schema completed** — every entry now declares `type`, `title`, and `default` as required by Anthropic's Zod validator.
-- **Skill frontmatter completed** — all 14 `skills/*/SKILL.md` now include the required `name:` field (previously only `description:` was set; the local `claude plugin validate` CLI does not crawl skill frontmatter).
-- **Gateway URLs hardcoded in `.mcp.json`** — Cowork rejects `${user_config.*}` inside `url:` fields because validation runs before the user is prompted (see anthropic/claude-code#39455). URLs to `mcp.bettercallclaude.ch` and `mcp.opencaselaw.ch` are now baked in; self-hosters fork and edit `.mcp.json` directly. `${user_config.*}` still works in `env:`, `args:`, and `headers:` blocks.
-- **Privacy hook hardened** — covers `MCP`, `MultiEdit`, and `WebFetch` tools; weak markers (bare `confidential`, `vertraulich`) gated on a corroborating signal to reduce false positives.
-- **Agent model tiers pinned** — every agent frontmatter now declares its `model:` explicitly (haiku/sonnet/opus); orchestrator and briefing agents gained the `Task` tool so they can actually spawn subagents.
-- **MCP shared code disambiguated** — resolved duplicate `CacheRepository` class; raw-SQL variant renamed `SqliteCacheRepository`.
-- **Docs** — added `docs/PRIVACY.md`, `SECURITY.md`, `CONTRIBUTING.md`; refreshed plugin README; removed dead `install-claude-desktop.sh`.
-- **CI** — lint no longer `continue-on-error`; added HTTP server job; engines/TypeScript versions aligned across packages.
+- **Repository split** — `mcp-servers-src/` and `mcp-servers-http/` have been removed from this repo. The TypeScript source for all 7 remote MCP servers and the HTTP aggregator deployed at `mcp.bettercallclaude.ch` now live in [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP). Plugin users are unaffected — `.mcp.json` still points at the same production URLs.
+- **New MCP: `legal-persona`** — Swiss-law-aware document intelligence. Three tools: `legal_strategy` (structured case strategy with statutory citations), `legal_draft` (15 Swiss document types across contracts, litigation, and opinions in DE/FR/IT/EN), and `legal_analyze` (compliance, clause-extraction, and issue-flagging against OR / ZGB / DSG).
+- **New MCP: `tas-jurisprudence`** — Court of Arbitration for Sport (CAS/TAS) decision search. Four tools: `cas_search`, `cas_get_award`, `cas_recent`, `cas_by_sport`. Backed by a Playwright-rendered crawl of `jurisprudence.tas-cas.org` with respectful rate limits.
+- **Ollama local server** — still bundled in this repo; `npm run build:ollama` now rebuilds it in-place for contributors.
+- **Simpler CI** — plugin-only repo means CI is now `validate-plugin` + package dry-run; the MCP build/test matrix has moved to `BetterCallClaudeMCP`.
 
-**Content counts unchanged**: 20 agents, 19 commands (+1 `/version` infra command), 14 skills, 7 MCP servers (6 remote + 1 local STDIO ollama).
+**Content counts**: 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
 
 [Full changelog →](CHANGELOG.md)
 
 **Cowork Desktop dedicated release** -- This repository is exclusively for Claude Cowork Desktop. The Claude Code CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
-- **HTTP-only transport**: 6 of 7 MCP servers connect via `mcp.bettercallclaude.ch` / `mcp.opencaselaw.ch` -- no local Node.js build required for those
+- **HTTP-only transport**: 8 of 9 MCP servers connect via `mcp.bettercallclaude.ch` / `mcp.opencaselaw.ch` -- no local Node.js build required for those
 - **Local STDIO server** (`ollama`): bundled and only touches `http://localhost:11434` for privacy-routed translation/summarisation
 - **Simplified setup**: `/setup` checks connectivity only -- no transport switching needed in Cowork
 
@@ -82,7 +79,7 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 | `/bettercallclaude:translate` | Translate Swiss legal documents between DE, FR, IT, and EN while preserving legal terminology precision. |
 | `/bettercallclaude:doc-analyze` | Analyze Swiss legal documents -- identify legal issues, extract key clauses, verify citations, assess compliance. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
-| `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 7 servers. |
+| `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 9 servers. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
 
@@ -133,10 +130,12 @@ All servers connect automatically after installation. No configuration required.
 | `legal-citations` | Citation verification and formatting | HTTP |
 | `fedlex-sparql` | Federal legislation database (SPARQL) | HTTP |
 | `onlinekommentar` | Swiss legal commentaries | HTTP |
+| `legal-persona` | Swiss-law document intelligence (strategy, drafting, analysis) | HTTP |
+| `tas-jurisprudence` | CAS/TAS sports arbitration decisions | HTTP |
 | `swiss-caselaw` | Case law, citation graphs, appeal chains (opencaselaw.ch) | SSE |
 | `ollama` | Local privacy classification for Anwaltsgeheimnis | Local |
 
-The five HTTP servers connect to `https://mcp.bettercallclaude.ch` (rate limit: 60 req/min per IP). The `swiss-caselaw` server connects to `https://mcp.opencaselaw.ch`. No API keys required for any server.
+The seven HTTP servers connect to `https://mcp.bettercallclaude.ch` (rate limit: 60 req/min per IP). The `swiss-caselaw` server connects to `https://mcp.opencaselaw.ch`. No API keys required for any server.
 
 See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for detailed API documentation.
 
