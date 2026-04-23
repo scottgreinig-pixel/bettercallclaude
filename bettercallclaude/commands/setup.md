@@ -18,7 +18,7 @@ If the health check succeeds, the HTTP service is online. If it fails, note the 
 
 ## Step 2: Probe MCP Servers
 
-Check connectivity for each of the 7 MCP servers using a **two-stage non-blocking approach**:
+Check connectivity for each of the 9 MCP servers using a **two-stage non-blocking approach**:
 
 **Stage A — Check tool availability (non-blocking)**
 
@@ -31,6 +31,8 @@ Look at your currently available tools. For each server, check whether its tools
 | legal-citations | `validate_citation`, `format_citation`, etc. |
 | fedlex-sparql | `search_legislation`, `get_article`, etc. |
 | onlinekommentar | `search_commentaries`, `get_commentary`, etc. |
+| legal-persona | `search_personas`, `get_persona_profile`, etc. |
+| tas-jurisprudence | `search_tas_awards`, `get_tas_award`, etc. |
 | swiss-caselaw | `search_decisions`, `find_citations`, `find_appeal_chain`, etc. |
 | ollama | `ollama_check_status`, `ollama_list_models`, etc. |
 
@@ -47,6 +49,8 @@ For each server whose tools ARE available, make one lightweight call to confirm 
 | legal-citations | `validate_citation` with a simple citation |
 | fedlex-sparql | `search_legislation` with a minimal query |
 | onlinekommentar | `search_commentaries` with a minimal query |
+| legal-persona | `search_personas` with a minimal query |
+| tas-jurisprudence | `search_tas_awards` with a minimal query |
 | swiss-caselaw | `search_decisions` with a minimal query |
 | ollama | `ollama_check_status` |
 
@@ -70,23 +74,25 @@ Output the following formatted status report, replacing status indicators and tr
   legal-citations           [x] Connected       HTTP
   fedlex-sparql             [x] Connected       HTTP
   onlinekommentar           [x] Connected       HTTP
+  legal-persona             [x] Connected       HTTP
+  tas-jurisprudence         [x] Connected       HTTP
   swiss-caselaw             [x] Connected       SSE
   ollama                    [x] Connected       Local
 
   HTTP Service: https://mcp.bettercallclaude.ch
   Health: OK / Unreachable
-  Connected: X/7 servers
+  Connected: X/9 servers
 ==============================================
 ```
 
-Mark each server as `[x] Connected`, `[ ] Not connected`, or `[ ] Timeout` based on Step 2 results. Show `HTTP` or `Local` in the Transport column.
+Mark each server as `[x] Connected`, `[ ] Not connected`, or `[ ] Timeout` based on Step 2 results. Show `HTTP`, `SSE`, or `Local` in the Transport column.
 
 ## Step 4: Provide Guidance Based on Results
 
-### If all 7 servers are connected:
+### If all 9 servers are connected:
 
 ```
-All 7 MCP servers are operational. No action needed.
+All 9 MCP servers are operational. No action needed.
 BetterCallClaude is running at full capability.
 ```
 

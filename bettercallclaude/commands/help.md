@@ -124,7 +124,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-## MCP Servers (7)
+## MCP Servers (9)
 
 | Server | Purpose | Transport |
 |--------|---------|-----------|
@@ -133,6 +133,8 @@ Skills activate automatically when Claude detects relevant context.
 | legal-citations | Citation verification and multi-lingual formatting | HTTP |
 | fedlex-sparql | Swiss federal legislation database queries | HTTP |
 | onlinekommentar | Swiss legal commentary access | HTTP |
+| legal-persona | Swiss judicial personas — profiles, voting patterns, doctrinal positions | HTTP |
+| tas-jurisprudence | CAS/TAS sports arbitration awards and jurisprudence | HTTP |
 | swiss-caselaw | Case law search, citation graphs, appeal chains, doctrine (opencaselaw.ch) | SSE |
 | ollama | Local privacy classification for privileged content | Local |
 
