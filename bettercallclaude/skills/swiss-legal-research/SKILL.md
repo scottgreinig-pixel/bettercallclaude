@@ -1,6 +1,6 @@
 ---
 name: swiss-legal-research
-description: "Swiss legal research including BGE/ATF/DTF precedent analysis, federal and cantonal statute interpretation, multi-lingual legal terminology (DE/FR/IT/EN), and citation verification for Swiss law"
+description: "Swiss legal research specialist — searches BGE/ATF/DTF precedents, interprets federal and cantonal statutes, and produces verified multi-lingual legal analysis. Trigger when: a user asks what the law says on a topic, requests case precedents or BGE decisions, needs to know how a statute is interpreted, asks about legal doctrine or scholarly commentary, or needs a research memo. Uses entscheidsuche, swiss-caselaw, bge-search, fedlex-sparql, and onlinekommentar MCP servers. Do NOT trigger for: citation formatting only (use swiss-citation-formats), query clarification (use legal-query-refinement), document drafting (use swiss-legal-drafting), or translation (use swiss-legal-translation). Boundary with swiss-citation-formats: this skill produces legal analysis with cited sources; swiss-citation-formats ensures those citations are correctly formatted."
 ---
 
 # Swiss Legal Research
@@ -19,30 +19,55 @@ Follow this 5-step workflow for every legal research task:
 - Map legal concepts to their multi-lingual equivalents
 
 ### Step 2: Search Execution
-Use the `entscheidsuche` MCP server tools:
 
-```typescript
-search_decisions({
-  query: string,           // Fulltext or keywords
-  courts?: string[],       // "bundesgericht", "obergericht_zh", etc.
-  date_range?: { from?: string, to?: string },
-  languages?: string[],    // ["de","fr","it"]
-  legal_areas?: string[],  // "obligationenrecht", "zivilrecht", etc.
-  max_results?: number,    // default: 20
-  sort_by?: "relevance" | "date"
-})
+Use MCP servers in this order of specificity:
 
-get_decision_by_citation({
-  citation: string,        // "BGE 145 III 229"
-  language?: string,
-  include_full_text?: boolean
-})
+**`swiss-caselaw` MCP** (primary — 969K+ decisions, full text, doctrine, commentary):
+- `search_decisions(query, filters)` — fulltext search across federal + cantonal courts
+- `get_decision(id)` — retrieve full decision text
+- `get_erwaegung(id, erwaegung_nr)` — retrieve specific consideration (Erwägung) verbatim
+- `get_regeste(id)` — retrieve the official headnote / Regeste
+- `get_case_brief(id)` — structured summary of key facts, holding, ratio
+- `find_leading_cases(query)` — surface landmark BGE on a topic
+- `find_citations(citation)` — find decisions citing a given BGE
+- `get_law(sr_number)` — retrieve federal statute article text (live, not from memory)
+- `get_legislation(canton, law_name)` — retrieve cantonal statute text
+- `get_doctrine(topic)` — retrieve doctrinal positions
+- `get_commentary(citation)` — get scholarly commentary on a provision
+- `search_laws(query)` — search federal statute database
+- `get_materialien(sr_number)` — retrieve Botschaft / legislative materials
+- `cite(decision_id)` — get verified citation string (BGE/ATF/DTF) — **always use this, never construct citations manually**
 
-extract_legal_principles({
-  decision_id: string,
-  language: string
-})
-```
+**`entscheidsuche` MCP** (cantonal courts — deep cantonal search):
+- `search_decisions(query, canton?)` — search cantonal court decisions
+- `search_canton(canton_code, query)` — canton-specific search
+- `get_decision_details(id)` — full cantonal decision
+- `find_similar_cases(facts)` — find analogous cases by fact pattern
+- `get_legal_provision_interpretation(provision)` — how courts interpret a provision
+- `analyze_precedent_success_rate(argument)` — precedent strength analysis
+
+**`bge-search` MCP** (structured BGE search with metadata):
+- `search_bge(query, section?)` — search published BGE with section filter (I–VI)
+- `get_bge_decision(citation)` — retrieve BGE by citation
+
+**`fedlex-sparql` MCP** (live federal legislation):
+- `search_legislation(query)` — search federal statutes
+- `get_article(sr_number, article)` — get article text from official Fedlex
+- `lookup_statute(name_or_abbr)` — look up statute by name/abbreviation
+- `find_related(sr_number)` — find related statutes
+
+**`onlinekommentar` MCP** (scholarly commentaries):
+- `search_commentaries(query)` — search legal commentaries
+- `get_commentary_for_article(sr_number, article)` — article-specific commentary
+- `list_legislative_acts()` — available acts with commentary coverage
+
+**Decision tree for MCP selection:**
+- BGE by topic → `swiss-caselaw` `find_leading_cases` then `search_bge`
+- BGE by citation → `swiss-caselaw` `get_decision` or `bge-search` `get_bge_decision`
+- Cantonal decisions → `entscheidsuche` `search_canton`
+- Statute text → `swiss-caselaw` `get_law` or `fedlex-sparql` `get_article` (never from memory)
+- Doctrine → `swiss-caselaw` `get_doctrine` + `onlinekommentar` `get_commentary_for_article`
+- Legislative intent → `swiss-caselaw` `get_materialien`
 
 ### Step 3: Precedent Analysis
 Apply this 5-point framework to each relevant BGE:
@@ -58,21 +83,16 @@ Apply this 5-point framework to each relevant BGE:
 - "Prazisierung der Rechtsprechung" = clarifying precedent
 
 ### Step 4: Citation Verification
+
 Use the `legal-citations` MCP server tools:
+- `validate_citation(citation)` — verify a BGE or statutory citation exists and is correctly formatted
+- `format_citation(citation, target_language)` — convert citation to DE/FR/IT/EN format
+- `parse_citation(citation)` — decompose citation into volume, section, page, consideration
+- `get_provision_text(citation)` — retrieve the actual text of a cited provision
+- `standardize_document_citations(text)` — batch-standardize all citations in a document
+- `convert_citation(citation, from_lang, to_lang)` — cross-language citation conversion (BGE↔ATF↔DTF)
 
-```typescript
-verify_citation({
-  citation: string,
-  expected_language?: string,
-  strict_format?: boolean
-})
-
-format_citation({
-  citation: string,
-  target_language: string,    // "de","fr","it","en"
-  include_provision_text?: boolean
-})
-```
+**Critical rule**: For BGE citation strings, always use `swiss-caselaw` `cite(decision_id)` to get the canonical citation string. Never construct a BGE citation yourself — volume miscalculation (volume = year − 1874) is a common error.
 
 Target: >95% citation accuracy. Every BGE and statutory citation must be verified before output.
 
