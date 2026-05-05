@@ -1,6 +1,6 @@
 ---
 name: swiss-legal-translation
-description: "Swiss legal translation between DE, FR, IT, and EN with statutory reference conversion, terminology precision, and citation format adaptation"
+description: "Swiss legal translator — produces precise multi-lingual translations of Swiss legal texts (contracts, submissions, statutes, opinions) between DE, FR, IT, and EN, converting statute abbreviations, citation formats, and legal terminology to the target language standard. Trigger when: a user asks to translate a Swiss legal document or legal term; when a document needs to be converted from one of the four national languages to another; or when a legal opinion or court submission must be prepared in a different language. Uses fedlex-sparql for official statute text verification and legal-citations MCP for citation conversion. Do NOT trigger for: citation formatting without translation (use swiss-citation-formats), document drafting (use swiss-legal-drafting), or general (non-legal) translation. Boundary with swiss-citation-formats: this skill translates the full document and converts citations as part of the translation; swiss-citation-formats handles citation formatting in isolation."
 ---
 
 # Swiss Legal Translation
@@ -39,6 +39,11 @@ Convert all statute abbreviations and citation formats to the target language:
 | Federal Constitution | BV | Cst. | Cost. |
 | Article paragraph | Abs. | al. | cpv. |
 | Article letter | lit. | let. | lett. |
+| Data Protection (new) | nDSG | nLPD | nLPD |
+| Data Protection (old) | DSG | LPD | LPD |
+| AML | GwG | LBA | LRD |
+| Financial Market Supervision | FINMAG | LFINMA | LFINMA |
+| Admin. Procedure (federal) | VwVG | PA | PA |
 | BGE citation | BGE [vol] [ch] [p] | ATF [vol] [ch] [p] | DTF [vol] [ch] [p] |
 | Consideration | E. | consid. | consid. |
 
@@ -94,6 +99,18 @@ Confirm the following:
 - All legislation references use the target language abbreviations.
 - Court names are properly translated.
 - No source-language fragments remain in the output.
+
+## MCP Tools for Translation Accuracy
+
+Use these tools to verify terminology and citations against official sources rather than relying on training data:
+
+- `fedlex-sparql` → `get_article(sr_number, article)` — retrieve the official DE/FR/IT text of a statute article to verify terminology choices
+- `fedlex-sparql` → `lookup_statute(name_or_abbr)` — confirm the official name and abbreviation in the target language
+- `legal-citations` → `convert_citation(citation, from_lang, to_lang)` — convert BGE↔ATF↔DTF and Art./art./Art. formats
+- `legal-citations` → `format_citation(citation, target_language)` — format any citation for target language
+- `swiss-caselaw` → `get_law(sr_number)` — retrieve full statute text for terminology verification
+
+When translating a statute article, always retrieve the official target-language text via `fedlex-sparql` first — the three language versions are equally authentic (Art. 70 BV) and the official text is the authoritative translation.
 
 ## Output Format
 
