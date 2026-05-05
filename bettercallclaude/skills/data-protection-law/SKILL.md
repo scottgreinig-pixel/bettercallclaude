@@ -1,6 +1,6 @@
 ---
 name: data-protection-law
-description: "Swiss data protection law — nDSG/FADP framework, GDPR adequacy assessment, cantonal data protection laws (IDG/KDSG/LIPAD), DPIA methodology, and cross-border data transfer mechanisms"
+description: "Swiss data protection law analysis — applies the nDSG/FADP framework (in force 1.9.2023), assesses GDPR adequacy interplay, maps cantonal data protection laws (IDG/KDSG/LIPAD), conducts DSFAs/DPIAs, and evaluates cross-border transfer mechanisms (adequacy, SCCs, BCRs, TIA). Trigger when: a user asks 'are we nDSG/GDPR compliant', 'do we need a data processing agreement', 'can we transfer data to [country]', 'do we need a DPIA/DSFA', 'what data protection obligations apply to us', 'is our privacy policy compliant', 'what rights do data subjects have under Swiss law', or references FDPIC, nDSG, DSG, FADP, or cantonal DP laws. Also triggered when the data-protection agent is invoked. Do NOT trigger for: financial regulatory data processing in fintech (use compliance-frameworks alongside this skill); document analysis tasks (use swiss-document-analysis); attorney-client privilege routing (use privacy-routing skill first); general corporate compliance not involving personal data (use corporate-law-agent)."
 ---
 
 # Swiss Data Protection Law
@@ -160,6 +160,13 @@ A DPIA must be conducted when planned processing is likely to result in a high r
 | Legal claims | Art. 17 Abs. 1 lit. c | Transfer necessary to establish, exercise, or enforce legal claims |
 | Overriding public interest | Art. 17 Abs. 1 lit. d | Protection of life or physical integrity |
 
+### GDPR Adequacy — Switzerland's Status
+
+The European Commission granted Switzerland adequacy under GDPR (Commission Implementing Decision 2000/518/EC, reviewed under GDPR). This means:
+- **EU → Switzerland transfers**: Permitted without additional safeguards (Switzerland is on the EU adequacy list)
+- **Switzerland → EU/EEA transfers**: Switzerland treats EU/EEA as adequate (Annex 1 DSV)
+- **Practical note**: The adequacy decision covers Switzerland's nDSG as of 1.9.2023 — entities must verify that their processing remains within the scope of the adequacy decision. FDPIC has issued guidance confirming that the nDSG maintains adequacy.
+
 ### Transfer Impact Assessment (TIA)
 
 When relying on SCCs or BCRs for transfer to a non-adequate country, a Transfer Impact Assessment must evaluate:
@@ -192,6 +199,33 @@ Professional secrecy (Anwaltsgeheimnis / secret professionnel / segreto professi
 | Cross-border transfers | Client data subject to professional secrecy requires heightened transfer safeguards |
 | Breach notification | Professional secrecy obligations must be balanced with breach notification duties |
 | Data processing agreements | Law firm as processor must ensure DPA respects professional secrecy |
+
+## MCP Tools for Data Protection Research
+
+Use these tools for precedent and legislative research:
+
+| Task | Tool |
+|------|------|
+| FDPIC opinions and enforcement decisions | `entscheidsuche` → `search_decisions` with "EDOB" or "FDPIC" or "Datenschutz" |
+| nDSG / DSG BGE precedents | `swiss-caselaw` → `find_leading_cases("Datenschutz nDSG")` or `search_decisions` |
+| Cantonal DP law (ZH IDG, GE LIPAD, BE KDSG) | `swiss-caselaw` → `get_legislation(canton, "Datenschutz")` |
+| nDSG article text (live, not from memory) | `fedlex-sparql` → `get_article("235.1", article_number)` |
+| DSV ordinance article text | `fedlex-sparql` → `get_article("235.11", article_number)` |
+| Scholarly commentary on nDSG provisions | `onlinekommentar` → `get_commentary_for_article("235.1", article_number)` |
+| Cite a decision | `swiss-caselaw` → `cite(decision_id)` — **never construct BGE citations manually** |
+
+SR numbers: nDSG = 235.1, DSV = 235.11, old DSG = 235.1 (pre-2023 version via Fedlex history).
+
+**Critical temporal rule**: If facts arose before 1 September 2023, apply the old DSG; if on or after, apply the nDSG. Always confirm which version applies at the outset of any analysis.
+
+## Skill Boundaries
+
+| Task | Use instead |
+|------|------------|
+| Data processing in fintech / FINMA-regulated entities | `compliance-frameworks` skill (plus this skill for DP specifics) |
+| Document analysis with DP issues | `swiss-document-analysis` skill for document review; this skill for the DP law analysis |
+| Attorney-client privilege over client data | Activate `privacy-routing` skill **first**, then this skill |
+| GDPR compliance for EU-based operations | This skill covers Swiss nDSG/GDPR adequacy interplay; for pure EU operations, note limits |
 
 ## Quality Standards
 
