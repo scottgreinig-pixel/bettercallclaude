@@ -1,5 +1,5 @@
 ---
-description: "Primary entry point for all BetterCallClaude requests — classifies intent, resolves jurisdiction (via swiss-jurisdictions skill), activates briefing when complexity ≥ 5 (via legal-briefing skill), and routes to specialist agents or workflow pipelines. Invoked explicitly as /bettercallclaude:legal or as the default when no other command matches. Supports --refine, --briefing, --skip-briefing/--direct, --no-framework flags."
+description: "Primary entry point for all BetterCallClaude requests — classifies intent, resolves jurisdiction (via swiss-jurisdictions skill), runs inline briefing for complexity 4–6, activates full briefing session when complexity ≥ 7 (via legal-briefing skill), and routes to specialist agents or workflow pipelines. Invoked explicitly as /bettercallclaude:legal or as the default when no other command matches. Supports --refine, --briefing, --skip-briefing/--direct, --no-framework flags."
 ---
 
 # Intelligent Legal Assistant

@@ -1,6 +1,6 @@
 ---
 name: compliance-frameworks
-description: "Swiss financial regulatory compliance analysis — assesses and maps compliance obligations under FINMA supervision, GwG/LBA (AML/KYC), FIDLEG/LSFin (financial services), FINIG/LEFin (financial institution licensing), BankG (banking secrecy), crypto/DLT regulation (DLT-Gesetz SR 950.1, FINMA ICO/staking guidance), nDSG data processing in fintech, and cross-border obligations (AEOI/CRS, FATCA/QI, EU market access). Trigger when: a user asks 'do we need a FINMA license', 'are we compliant with GwG/AML', 'what are the KYC requirements', 'can we offer financial services cross-border', 'what does FINMA require for crypto/DLT/tokens', 'is our data processing compliant for fintech'; or when the compliance-officer agent is invoked. Also use for FINIG licensing gap analysis and remediation planning. Do NOT trigger for: general corporate law questions (use corporate-law-agent); data protection not specific to financial services (use data-protection-specialist); tax/transfer-pricing (use fiscal-legal-expert); cantonal commercial registry or zoning (use cantonal skill)."
+description: "Swiss financial regulatory compliance analysis — assesses and maps compliance obligations under FINMA supervision, GwG/LBA (AML/KYC), FIDLEG/LSFin (financial services), FINIG/LEFin (financial institution licensing), BankG (banking secrecy), crypto/DLT regulation (DLT-Gesetz / Mantelerlass amending OR/FinfraG/BankG/GwG, FINMA ICO/staking guidance), nDSG data processing in fintech, and cross-border obligations (AEOI/CRS, FATCA/QI, EU market access). Trigger when: a user asks 'do we need a FINMA license', 'are we compliant with GwG/AML', 'what are the KYC requirements', 'can we offer financial services cross-border', 'what does FINMA require for crypto/DLT/tokens', 'is our data processing compliant for fintech'; or when the compliance-officer agent is invoked. Also use for FINIG licensing gap analysis and remediation planning. Do NOT trigger for: general corporate law questions (use corporate-law-agent); data protection not specific to financial services (use data-protection-specialist); tax/transfer-pricing (use fiscal-legal-expert); cantonal commercial registry or zoning (use cantonal skill)."
 ---
 
 # Swiss Financial Regulatory Compliance
@@ -157,7 +157,7 @@ All licensed institutions must maintain:
 
 ### DLT Act (DLT-Gesetz / Loi DLT)
 
-Switzerland enacted the Federal Act on the Adaptation of Federal Law to Developments in Distributed Ledger Technology (DLT Act), in force since **1 February 2021** (SR 950.1 amends multiple acts). Key impacts:
+Switzerland enacted the Federal Act on the Adaptation of Federal Law to Developments in Distributed Ledger Technology (DLT Act), in force since **1 February 2021**. The DLT Act is a Mantelerlass (omnibus amendment act, AS 2021 33) and has no own SR number — its provisions are folded into OR (SR 220), FinfraG (SR 958.1), BankG (SR 952.0), and GwG (SR 955.0). Key impacts:
 
 | Area | Change | Statute |
 |------|--------|---------|
@@ -250,7 +250,7 @@ Use these tools when researching regulatory precedents and enforcement practice:
 | GwG / AML leading cases | `swiss-caselaw` → `find_leading_cases("Geldwäscherei GwG")` |
 | Cite a decision | `swiss-caselaw` → `cite(decision_id)` — **never construct BGE citations manually** |
 
-SR numbers for key statutes: BankG = 952.0, FINMAG = 956.1, GwG = 955.0, FIDLEG = 950.1 (confusingly also used for DLT-Gesetz — use full name), FINIG = 954.1, FinfraG = 958.1.
+SR numbers for key statutes: BankG = 952.0, FINMAG = 956.1, GwG = 955.0, FIDLEG = 950.1, FINIG = 954.1, FinfraG = 958.1. The DLT-Gesetz is a Mantelerlass with no own SR number — look up its provisions under the amended acts: OR Art. 973d–973i (SR 220), FinfraG Art. 73a–73u (SR 958.1).
 
 ## Quality Standards
 
