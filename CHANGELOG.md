@@ -4,10 +4,11 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
-## [4.5.0] - 2026-04-19
+## [4.5.0] - 2026-05-09
 
 ### Changed
-- **Skill descriptions v2 — richer trigger semantics for Cowork's auto-router.** All 14 skills' `description:` frontmatter now lists concrete trigger conditions, MCP tool names by name, and explicit `Do NOT trigger for:` boundaries with cross-references to other skills. Description sizes grew from short summaries (~300 chars) to 1.5K–2.4K chars each, giving Cowork's skill router much more signal for accurate auto-activation. Example: `swiss-legal-research` description now names 5 MCPs and 14 tools and rules out citation-only / refinement-only / drafting-only / translation-only queries. Skill bodies are unchanged — logic and workflows are identical to 4.4.0.
+- **Skill descriptions v2 — richer trigger semantics for Cowork's auto-router.** All 14 skills' `description:` frontmatter rewritten to list concrete trigger conditions, MCP tool names by name, and explicit `Do NOT trigger for:` boundaries with cross-references to other skills. Description sizes grew from short summaries (~300 chars) to 1.5K–2.4K chars each, giving Cowork's skill router much more signal for accurate auto-activation. Example: `swiss-legal-research` description now names 5 MCPs and 14 tools and rules out citation-only / refinement-only / drafting-only / translation-only queries.
+- **Skill bodies enriched alongside descriptions** (13 of 14 skill bodies modified, +411 / −146 lines across `bettercallclaude/skills/**/SKILL.md`). New body sections include: FINIG transitional period guidance and Crypto/DLT regulation reference + MCP-tools section in `compliance-frameworks` (+58 lines, 12 KB → 18 KB); explicit MCP-tool listings in `swiss-legal-research` Step 2 (+98/−41 lines); GDPR adequacy + MCP-tools section in `data-protection-law` (+36 lines); pipeline-role table and expanded competence matrix in `swiss-jurisdictions` (+48 lines); activation-and-fallback section in `adversarial-analysis` (+24 lines); rewritten Step 2 and conciliation row in `swiss-legal-strategy` (+46 lines); expanded handoff block + pipeline table in `legal-query-refinement` (+46 lines). High-level workflow shapes and agent invocations are preserved — changes are additive references and clarifications, not behavioural rewrites.
 - **`legal-briefing` agent reorganised.** Same workflow + agent panel structure, more concise phrasing (net −5 lines, +123/−128 across the file).
 - **`/legal` and `/briefing` intent-classification.** Routing fixes between the briefing and jurisdiction skills.
 
@@ -35,7 +36,7 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ### Notes
 - **No MCP server changes.** `.mcp.json` is identical to 4.4.0: 7 HTTP servers on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO.
-- **No agent logic changes.** Agent count remains 20, command count 19, skill count 14.
+- **No skill or agent count changes.** 20 agents, 19 commands, 14 skills — same as 4.4.0. Skill body content was modified (see Changed section above) but no skill was added or removed and no agent logic was rewritten.
 - **No userConfig schema changes.** Existing installs upgrade in-place without re-prompting for `ollama_host`, `default_jurisdiction`, `output_language`, or `api_token`.
 - **Cowork upgrade path:** `marketplace.json` advertises `4.5.0` once this lands on `main`. Existing users will see "Update plugin" on their next marketplace Sync (manual or auto).
 
