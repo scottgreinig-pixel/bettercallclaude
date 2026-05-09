@@ -4,6 +4,46 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.5.0] - 2026-04-19
+
+### Changed
+- **Skill descriptions v2 — richer trigger semantics for Cowork's auto-router.** All 14 skills' `description:` frontmatter now lists concrete trigger conditions, MCP tool names by name, and explicit `Do NOT trigger for:` boundaries with cross-references to other skills. Description sizes grew from short summaries (~300 chars) to 1.5K–2.4K chars each, giving Cowork's skill router much more signal for accurate auto-activation. Example: `swiss-legal-research` description now names 5 MCPs and 14 tools and rules out citation-only / refinement-only / drafting-only / translation-only queries. Skill bodies are unchanged — logic and workflows are identical to 4.4.0.
+- **`legal-briefing` agent reorganised.** Same workflow + agent panel structure, more concise phrasing (net −5 lines, +123/−128 across the file).
+- **`/legal` and `/briefing` intent-classification.** Routing fixes between the briefing and jurisdiction skills.
+
+### Fixed
+- **DLT-Gesetz SR attribution (`compliance-frameworks` skill).** Three places incorrectly attributed SR 950.1 to the DLT Act. SR 950.1 is FIDLEG; the DLT Act is a Mantelerlass (AS 2021 33) with no own SR number — its provisions are folded into OR (SR 220), FinfraG (SR 958.1), BankG (SR 952.0), and GwG (SR 955.0). Fix prevents `fedlex-sparql.get_article("950.1", ...)` lookups from returning FIDLEG articles when the agent intended DLT provisions.
+  - Description (line 3): drop "SR 950.1", describe DLT-Gesetz as Mantelerlass amending OR/FinfraG/BankG/GwG.
+  - DLT body section (line 160): drop "(SR 950.1 amends multiple acts)", state DLT Act has no own SR number (AS 2021 33), point to the four amended acts.
+  - SR-numbers reference (line 253): drop the false claim that 950.1 is also DLT-Gesetz; add explicit lookup hint pointing to OR Art. 973d–973i and FinfraG Art. 73a–73u.
+- **`/legal` complexity threshold metadata.** Description claimed briefing activates at complexity ≥ 5. Body actually splits at three tiers: 1–3 no briefing, 4–6 inline questions handled by `/legal` itself (NOT the skill), 7–10 invokes the legal-briefing skill (`commands/legal.md:137`). Description rewritten: "runs inline briefing for complexity 4–6, activates full briefing session when complexity ≥ 7 (via legal-briefing skill)".
+- **`legal-query-refinement` handoff metadata.** Description's `Do NOT trigger for` clause said "queries that score ≥ 5 on the complexity scale". Body's handoff at line 51 only redirects when `complexity ≥ 8 OR 3+ distinct legal domains OR multi-jurisdictional` — gap at complexity 5–7 where the description told the router to skip but the body had no handoff. Description aligned with body's actual handoff condition (option a: keep single-domain clarification broad, matching the skill's own boundary clause).
+- **`/version` command** hardcoded version display corrected from stale `4.3.0` (was wrong on 4.4.0 already) to `4.5.0`.
+- **`/help` command** version footer corrected from stale `v4.3.0` to `v4.5.0`.
+
+### Removed
+- **Dev artifacts that shipped in 4.4.0.** The plugin no longer ships `bettercallclaude/skills/legal-briefing-workspace/` (~150 KB / 55-file eval harness with `iteration-1/`, `evals/`, `old_skill/` vs `with_skill/` benchmark JSON runs, response.md, eval_metadata.json, timing.json, grading.json). Cowork's skill scanner uses `skills/*/SKILL.md` (single wildcard) so the nested `iteration-1/skill-snapshot/SKILL.md` was never picked up — but the directory was being shipped to every user with no purpose.
+- Two ad-hoc HTML review exports at the repo root (`legal-briefing-review-iteration-1.html`, `legal-briefing-trigger-eval-review.html`, ~110 KB combined).
+
+### Added
+- `.gitignore` rules to prevent the dev-artifact recurrence:
+  ```
+  legal-briefing-review-*.html
+  legal-briefing-trigger-eval-review.html
+  bettercallclaude/skills/*-workspace/
+  ```
+
+### Notes
+- **No MCP server changes.** `.mcp.json` is identical to 4.4.0: 7 HTTP servers on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO.
+- **No agent logic changes.** Agent count remains 20, command count 19, skill count 14.
+- **No userConfig schema changes.** Existing installs upgrade in-place without re-prompting for `ollama_host`, `default_jurisdiction`, `output_language`, or `api_token`.
+- **Cowork upgrade path:** `marketplace.json` advertises `4.5.0` once this lands on `main`. Existing users will see "Update plugin" on their next marketplace Sync (manual or auto).
+
+### Content counts
+- 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP + `swiss-caselaw` SSE + `ollama` local STDIO). Same as 4.4.0.
+
+---
+
 ## [4.4.0] - 2026-04-21
 
 ### Changed
