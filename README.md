@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.4.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.5.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -25,17 +25,21 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.4.0
+## What's New in v4.5.0
 
-**v4.4.0 — Repository split + two new MCP servers.** The plugin repo is now plugin-only; MCP server source code lives canonically in a dedicated repository, and two new MCP servers are exposed to users.
+**v4.5.0 — Skill descriptions v2 + skill-body enrichment + content fixes.** All 14 skill descriptions rewritten with richer trigger semantics so Cowork's auto-router activates the right skill more accurately, and 13 of 14 skill bodies enriched with new MCP-tool reference sections, expanded competence matrices, and clarified handoff blocks. Three concrete content bugs flagged by Devin Review fixed. No changes to MCP servers or agent count.
 
-- **Repository split** — `mcp-servers-src/` and `mcp-servers-http/` have been removed from this repo. The TypeScript source for all 7 remote MCP servers and the HTTP aggregator deployed at `mcp.bettercallclaude.ch` now live in [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP). Plugin users are unaffected — `.mcp.json` still points at the same production URLs.
-- **New MCP: `legal-persona`** — Swiss-law-aware document intelligence. Three tools: `legal_strategy` (structured case strategy with statutory citations), `legal_draft` (15 Swiss document types across contracts, litigation, and opinions in DE/FR/IT/EN), and `legal_analyze` (compliance, clause-extraction, and issue-flagging against OR / ZGB / DSG).
-- **New MCP: `tas-jurisprudence`** — Court of Arbitration for Sport (CAS/TAS) decision search. Four tools: `cas_search`, `cas_get_award`, `cas_recent`, `cas_by_sport`. Backed by a Playwright-rendered crawl of `jurisprudence.tas-cas.org` with respectful rate limits.
-- **Ollama local server** — still bundled in this repo; `npm run build:ollama` now rebuilds it in-place for contributors.
-- **Simpler CI** — plugin-only repo means CI is now `validate-plugin` + package dry-run; the MCP build/test matrix has moved to `BetterCallClaudeMCP`.
+- **Skill descriptions v2** — every skill's `description:` frontmatter now lists concrete trigger conditions, MCP tool names by name, and explicit `Do NOT trigger for:` boundaries with cross-references to other skills. Description sizes grew from short summaries (~300 chars) to 1.5K–2.4K chars each, giving Cowork's skill router much more signal. Example: `swiss-legal-research` description now names 5 MCPs and 14 tools and rules out citation-only / refinement-only / drafting-only / translation-only queries.
+- **Skill bodies enriched** — 13 of 14 skill bodies modified (+411 / −146 lines across `skills/**/SKILL.md`). Examples: `compliance-frameworks` gained a FINIG transitional-period section + Crypto/DLT reference + MCP-tools section (+58 lines); `swiss-legal-research` Step 2 rewritten with explicit MCP-tool listings; `data-protection-law` gained GDPR adequacy + MCP-tools sections; `swiss-jurisdictions` gained a pipeline-role table + expanded competence matrix; `legal-query-refinement` gained an explicit handoff-to-legal-briefing block. Changes are additive references and clarifications — high-level workflow shapes and agent invocations are preserved.
+- **Briefing agent reorganised** — same workflow + agent panel structure, more concise phrasing (net −5 lines).
+- **`/legal` and `/briefing` intent-classification** — routing fixes between the briefing and jurisdiction skills.
+- **Fixed: DLT-Gesetz SR attribution.** `compliance-frameworks` skill incorrectly attributed SR 950.1 to the DLT Act in 3 places. SR 950.1 is FIDLEG; the DLT Act is a Mantelerlass (AS 2021 33) with no own SR number, amending OR/FinfraG/BankG/GwG. Fix prevents `fedlex-sparql.get_article` lookups from returning the wrong statute.
+- **Fixed: `/legal` complexity threshold metadata.** Description claimed briefing activates at complexity ≥ 5; actual body has three tiers (1–3 no briefing, 4–6 inline questions, 7–10 legal-briefing skill). Description aligned with body.
+- **Fixed: `legal-query-refinement` handoff metadata.** Description and body had a 2-tier gap (5–7) where description said don't activate but body had no handoff. Description aligned with body's actual condition (`≥ 8 OR 3+ legal domains OR multi-jurisdictional`).
+- **Fixed: `/version` and `/help` hardcoded version display** — was stale at `4.3.0` even on 4.4.0 installs; now shows the running version.
+- **Removed: dev artifacts shipped in 4.4.0.** The plugin no longer ships `legal-briefing-workspace/` (a ~150 KB / 55-file eval harness with iteration-1 / evals / benchmark JSON runs) or two ad-hoc HTML review exports. `.gitignore` extended to prevent recurrence.
 
-**Content counts**: 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
+**Content counts**: 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO) — unchanged from 4.4.0.
 
 [Full changelog →](CHANGELOG.md)
 
