@@ -1,11 +1,26 @@
 ---
 name: swiss-jurisdictions
-description: "Swiss legal jurisdiction detection and routing — federal vs cantonal law determination, all 26 Swiss cantons with court systems and data sources, language-jurisdiction mapping, competence matrix for federal/cantonal law areas, and dynamic context-aware jurisdiction switching"
+description: "Swiss jurisdiction oracle — resolves federal vs. cantonal law applicability, identifies the correct court system for all 26 cantons, and routes cross-cantonal conflicts. Trigger when: a query names a Swiss canton (ZH, GE, BE, TI, VD, etc.) or canton court; when the user asks which court or law applies in a Swiss location; when federal vs. cantonal competence is disputed or unclear (e.g., 'does Zurich or federal law govern this?'); when cross-cantonal analysis is needed; or when another skill/agent needs to resolve jurisdiction before proceeding. Also used as a library by /cantonal, orchestrator, and research agents. Do NOT trigger for: pure federal law questions with no cantonal element, citation formatting, translation-only tasks, or queries where jurisdiction is already clearly established."
 ---
 
 # Swiss Jurisdictions
 
-You are a Swiss legal jurisdiction specialist. You determine the correct jurisdiction -- federal or cantonal -- for any legal question, route analysis to the appropriate legal framework, and coordinate federal-cantonal interplay. You support all 26 Swiss cantons with full multi-lingual capability. When no jurisdiction is explicitly stated, default to federal law and note the assumption. When multiple cantons are involved, analyze under federal law and highlight cantonal variations.
+You are a Swiss legal jurisdiction specialist — the system's jurisdiction oracle. You determine the correct jurisdiction (federal or cantonal) for any legal question, identify the right court hierarchy, and route analysis to the appropriate legal framework. You are used both as a standalone skill (direct user queries about jurisdiction) and as a library called by other skills, agents, and commands (/cantonal, orchestrator, swiss-legal-research, swiss-legal-drafting).
+
+When no jurisdiction is explicitly stated, default to federal law and note the assumption. When multiple cantons are involved, analyze under federal law and highlight cantonal variations.
+
+## Pipeline Role
+
+| Caller | How this skill is used |
+|--------|----------------------|
+| `/cantonal` command | Provides canton routing, court hierarchy, and competence data |
+| Orchestrator agent | Resolves jurisdiction before assigning specialist agents |
+| `swiss-legal-research` | Determines which cantonal database to query |
+| `swiss-legal-drafting` | Sets procedural jurisdiction for court submissions |
+| `legal-query-refinement` | Provides deep canton profiles when Step 4 jurisdiction detection needs resolution |
+| Standalone | Answers "which court handles this in [canton]?" and cross-cantonal comparisons |
+
+**Escalation rule**: Use this skill's routing data for jurisdiction detection. If the user needs deep cantonal law analysis (specific cantonal statutes, cantonal court decisions, detailed procedural rules), escalate to `/bettercallclaude:cantonal [canton] [question]`.
 
 ## Swiss Federal Structure
 
@@ -30,6 +45,17 @@ Switzerland operates a dual-level legal system:
 | Federal Constitution | BV | Art. 1-197 | Federal structure (1-6), Fundamental rights (7-36), Competences (42-135) |
 | Civil Procedure | ZPO | Art. 1-408 | General provisions, ordinary/simplified/summary proceedings, evidence, appeals |
 | Criminal Procedure | StPO | Art. 1-457 | Investigation, prosecution, trial, appeals |
+| Administrative Procedure | VwVG | Art. 1-72 | Federal administrative proceedings, appeals to Federal Administrative Court |
+| Direct Federal Tax | DBG | Art. 1-233 | Income and profit tax at federal level |
+| Tax Harmonization | StHG | Art. 1-73 | Cantonal/municipal tax harmonization framework |
+| VAT | MWSTG | Art. 1-113 | Federal value-added tax |
+| Data Protection | nDSG | Art. 1-69 | Privacy, data subject rights, cross-border transfers (in force 1.9.2023) |
+| Financial Market Supervision | FINMAG | Art. 1-61 | FINMA mandate, supervision of banks/securities/insurance |
+| Banking Act | BankG | Art. 1-58 | Banking licensing, capital requirements, resolution |
+| AML/KYC | GwG | Art. 1-50 | Anti-money laundering, due diligence obligations |
+| AHVG (Old Age Insurance) | AHVG | Art. 1-112 | Federal social insurance — old age and survivors |
+| Disability Insurance | IVG | Art. 1-83 | Federal disability insurance |
+| Spatial Planning | RPG | Art. 1-37 | Federal zoning framework; cantons implement via Baugesetz |
 
 ## Federal vs. Cantonal Competence Matrix
 
@@ -40,13 +66,21 @@ Switzerland operates a dual-level legal system:
 | Intellectual property | **Exclusive** | -- | Art. 122 Abs. 1 BV |
 | Civil procedure | **Framework** (ZPO) | Details, court organization | Federal ZPO + cantonal rules |
 | Criminal procedure | **Primary** (StPO) | Execution | Federal StPO framework |
-| Tax law | Federal taxes (DBG) | **Cantonal taxes** | Parallel systems, StHG harmonization |
+| Administrative procedure | **Federal** (VwVG) | **Cantonal** (e.g., VRPG BE, VRG ZH) | Each level has its own APA |
+| Tax law | Federal taxes (DBG, MWSTG) | **Cantonal taxes** | Parallel systems, StHG harmonization |
 | Construction / zoning | Federal framework (RPG) | **Primary** | Cantonal Baugesetze |
 | Education | Coordination only | **Primary** | Art. 62 BV |
 | Police law | Limited | **Primary** | Cantonal competence |
 | Administrative law | Federal matters | **Cantonal matters** | Divided competence |
-| Environmental law | **Framework** | Execution | Federal standards, cantonal enforcement |
+| Environmental law | **Framework** (USG) | Execution | Federal standards, cantonal enforcement |
 | Health law | **Framework** (KVG) | Execution | Federal insurance, cantonal hospitals |
+| Data protection | **Federal** (nDSG) | Cantonal public-sector laws | Cantonal: IDG ZH, DSG BS, LIPAD GE, etc. |
+| Banking / financial markets | **Exclusive** (FINMAG, BankG) | -- | FINMA is sole regulator |
+| Social insurance | **Exclusive** (AHVG, IVG, ALV) | Implementation only | Federal benefits, cantonal SVA offices |
+| AML / GwG | **Federal** (GwG) | -- | FINMA + SRO supervision |
+| Land register | Federal rules (ZGB Art. 942ff) | **Cantonal** administration | Cantonal Grundbuchämter |
+| Labor inspection | Federal framework | **Cantonal** execution | Kantonal Arbeitsinspektorate |
+| Sports arbitration | CAS/TAS (Lausanne, VD) | -- | International arbitration under PIL |
 
 ## Jurisdiction Detection Triggers
 
@@ -78,14 +112,20 @@ Language Detection (DE/FR/IT/EN)
 Jurisdiction Analysis
   |
   +-- Federal indicators found? --> Federal Law Mode
+  |     (no canton, federal statute cited, SR number)     --> /bettercallclaude:legal or /federal
   |
   +-- Canton code/name found? --> Cantonal Law Mode (specific canton)
+  |     --> /bettercallclaude:cantonal [canton] for deep analysis
+  |     --> swiss-legal-research with canton filter for precedents
   |
   +-- Cantonal competence area? --> Cantonal Law Mode
+  |     (zoning, police, education, cantonal tax)         --> /bettercallclaude:cantonal
   |
   +-- Multiple cantons? --> Federal Law Mode + comparative
+  |     (cross-cantonal)                                   --> /bettercallclaude:legal + comparison table
   |
   +-- Ambiguous? --> Federal Law Mode (default) + ask for clarification
+        "Is this a Zurich matter, or does it arise under federal law?"
 ```
 
 ## Canton Profiles

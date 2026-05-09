@@ -1,81 +1,67 @@
 ---
 name: legal-briefing
-description: "Auto-activates structured briefing sessions for complex legal queries -- detects when multi-agent coordination benefits from pre-execution intake and plan building"
+description: "Proactively suggests or activates a structured briefing session before executing complex Swiss legal queries. Trigger whenever a query: spans multiple legal domains (corporate + tax, employment + social insurance, regulatory + M&A), is multi-jurisdictional (federal + cantonal, Swiss + German/EU), involves both analysis and a deliverable document, mentions financial exposure above CHF 100,000, uses open-ended or uncertain language ('handle', 'deal with', 'advise on', 'figure out', 'not sure how to', 'where do we even start', 'what are my options'), or requires coordinating three or more specialist agents. Activate for: group restructuring, IPO preparation, cross-border M&A, family office setup, FINMA/crypto/AML compliance, shareholder disputes with board deadlock, employment termination with discrimination claims, tenancy disputes spanning cantonal and federal law, startup entity conversions, and any situation where the user cannot identify a single focused legal question. Do NOT trigger for: single-article lookups, citation checks, translation-only requests, single-canton procedural questions, or clearly scoped single-domain questions even if complex."
 ---
 
 # Legal Briefing Skill
 
-You are aware of BetterCallClaude's briefing session capability. When you detect a complex legal query that would benefit from structured intake before execution, suggest or activate a briefing session.
+Before routing a complex Swiss legal query to specialist agents, suggest or activate a briefing session. Structured intake prevents mis-routing, avoids wasted effort on the wrong track, and ensures every agent gets exactly the context it needs.
 
-## Activation Criteria
+## When to Suggest a Briefing
 
-Suggest a briefing session when **any** of the following conditions are met:
+Suggest proactively — without waiting to be asked — whenever the query meets **any** of these conditions:
 
-### Complexity Indicators (score >= 5)
-- Three or more legal domains in a single query (e.g., corporate + tax + compliance).
-- Multi-jurisdictional question (federal + cantonal, or multiple cantons).
-- Document output expected alongside analysis (e.g., "analyze and draft").
-- Financial exposure mentioned above CHF 100,000.
-- Multiple parties with conflicting interests.
+### Complexity (suggest when score ≥ 5)
+- Three or more legal domains in a single query (e.g., corporate + tax + compliance + FINMA)
+- Multi-jurisdictional question (federal + cantonal, or multiple cantons)
+- Document output expected alongside analysis (e.g., "analyze and draft")
+- Financial exposure above CHF 100,000
+- Multiple parties with potentially conflicting interests
 
-### Ambiguity Indicators
-- Desired output is unclear (research? strategy? document? compliance check?).
-- Jurisdiction cannot be determined from the query.
-- Multiple valid routing paths exist with significantly different outcomes.
-- The query uses vague terms: "handle", "deal with", "figure out", "advise on".
+### Ambiguity (suggest whenever present)
+- Desired output is unclear — is this research, strategy, a document, or a compliance check?
+- Jurisdiction cannot be determined from the query
+- Open-ended verbs dominate: "handle", "deal with", "figure out", "advise on", "sort out"
+- Multiple valid routing paths exist with significantly different outcomes
 
-### Pipeline Indicators
-- Query maps to a workflow template (litigation-prep, due-diligence, contract-lifecycle).
-- Three or more agents would need to be coordinated.
-- Data dependencies exist between agents (output of one feeds into another).
+### Pipeline complexity (suggest when coordination needed)
+- Query maps to a known workflow template (litigation-prep, due-diligence, contract-lifecycle)
+- Three or more agents would need to coordinate
+- Agent outputs depend on each other (output of one feeds into another)
 
-## When NOT to Activate
+## When NOT to Suggest
 
-Skip briefing and route directly when:
-- Query is a simple, focused question (complexity 1-3).
-- User explicitly specifies a single agent with `@agent_name`.
-- User uses `--skip-briefing` or `--direct` flag.
-- Query is a citation lookup, translation, or format verification.
-- User is resuming a previously approved execution plan.
+Skip the briefing and route directly when:
+- Simple, focused question (complexity 1–3) with a clear single answer
+- User specifies a single agent explicitly (`@agent_name`)
+- User uses `--skip-briefing` or `--direct` flag
+- Query is a citation lookup, translation request, or citation format check
+- User is resuming a previously approved execution plan
 
-## Activation Behavior
+## How to Suggest
 
-### Implicit Suggestion (auto-detected complexity >= 5)
-
-When the `/legal` gateway scores a query at complexity 5+ and no `--skip-briefing` flag is present:
+When conditions are met, offer the briefing naturally — not as a gate, but as the smart path:
 
 ```
 💡 This query involves [N domains / multi-jurisdiction / pipeline coordination].
-A briefing session would help build a precise execution plan before I start working.
+A short briefing session will help me ask the right questions first and build
+a precise execution plan — rather than starting on potentially the wrong track.
 
-**Options**:
-- **Proceed with briefing** (recommended) — I'll ask a few targeted questions first
-- **Skip briefing** — Route directly to agents (add `--skip-briefing` to bypass in future)
+**Options:**
+- **Start briefing** (recommended) — I'll gather key facts, then build a step-by-step plan
+- **Skip briefing** — Route directly to agents now (or add `--skip-briefing` to always bypass)
 ```
 
-### Explicit Activation
-
-When the user invokes `/bettercallclaude:briefing`, always activate regardless of complexity.
-
-## Memory Key Patterns
-
-The briefing system uses these memory keys for persistence:
-
-| Pattern | Purpose |
-|---------|---------|
-| `briefing_[id]` | Full state for a specific briefing session |
-| `briefing_latest` | ID of the most recently active briefing |
-| `briefing_index` | Registry of all briefing sessions with status |
+If the user chooses to proceed with the briefing, invoke `/bettercallclaude:briefing` with the original query as the argument. If the user skips, route directly via `/bettercallclaude:legal`.
 
 ## Integration Points
 
-- **`/legal` gateway**: Briefing phase is embedded between intent classification and routing.
-- **Orchestrator agent**: Consumes the approved execution plan YAML for step-by-step execution.
-- **All specialist agents**: Can be spawned as panel members during the consultation phase.
-- **Summarizer agent**: Can be appended to the execution plan's final stage.
+- **`/legal` gateway**: Check activation criteria here, between intent classification and agent routing.
+- **`/bettercallclaude:briefing` command**: The command that runs the full briefing workflow — invoke it when the user agrees to proceed.
+- **Orchestrator agent**: Receives the approved execution plan YAML from the briefing session and executes it with checkpoints.
 
 ## Quality Standards
 
-- Briefing suggestions must be helpful, not obstructive — never block simple queries.
-- Auto-detection should have a low false-positive rate: only suggest for genuinely complex cases.
-- The user must always have a clear path to skip the briefing if they prefer direct routing.
+- Be helpful, not obstructive — never block a clearly simple query with a briefing suggestion.
+- A missed briefing on a complex case causes real harm (wrong agents, wasted effort). When in doubt, suggest.
+- The user must always have a clear, friction-free path to skip and proceed directly.

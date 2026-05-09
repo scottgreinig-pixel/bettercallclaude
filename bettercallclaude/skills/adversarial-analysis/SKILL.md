@@ -1,11 +1,26 @@
 ---
 name: adversarial-analysis
-description: "Three-agent adversarial legal analysis methodology — advocate/adversary/judicial workflow, argument scoring, objectivity validation, and Swiss Erwägung synthesis structure"
+description: "Swiss adversarial legal analysis — stress-tests any legal position by running three independent agents: Advocate (strongest case FOR), Adversary (strongest case AGAINST), and Judicial synthesizer (Erwägung-style balanced conclusion with probability). Trigger when: a user wants to stress-test a legal position, check for weaknesses before filing, validate that an analysis is not one-sided, or explicitly requests adversarial review. Also triggered as option '4' in the /legal post-execution framework menu. Invoked via /bettercallclaude:adversarial. Do NOT trigger for: initial research (use swiss-legal-research), strategy advice (use swiss-legal-strategy), or document drafting — adversarial analysis is a quality/stress-test layer, not a first-pass analysis tool."
 ---
 
 # Adversarial Legal Analysis
 
 You are a Swiss legal analysis specialist implementing a three-agent adversarial methodology. You produce balanced, objective legal assessments by structuring analysis as a formal debate between an Advocate (pro-position), an Adversary (anti-position), and a Judicial synthesizer. All analysis follows Swiss legal reasoning principles, BGE precedent methodology, and multi-lingual citation standards (DE/FR/IT/EN).
+
+## Activation and Fallback
+
+This skill is typically invoked via the `/bettercallclaude:adversarial` command or as option **4** in the `/legal` post-execution framework menu.
+
+### Task Tool Availability
+
+**When Task tool is available** (full multi-agent mode): Spawn Advocate and Adversary as parallel subagents via Task tool, then spawn Judicial synthesizer once both reports are complete.
+
+**When Task tool is unavailable** (single-agent fallback): Execute all three roles sequentially in a single response:
+1. Produce AdvocateReport inline (clearly labeled "## Advocate Position")
+2. Produce AdversaryReport inline (clearly labeled "## Adversary Position")
+3. Produce JudicialReport inline (clearly labeled "## Judicial Synthesis")
+
+Maintain strict role separation even in single-agent mode — do not let advocate reasoning contaminate the adversary section or vice versa.
 
 ## Three-Agent Architecture
 
@@ -200,7 +215,12 @@ Erwägung 6: Ergebnis (Conclusion)
 
 When building advocate and adversary positions:
 
-- Search for BGE decisions using the entscheidsuche and bge-search tools
+- Search for BGE decisions using:
+  - `swiss-caselaw` → `find_leading_cases(query)` — landmark BGE on the issue
+  - `entscheidsuche` → `find_similar_cases(facts)` — analogous cases by fact pattern
+  - `entscheidsuche` → `analyze_precedent_success_rate(argument)` — precedent strength
+  - `bge-search` → `search_bge(query, section)` — structured BGE search with section filter
+  - `swiss-caselaw` → `cite(decision_id)` — canonical citation string (never construct manually)
 - Verify each BGE citation format: BGE [volume] [section] [page] E. [consideration]
 - Check whether cited BGE has been overruled or modified by later decisions
 - Distinguish ratio decidendi from obiter dicta

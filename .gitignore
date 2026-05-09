@@ -72,3 +72,8 @@ claudedocs/
 manifest.json
 version.txt
 AGENTS.md
+
+# Skill development & evaluation artifacts (not part of the shipped plugin)
+legal-briefing-review-*.html
+legal-briefing-trigger-eval-review.html
+bettercallclaude/skills/*-workspace/

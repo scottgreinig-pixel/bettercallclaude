@@ -1,6 +1,6 @@
 ---
 name: legal-query-refinement
-description: "Swiss legal query refinement through Socratic dialogue -- transforms vague queries into precise structured prompts with workflow recommendations and multi-lingual terminology guidance"
+description: "Swiss legal query refinement — transforms vague, colloquial, or incomplete queries into precise structured prompts through targeted Socratic dialogue (max 3 rounds). Trigger when: the user's query is unclear, missing jurisdiction or domain, uses non-legal language ('I have a problem with my landlord', 'can they fire me?', 'what are my options?'), or needs a structured prompt before agent execution. Supports --quick (no dialogue, prompt from available info) and --optimize (expert mode, workflow-only). Do NOT trigger for: queries already refined or precise, citation lookups, translation requests, document drafting, or queries that score ≥ 8 on the complexity scale, span 3+ legal domains, or are multi-jurisdictional (those should go to legal-briefing for a full intake session instead). Boundary with legal-briefing: use this skill for single-domain clarification; use legal-briefing when the query spans 3+ legal domains or requires multi-agent coordination planning."
 ---
 
 # Legal Query Refinement
@@ -48,6 +48,9 @@ Detect:
 
 If clarity ≥ 7 AND completeness ≥ 7: Generate structured prompt directly.
 
+**Handoff to legal-briefing**: If complexity ≥ 8 OR 3+ distinct legal domains detected OR multi-jurisdictional → stop and suggest:
+> "This query involves [N domains / multi-jurisdiction]. I recommend a full briefing session instead of quick refinement — it builds a precise execution plan rather than a single prompt. Shall I start a briefing session? Or use `--skip-briefing` to proceed with refinement."
+
 ### Step 2: Socratic Questioning
 
 Ask targeted questions to fill gaps. Maximum 3 rounds, 2-4 questions per round.
@@ -80,11 +83,13 @@ During dialogue, naturally introduce proper Swiss legal terminology:
 
 ### Step 4: Jurisdiction Detection
 
-Confirm jurisdiction:
-- Federal (Bundesrecht): Constitutional, federal statutes, social insurance
-- Cantonal (Kantonsrecht): Cantonal procedure, local courts, cantonal tax
+Apply the `swiss-jurisdictions` skill for authoritative jurisdiction resolution:
+- If canton name/code present → cantonal mode, load canton court profile
+- If federal statute cited or no canton mentioned → federal mode (default)
+- If ambiguous → ask: "Betrifft dies Bundesrecht oder das Recht eines bestimmten Kantons?" / "Cela relève-t-il du droit fédéral ou d'un canton spécifique?"
+- If multiple cantons → federal baseline + cantonal comparison mode
 
-Ask: "Betrifft dies Bundesrecht oder das Recht eines bestimmten Kantons?" / "Cela relève-t-il du droit fédéral ou d'un canton spécifique?"
+Do not independently determine jurisdiction competence — delegate to the swiss-jurisdictions skill's competence matrix and routing rules.
 
 ### Step 5: Workflow Recommendation
 
@@ -97,7 +102,17 @@ Based on the clarified matter, recommend the optimal agent pipeline:
 | Contract review | researcher → corporate → drafter → citation |
 | Compliance check | compliance → data-protection → risk → drafter |
 | Due diligence | parallel[corporate, fiscal, compliance, realestate] → risk → drafter |
-| Tenant dispute | researcher → strategist → drafter |
+| Tenant / mietrecht | researcher → strategist → drafter |
+| Employment / labor | researcher → risk → strategist → drafter |
+| Administrative appeal | researcher → procedure → strategist → drafter |
+| Data protection / nDSG | data-protection → compliance → risk → drafter |
+| IP / patents | researcher → corporate → drafter → citation |
+| M&A / corporate | parallel[corporate, fiscal, compliance] → risk → drafter |
+| Real estate transaction | realestate → fiscal → drafter → citation |
+| Criminal defense | researcher → strategist → procedure → drafter |
+| Family / succession | researcher → strategist → drafter |
+| Sports arbitration (CAS) | researcher → strategist → drafter |
+| Cross-border / international | researcher → compliance → fiscal → drafter |
 
 ### Step 6: Generate Structured Prompt
 
@@ -123,16 +138,17 @@ Based on the clarified matter, recommend the optimal agent pipeline:
 ```
 ## Next Steps
 
-1. **Execute now** -- Route to recommended agents
-2. **Modify** -- Adjust the prompt before execution
-3. **Explore alternatives** -- See other workflow options
-4. **Learn more** -- Deep dive on relevant legal concepts
-5. **Save** -- Store for future reference
+1. **Execute now** — Route to recommended agents via /bettercallclaude:legal
+2. **Modify** — Adjust the prompt before execution
+3. **Explore alternatives** — See other workflow options
+4. **Briefing session** — Escalate to a full intake session for complex matters
 
 What would you like to do?
 ```
 
 If user chooses "Execute now": Run `/bettercallclaude:legal [refined prompt]` (without `--refine` flag).
+
+If user chooses "Briefing session": Invoke `/bettercallclaude:briefing [refined prompt]` — the structured prompt becomes the briefing input, avoiding duplicate clarification rounds.
 
 ## Output Format
 
@@ -194,7 +210,9 @@ After refinement is complete, always provide the structured prompt followed by e
 ## Quality Standards
 
 - Never fabricate legal information
-- Always verify citations before including (use legal-citations MCP when possible)
+- Always verify citations before including — use the `legal-citations` MCP (`validate_citation`, `format_citation`) when a citation is present in the user's query
+- For jurisdiction resolution, delegate to `swiss-jurisdictions` skill rather than inferring independently
 - Respect user's language throughout the dialogue
-- Keep dialogues efficient -- maximum 3 rounds
-- Provide clear execution path after refinement
+- Keep dialogues efficient — maximum 3 rounds, 2-4 questions per round
+- If the dialogue reveals complexity ≥ 8 or 3+ domains mid-session, pivot to briefing recommendation
+- Provide a clear, clickable execution path after every refinement output
