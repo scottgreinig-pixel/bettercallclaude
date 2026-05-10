@@ -52,7 +52,7 @@ a precise execution plan — rather than starting on potentially the wrong track
 - **Skip briefing** — Route directly to agents now (or add `--skip-briefing` to always bypass)
 ```
 
-If the user chooses to proceed with the briefing, invoke `/bettercallclaude:briefing` with the original query as the argument. If the user skips, route directly via `/bettercallclaude:legal`.
+If the user chooses to proceed with the briefing, invoke `/bettercallclaude:briefing` with the original query as the argument. If the user skips, route directly via `/bettercallclaude:legal --skip-briefing` so this skill is not re-triggered on the same query.
 
 ## Integration Points
 

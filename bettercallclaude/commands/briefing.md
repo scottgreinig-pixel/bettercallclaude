@@ -13,6 +13,7 @@ Parse flags from the user's input to determine the mode:
 1. **New briefing** (default): Start a fresh briefing session for the provided query.
 2. **Resume** (`--resume [id]`): Resume a previously saved or paused briefing. If no ID provided, load `briefing_latest`.
 3. **List** (`--list`): Display all saved briefings from `briefing_index`.
+4. **Skip** (`--skip-briefing`): Bypass the briefing flow entirely and route the query straight to `/bettercallclaude:legal --skip-briefing`. The briefing coordinator is **not** invoked. Used by the `legal-briefing` skill on the user's "Skip briefing" choice and by users who explicitly want to bypass intake on a `/briefing` invocation.
 
 ## Flags
 
@@ -68,6 +69,15 @@ If the user skips, proceed with the original query and flag the gaps in the exec
 ---
 
 ## Execution
+
+### Pre-flight: Skip
+
+**Before any other branch**, check for `--skip-briefing` in the parsed flags. If present:
+
+1. Do **not** invoke the briefing coordinator, the vagueness check, or the specialist panel.
+2. Strip the `--skip-briefing` flag from the parsed flag list (it has been consumed here).
+3. Route the original query directly to `/bettercallclaude:legal --skip-briefing [remaining flags] [query]`. The downstream `/legal` command will see the flag and will not re-activate the `legal-briefing` skill on the same query.
+4. Stop. Do not continue into the New / Resume / List branches below.
 
 ### New Briefing
 
