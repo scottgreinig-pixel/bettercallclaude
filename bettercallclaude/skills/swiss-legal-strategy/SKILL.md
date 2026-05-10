@@ -1,6 +1,6 @@
 ---
 name: swiss-legal-strategy
-description: "Swiss litigation strategy including case strength analysis, risk assessment, procedural strategy (ZPO), cost-benefit analysis, settlement evaluation, and alternative dispute resolution for Swiss federal and cantonal courts"
+description: "Swiss legal strategy specialist — develops case strategy across civil (ZPO), criminal (StPO), and administrative (VwVG) proceedings including case strength analysis, risk probability, cost-benefit, settlement/BATNA evaluation, and ADR assessment. Trigger when: a user needs to assess litigation viability, decide whether to sue or settle, understand procedural options, evaluate a settlement offer, or prepare a strategy memo. Uses entscheidsuche MCP (find_similar_cases, analyze_precedent_success_rate) for precedent-based probability. Do NOT trigger for: drafting court documents (use swiss-legal-drafting), deadline calculation (use procedure agent), pure legal research (use swiss-legal-research). Boundary with swiss-legal-research: research produces legal analysis; this skill converts that analysis into a decision-oriented strategic recommendation."
 ---
 
 # Swiss Legal Strategy
@@ -18,9 +18,14 @@ Follow these 6 steps for every case assessment:
 - Map factual assertions to legal elements
 
 ### Step 2: Research Precedents
-- Search similar BGE decisions via entscheidsuche MCP
-- Analyze precedent outcomes for similar fact patterns
-- Identify judicial reasoning patterns and success factors
+Use these MCP tools for evidence-based probability assessment:
+- `entscheidsuche` → `find_similar_cases(facts)` — find analogous cases by fact pattern
+- `entscheidsuche` → `analyze_precedent_success_rate(argument)` — quantify precedent success rate for a legal argument
+- `swiss-caselaw` → `find_leading_cases(query)` — identify landmark BGE on the issue
+- `swiss-caselaw` → `get_case_brief(id)` — extract ratio decidendi and outcome from each BGE
+- `entscheidsuche` → `get_legal_provision_interpretation(provision)` — how courts apply a specific article
+
+Base the Step 6 probability estimate directly on the success rate data from these tools.
 
 ### Step 3: Assess Burden of Proof
 
@@ -82,9 +87,12 @@ Assess:
 
 | Track | German | Scope | Value Threshold |
 |-------|--------|-------|-----------------|
-| Summary | Summarisches Verfahren | Clear cases, provisional measures | No limit |
-| Simplified | Vereinfachtes Verfahren | Smaller civil claims | Up to CHF 30,000 |
+| Conciliation | Schlichtungsverfahren | **Mandatory first step** for most civil claims (Art. 197-212 ZPO); produces Klagebewilligung if failed | Up to CHF 100,000 (judge-led); all amounts (justice of peace) |
+| Summary | Summarisches Verfahren | Clear cases, provisional measures, debt enforcement | No limit |
+| Simplified | Vereinfachtes Verfahren | Smaller civil claims, employment, consumer, tenancy | Up to CHF 30,000 |
 | Ordinary | Ordentliches Verfahren | Standard civil litigation | Above CHF 30,000 |
+
+**Note**: Schlichtungsverfahren is mandatory before Ordinary and Simplified proceedings (exceptions: Art. 198 ZPO). Factor the 2-3 month conciliation phase into timeline projections.
 
 ### Timeline Projections (typical ranges)
 
@@ -146,6 +154,24 @@ Net expected value:         CHF [X*Y - Z]
 - Business relationship preservation
 - Reputational considerations
 
+## Criminal and Administrative Strategy
+
+### Criminal Proceedings (StPO)
+Key strategic decisions in criminal matters:
+- **Cooperation vs. silence**: Art. 113 StPO right to silence; assess whether cooperation reduces risk
+- **Simplified procedure** (Art. 358-362 StPO): Guilty plea pathway — faster resolution, capped at 5 years
+- **Private prosecution** (Privatklage): For offenses requiring complaint (Antragsdelikte, e.g., Art. 28ff StGB)
+- **Abandonment chances**: File for non-prosecution order (Einstellungsantrag) when evidence is weak
+- **Appeal routes**: Beschwerdekammer → Berufung → Bundesgericht (Art. 379ff StPO)
+
+### Administrative Appeals (VwVG / Cantonal APAs)
+Strategic considerations for administrative matters:
+- **Einsprache / opposition** (if available): exhaust administrative remedies first
+- **Beschwerde routes**: Federal — BVGer (Art. 31ff VGG); Cantonal — Verwaltungsgericht; then Bundesgericht
+- **Aufschiebende Wirkung** (suspensory effect, Art. 55 VwVG): Request stay of contested decision pending appeal
+- **Kognition** (scope of review): Full review on law + facts at BVGer; more limited at Bundesgericht
+- **Frist** (deadlines): Federal appeals typically 30 days (Art. 50 VwVG); cantonal varies
+
 ## ADR Assessment
 
 ### Mediation (ZPO Art. 213-218)
@@ -157,9 +183,11 @@ Net expected value:         CHF [X*Y - Z]
 ### Arbitration (IPRG Chapter 12)
 - International: IPRG Chapter 12, Swiss Rules of International Arbitration
 - Domestic: ZPO Part 3 (Art. 353-399)
-- Geneva and Zurich as leading arbitration seats
-- Advantages: confidentiality, enforceability (New York Convention), speed
-- Cost comparison: often more expensive than litigation for smaller claims
+- Geneva and Zurich as leading arbitration seats; Basel emerging for pharma/IP
+- **Seat selection considerations**: Geneva (francophone, ICC/SCAI hub, CAS home), Zurich (German-speaking, Swiss Chambers, financial disputes), Basel (pharma, IP, proximity to German courts)
+- Advantages: confidentiality, enforceability (New York Convention, 170+ states), neutral forum, specialist arbitrators
+- Cost comparison: often more expensive than litigation for claims below CHF 500K; consider ICC vs. SCAI vs. ad hoc cost structures
+- **CAS/TAS** (Court of Arbitration for Sport, Lausanne): mandatory for sports disputes under most federations; expedited procedure for event-time appeals
 
 ## Proportionality Three-Part Test
 

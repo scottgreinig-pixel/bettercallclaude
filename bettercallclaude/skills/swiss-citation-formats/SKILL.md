@@ -1,6 +1,6 @@
 ---
 name: swiss-citation-formats
-description: "Swiss legal citation formatting across DE/FR/IT/EN — BGE/ATF/DTF Federal Supreme Court decision formats, statutory article citations (Art./Abs./lit./Ziff.), doctrine references, cantonal court citations, and abbreviation tables for all Swiss official languages"
+description: "Swiss legal citation formatter — ensures every BGE/ATF/DTF, statutory, cantonal court, and doctrine citation follows the correct language convention (DE/FR/IT/EN) and is internally consistent. Trigger when: a document or response contains legal citations that need formatting, validation, or language conversion; when the user asks how to cite a Swiss decision or statute; or when batch-standardizing citations in a draft. Use legal-citations MCP tools (validate_citation, format_citation, convert_citation) for verification. Do NOT trigger for: legal research (use swiss-legal-research), document drafting (use swiss-legal-drafting), or pure translation without citations. Boundary with swiss-legal-research: that skill produces analysis and raw citations; this skill ensures those citations are correctly formatted before delivery."
 ---
 
 # Swiss Citation Formats
@@ -55,7 +55,8 @@ The volume, section, and page numbers are identical across all language versions
 | Criminal Procedure | Strafprozessordnung / **StPO** | Code de procedure penale / **CPP** | Codice di procedura penale / **CPP** | SCPP |
 | Admin. Procedure | Verwaltungsverfahrensgesetz / **VwVG** | Loi sur la procedure administrative / **PA** | Legge sulla procedura amministrativa / **PA** | APA |
 | Unfair Competition | Bundesgesetz gegen den unlauteren Wettbewerb / **UWG** | Loi contre la concurrence deloyale / **LCD** | Legge contro la concorrenza sleale / **LCSl** | UCA |
-| Data Protection | Datenschutzgesetz / **DSG** | Loi sur la protection des donnees / **LPD** | Legge sulla protezione dei dati / **LPD** | DPA |
+| Data Protection (new, from 1.9.2023) | Datenschutzgesetz / **nDSG** (also revDSG) | Loi sur la protection des donnees / **nLPD** | Legge sulla protezione dei dati / **nLPD** | nFADP |
+| Data Protection (old, pre-2023) | Datenschutzgesetz / **DSG** | Loi sur la protection des donnees / **LPD** | Legge sulla protezione dei dati / **LPD** | FADP |
 
 ## Statutory Citation Format Examples
 
@@ -190,6 +191,21 @@ When converting citations between languages, change only:
 
 Never change: article numbers, paragraph numbers, letter designations, BGE volume/section/page numbers.
 
+## MCP Tools for Citation Work
+
+Use these tools rather than constructing or guessing citations:
+
+| Task | Tool |
+|------|------|
+| Get canonical BGE citation string | `swiss-caselaw` → `cite(decision_id)` |
+| Validate a citation | `legal-citations` → `validate_citation(citation)` |
+| Format to target language | `legal-citations` → `format_citation(citation, lang)` |
+| Convert BGE↔ATF↔DTF | `legal-citations` → `convert_citation(citation, from, to)` |
+| Batch standardize a document | `legal-citations` → `standardize_document_citations(text)` |
+| Get article text to verify paragraph count | `swiss-caselaw` → `get_law(sr)` or `fedlex-sparql` → `get_article(sr, art)` |
+
+**Anti-hallucination rule**: Never construct a BGE citation string yourself. BGE volume = year − 1874, and section codes depend on the legal area (I–VI). Even a small error produces an invalid citation. Always retrieve via `cite()` or `validate_citation()`.
+
 ## Quality Rules
 
 Before delivering any output containing legal citations:
@@ -200,4 +216,5 @@ Before delivering any output containing legal citations:
 - Check that doctrine citations include author, title, edition, year, and margin number
 - Validate cantonal court citations include court name, date, and reference number
 - Apply the correct judgment type term (Urteil/Arret/Sentenza) based on decision type
+- For nDSG citations: confirm whether the matter arose before or after 1.9.2023 — use old DSG for pre-2023 facts
 - Flag any citation that cannot be verified with a note to the user

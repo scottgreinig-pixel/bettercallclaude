@@ -1,6 +1,6 @@
 ---
 name: compliance-frameworks
-description: "Swiss financial regulatory compliance frameworks — FINMA supervision, GwG/AMLA anti-money laundering, FIDLEG/FINIG financial institution licensing, banking secrecy, and cross-border compliance requirements"
+description: "Swiss financial regulatory compliance analysis — assesses and maps compliance obligations under FINMA supervision, GwG/LBA (AML/KYC), FIDLEG/LSFin (financial services), FINIG/LEFin (financial institution licensing), BankG (banking secrecy), crypto/DLT regulation (DLT-Gesetz / Mantelerlass amending OR/FinfraG/BankG/GwG, FINMA ICO/staking guidance), nDSG data processing in fintech, and cross-border obligations (AEOI/CRS, FATCA/QI, EU market access). Trigger when: a user asks 'do we need a FINMA license', 'are we compliant with GwG/AML', 'what are the KYC requirements', 'can we offer financial services cross-border', 'what does FINMA require for crypto/DLT/tokens', 'is our data processing compliant for fintech'; or when the compliance-officer agent is invoked. Also use for FINIG licensing gap analysis and remediation planning. Do NOT trigger for: general corporate law questions (use corporate-law-agent); data protection not specific to financial services (use data-protection-specialist); tax/transfer-pricing (use fiscal-legal-expert); cantonal commercial registry or zoning (use cantonal skill)."
 ---
 
 # Swiss Financial Regulatory Compliance
@@ -109,6 +109,15 @@ Non-bank financial intermediaries must join a Self-Regulatory Organization (SRO)
 | Fund Management Company | Fondsleitung | Direction de fonds | Min. CHF 1M capital, comprehensive organizational requirements |
 | Securities Firm | Wertpapierhaus | Maison de titres | Min. CHF 1.5M capital, FINMA direct supervision |
 
+### FINIG Transitional Period
+
+The FINIG/LEFin came into force on 1 January 2020. Asset managers and trustees required to be licensed had a transitional period to submit their license applications. **The transitional period expired on 31 December 2022** (extended from the original 31 December 2021 deadline). Institutions that submitted a complete application by 31 December 2022 may continue to operate until FINMA renders its licensing decision. Institutions that failed to apply by the deadline are in unauthorized operation and face enforcement action.
+
+Key transitional-period facts for gap analysis:
+- Asset managers and trustees: application deadline 31 December 2022
+- Managers of collective assets and fund management companies: no transitional period (direct licensing obligation from 1 January 2020)
+- Institutions with existing authorizations (e.g., securities dealers converted to securities firms): required to adapt to new requirements by 1 January 2023
+
 ### Organizational Requirements (Art. 9 FINIG)
 
 All licensed institutions must maintain:
@@ -143,6 +152,39 @@ All licensed institutions must maintain:
 | AEOI/CRS | AEOI Act (AIAG) | Automatic exchange of financial account information |
 | FINMA supervision | FINMAG | Supervisory information exchange |
 | Tax treaty assistance | DBA / CDI | Administrative assistance under tax treaties |
+
+## Crypto / DLT Regulation
+
+### DLT Act (DLT-Gesetz / Loi DLT)
+
+Switzerland enacted the Federal Act on the Adaptation of Federal Law to Developments in Distributed Ledger Technology (DLT Act), in force since **1 February 2021**. The DLT Act is a Mantelerlass (omnibus amendment act, AS 2021 33) and has no own SR number — its provisions are folded into OR (SR 220), FinfraG (SR 958.1), BankG (SR 952.0), and GwG (SR 955.0). Key impacts:
+
+| Area | Change | Statute |
+|------|--------|---------|
+| DLT securities (DLT-Wertrechte) | New class of uncertificated securities registrable on DLT-based systems | Art. 973d-973i OR |
+| DLT trading facilities | New license category under FinfraG | Art. 73a-73u FinfraG |
+| Segregation in insolvency | DLT-based assets held by a bankrupt institution may be segregated | BankG amendment |
+| AML extension | DLT trading facilities subject to GwG | GwG amendment |
+
+### FINMA Guidance on Crypto Assets
+
+FINMA classifies tokens into three categories (FINMA ICO Guidelines, February 2018, updated via Aufsichtsmitteilungen):
+
+| Token Type | DE | Regulatory Treatment |
+|------------|----|--------------------|
+| Payment tokens | Zahlungs-Token | Treated as means of payment. GwG applies for exchange services. No securities regulation. |
+| Utility tokens | Nutzungs-Token | Generally no securities regulation if purely functional. GwG may apply. |
+| Asset tokens | Anlage-Token | Treated as securities (Effekten) — FIDLEG prospectus, FINIG license for intermediaries may be required. |
+| Hybrid tokens | Hybride Token | Regulated under the most restrictive applicable category. |
+
+### Key Compliance Checkpoints for Crypto/DLT Projects
+
+1. **Token classification**: Submit FINMA enquiry (Voranfrage) for novel structures
+2. **AML obligations**: Any exchange of crypto-assets for fiat or other crypto triggers GwG; threshold CHF 0 (no de minimis for professional activity)
+3. **DLT trading facility license**: Required if operating a DLT-based trading facility for DLT securities open to the public
+4. **Staking / DeFi**: FINMA has indicated that staking services may constitute deposit-taking requiring BankG authorization — factual analysis required per project
+5. **NFTs**: Treated as utility tokens unless they represent financial claims; review on a case-by-case basis
+6. **VASP registration**: Switzerland implements FATF Travel Rule — virtual asset service providers subject to GwG and MROS reporting
 
 ## Cross-Border Compliance
 
@@ -187,12 +229,28 @@ All licensed institutions must maintain:
 
 When performing a compliance assessment, follow this sequence:
 
-1. **Scope Definition**: Identify applicable regulations, assessment boundaries, and materiality thresholds
+1. **Scope Definition**: Identify applicable regulations, assessment boundaries, and materiality thresholds. For fintech entities processing personal data: nDSG (Datenschutzgesetz, in force **1 September 2023**, SR 235.1) applies to all data processing activities regardless of financial regulatory status — include nDSG compliance in scope alongside GwG and FINMA requirements
 2. **Regulatory Mapping**: Map business activities to specific regulatory obligations, note exemptions
 3. **Gap Analysis**: Compare current state to regulatory requirements, classify gaps by severity (critical/material/minor)
 4. **Risk Assessment**: Evaluate enforcement probability, potential penalties, reputational impact
 5. **Remediation Planning**: Develop action items with timelines, responsibilities, and success criteria
 6. **Reporting**: Produce executive summary, detailed findings, and remediation roadmap
+
+## MCP Tools for Compliance Research
+
+Use these tools when researching regulatory precedents and enforcement practice:
+
+| Task | Tool |
+|------|------|
+| FINMA enforcement decisions (Enforcementberichte) | `entscheidsuche` → `search_decisions` with query including "FINMA" or "Enforcement" |
+| GwG / AML case law | `swiss-caselaw` → `search_decisions` filtered to BGer or BVGer sections |
+| BankG / banking secrecy decisions | `swiss-caselaw` → `find_leading_cases("banking secrecy Art. 47 BankG")` |
+| FIDLEG/FINIG current article text | `fedlex-sparql` → `get_article(sr_number, article)` |
+| Regulatory commentary | `onlinekommentar` → `search_commentaries("FINMAG")` or `get_commentary_for_article` |
+| GwG / AML leading cases | `swiss-caselaw` → `find_leading_cases("Geldwäscherei GwG")` |
+| Cite a decision | `swiss-caselaw` → `cite(decision_id)` — **never construct BGE citations manually** |
+
+SR numbers for key statutes: BankG = 952.0, FINMAG = 956.1, GwG = 955.0, FIDLEG = 950.1, FINIG = 954.1, FinfraG = 958.1. The DLT-Gesetz is a Mantelerlass with no own SR number — look up its provisions under the amended acts: OR Art. 973d–973i (SR 220), FinfraG Art. 73a–73u (SR 958.1).
 
 ## Quality Standards
 
