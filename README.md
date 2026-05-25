@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.5.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.6.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -11,7 +11,7 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 19 commands, 14 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 20 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
@@ -39,7 +39,7 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 - **Fixed: `/version` and `/help` hardcoded version display** — was stale at `4.3.0` even on 4.4.0 installs; now shows the running version.
 - **Removed: dev artifacts shipped in 4.4.0.** The plugin no longer ships `legal-briefing-workspace/` (a ~150 KB / 55-file eval harness with iteration-1 / evals / benchmark JSON runs) or two ad-hoc HTML review exports. `.gitignore` extended to prevent recurrence.
 
-**Content counts**: 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO) — unchanged from 4.4.0.
+**Content counts**: 20 agents, 20 commands, 15 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO) — unchanged from 4.4.0.
 
 [Full changelog →](CHANGELOG.md)
 
@@ -85,7 +85,14 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
 | `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 9 servers. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
+| `/bettercallclaude:legal-5step` | Execute the 5-step end-to-end Swiss legal framework: intake → research → strategy → adversarial → draft. |
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
+
+### Skills
+
+| Skill | Description |
+|-------|-------------|
+| `legal-5step-framework` | Coordinates the 5-step pipeline, enforces data flow between agents, manages quality gates and checkpoints. |
 
 ### Usage Examples
 

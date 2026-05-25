@@ -4,6 +4,18 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.6.0] - 2026-05-25
+
+### Added
+- `/bettercallclaude:legal-5step` command: sequential 5-step pipeline (intake → research → strategy → adversarial → draft) with `--short/--medium/--long/--no-summary/--stop-after/--lang/--canton` flags and checkpoints at Steps 3 and 4.
+- `legal-5step-framework` skill: coordinates the pipeline, enforces citation integrity (all Step 5 citations must trace to Step 2 memo), propagates Anwaltsgeheimnis privilege flag across all steps, and triggers quality gates on low probability or high strategy delta.
+
+### Notes
+- No MCP server changes.
+- Agent and skill count: +1 skill (legal-5step-framework). Command count: +1 (/bettercallclaude:legal-5step).
+
+---
+
 ## [4.5.0] - 2026-05-09
 
 ### Changed
