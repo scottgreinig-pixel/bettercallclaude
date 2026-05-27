@@ -379,6 +379,82 @@ t('falls back to balanced on malformed JSON', () => {
   delete process.env.CLAUDE_PLUGIN_USER_CONFIG;
 });
 
+// Config file fallback tests
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
+
+console.log('privacy-check: resolvePrivacyMode — config file fallback');
+
+t('reads strict from ~/.betterask/config.yaml when env var unset', () => {
+  delete process.env.CLAUDE_PLUGIN_USER_CONFIG;
+  const cfgDir = path.join(os.homedir(), '.betterask');
+  const cfgPath = path.join(cfgDir, 'config.yaml');
+  const existed = fs.existsSync(cfgPath);
+  let original;
+  if (existed) original = fs.readFileSync(cfgPath, 'utf8');
+  try {
+    fs.mkdirSync(cfgDir, { recursive: true });
+    fs.writeFileSync(cfgPath, 'privacy_mode: strict\n');
+    assert.strictEqual(resolvePrivacyMode(), 'strict');
+  } finally {
+    if (existed) fs.writeFileSync(cfgPath, original);
+    else try { fs.unlinkSync(cfgPath); } catch {}
+  }
+});
+
+t('reads cloud from ~/.betterask/config.yaml when env var unset', () => {
+  delete process.env.CLAUDE_PLUGIN_USER_CONFIG;
+  const cfgDir = path.join(os.homedir(), '.betterask');
+  const cfgPath = path.join(cfgDir, 'config.yaml');
+  const existed = fs.existsSync(cfgPath);
+  let original;
+  if (existed) original = fs.readFileSync(cfgPath, 'utf8');
+  try {
+    fs.mkdirSync(cfgDir, { recursive: true });
+    fs.writeFileSync(cfgPath, 'privacy_mode: cloud\n');
+    assert.strictEqual(resolvePrivacyMode(), 'cloud');
+  } finally {
+    if (existed) fs.writeFileSync(cfgPath, original);
+    else try { fs.unlinkSync(cfgPath); } catch {}
+  }
+});
+
+t('env var takes precedence over config file', () => {
+  const cfgDir = path.join(os.homedir(), '.betterask');
+  const cfgPath = path.join(cfgDir, 'config.yaml');
+  const existed = fs.existsSync(cfgPath);
+  let original;
+  if (existed) original = fs.readFileSync(cfgPath, 'utf8');
+  try {
+    fs.mkdirSync(cfgDir, { recursive: true });
+    fs.writeFileSync(cfgPath, 'privacy_mode: cloud\n');
+    process.env.CLAUDE_PLUGIN_USER_CONFIG = JSON.stringify({ privacy_mode: 'strict' });
+    assert.strictEqual(resolvePrivacyMode(), 'strict');
+  } finally {
+    delete process.env.CLAUDE_PLUGIN_USER_CONFIG;
+    if (existed) fs.writeFileSync(cfgPath, original);
+    else try { fs.unlinkSync(cfgPath); } catch {}
+  }
+});
+
+t('config file with other keys preserves privacy_mode', () => {
+  delete process.env.CLAUDE_PLUGIN_USER_CONFIG;
+  const cfgDir = path.join(os.homedir(), '.betterask');
+  const cfgPath = path.join(cfgDir, 'config.yaml');
+  const existed = fs.existsSync(cfgPath);
+  let original;
+  if (existed) original = fs.readFileSync(cfgPath, 'utf8');
+  try {
+    fs.mkdirSync(cfgDir, { recursive: true });
+    fs.writeFileSync(cfgPath, 'some_other_key: value\nprivacy_mode: cloud\nyet_another: 42\n');
+    assert.strictEqual(resolvePrivacyMode(), 'cloud');
+  } finally {
+    if (existed) fs.writeFileSync(cfgPath, original);
+    else try { fs.unlinkSync(cfgPath); } catch {}
+  }
+});
+
 // -------------------------------------------------------------------------
 // Extractors
 // -------------------------------------------------------------------------

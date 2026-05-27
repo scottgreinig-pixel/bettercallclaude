@@ -33,7 +33,7 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 - **`legal-5step-framework` skill** — coordinates the pipeline with structured data flow between steps, enforces citation integrity (all Step 5 citations must trace back to the Step 2 research memo), propagates the Anwaltsgeheimnis privilege flag from Step 1 across all subsequent steps, and triggers quality gates: pause after Step 3 if success probability < 30% or any Critical risk, pause before Step 5 if the adversarial probability diverges from strategy by > 15 percentage points.
 - **No changes to MCP servers, existing agents, existing commands, or existing skills.**
 
-**Content counts**: 20 agents, 20 commands, 15 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
+**Content counts**: 20 agents, 21 commands, 15 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
 
 [Full changelog →](CHANGELOG.md)
 
@@ -80,6 +80,7 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 | `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 9 servers. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:legal-5step` | Execute the 5-step end-to-end Swiss legal framework: intake → research → strategy → adversarial → draft. |
+| `/bettercallclaude:privacy` | View or change the privacy mode (`strict` / `balanced` / `cloud`). Settings stored in `~/.betterask/config.yaml`. |
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
 
 ### Skills
