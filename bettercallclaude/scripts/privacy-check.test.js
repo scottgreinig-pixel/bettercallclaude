@@ -12,6 +12,7 @@ const assert = require('node:assert');
 const {
   classify,
   classifyWithMode,
+  isOllamaTool,
   resolvePrivacyMode,
   extractTextFromInput,
   extractPathHint,
@@ -241,62 +242,94 @@ t('triggers on two co-occurring weak markers', () => {
 
 console.log('privacy-check: classifyWithMode — balanced (default)');
 
-t('balanced: strong pattern → deny', () => {
-  const r = classifyWithMode('Anwaltsgeheimnis here.', '', 'balanced');
-  assert.strictEqual(r.decision, 'deny');
+t('balanced: strong pattern → ask', () => {
+  const r = classifyWithMode('Anwaltsgeheimnis here.', '', 'balanced', 'Write');
+  assert.strictEqual(r.decision, 'ask');
   assert.strictEqual(r.category, 'anwaltsgeheimnis');
 });
 
 t('balanced: weak pattern + context → ask', () => {
-  const r = classifyWithMode('Vertraulich info.', '/home/u/klient/acme/n.md', 'balanced');
+  const r = classifyWithMode('Vertraulich info.', '/home/u/klient/acme/n.md', 'balanced', 'Write');
   assert.strictEqual(r.decision, 'ask');
   assert.strictEqual(r.category, 'vertraulich-bare+context');
 });
 
 t('balanced: weak pattern without context → null (allow)', () => {
-  const r = classifyWithMode('Vertraulich info.', '/tmp/x.md', 'balanced');
+  const r = classifyWithMode('Vertraulich info.', '/tmp/x.md', 'balanced', 'Write');
   assert.strictEqual(r, null);
 });
 
 t('balanced: no pattern → null (allow)', () => {
-  const r = classifyWithMode('Hello world.', '', 'balanced');
+  const r = classifyWithMode('Hello world.', '', 'balanced', 'Write');
   assert.strictEqual(r, null);
 });
 
 console.log('privacy-check: classifyWithMode — strict');
 
 t('strict: strong pattern → deny', () => {
-  const r = classifyWithMode('Anwaltsgeheimnis.', '', 'strict');
+  const r = classifyWithMode('Anwaltsgeheimnis.', '', 'strict', 'Write');
   assert.strictEqual(r.decision, 'deny');
 });
 
-t('strict: weak pattern without context → deny (strict blocks all)', () => {
-  const r = classifyWithMode('Hello world, no pattern.', '/tmp/x.md', 'strict');
+t('strict: no pattern → deny (strict blocks all non-Ollama)', () => {
+  const r = classifyWithMode('Hello world, no pattern.', '/tmp/x.md', 'strict', 'Write');
   assert.strictEqual(r.decision, 'deny');
   assert.strictEqual(r.category, 'strict-mode-block');
 });
 
-t('strict: no pattern at all → deny', () => {
-  const r = classifyWithMode('Neutral legal text.', '', 'strict');
+t('strict: Ollama tool → null (exempt, local processing)', () => {
+  const r = classifyWithMode('Anwaltsgeheimnis.', '', 'strict', 'mcp__ollama__translate');
+  assert.strictEqual(r, null);
+});
+
+t('strict: non-Ollama MCP tool → deny', () => {
+  const r = classifyWithMode('Neutral text.', '', 'strict', 'mcp__entscheidsuche__search');
+  assert.strictEqual(r.decision, 'deny');
+});
+
+t('strict: Bash tool → deny', () => {
+  const r = classifyWithMode('Neutral text.', '', 'strict', 'Bash');
   assert.strictEqual(r.decision, 'deny');
 });
 
 console.log('privacy-check: classifyWithMode — cloud');
 
-t('cloud: strong pattern → deny', () => {
-  const r = classifyWithMode('Anwaltsgeheimnis.', '', 'cloud');
-  assert.strictEqual(r.decision, 'deny');
+t('cloud: strong pattern → ask', () => {
+  const r = classifyWithMode('Anwaltsgeheimnis.', '', 'cloud', 'Write');
+  assert.strictEqual(r.decision, 'ask');
   assert.strictEqual(r.category, 'anwaltsgeheimnis');
 });
 
 t('cloud: weak pattern + context → null (allow without prompt)', () => {
-  const r = classifyWithMode('Vertraulich info.', '/home/u/klient/acme/n.md', 'cloud');
+  const r = classifyWithMode('Vertraulich info.', '/home/u/klient/acme/n.md', 'cloud', 'Write');
   assert.strictEqual(r, null);
 });
 
 t('cloud: no pattern → null (allow)', () => {
-  const r = classifyWithMode('Hello world.', '', 'cloud');
+  const r = classifyWithMode('Hello world.', '', 'cloud', 'Write');
   assert.strictEqual(r, null);
+});
+
+console.log('privacy-check: isOllamaTool');
+
+t('identifies mcp__ollama__translate as Ollama', () => {
+  assert.strictEqual(isOllamaTool('mcp__ollama__translate'), true);
+});
+
+t('identifies mcp__ollama__summarize as Ollama', () => {
+  assert.strictEqual(isOllamaTool('mcp__ollama__summarize'), true);
+});
+
+t('rejects mcp__entscheidsuche__search', () => {
+  assert.strictEqual(isOllamaTool('mcp__entscheidsuche__search'), false);
+});
+
+t('rejects Write', () => {
+  assert.strictEqual(isOllamaTool('Write'), false);
+});
+
+t('rejects empty string', () => {
+  assert.strictEqual(isOllamaTool(''), false);
 });
 
 // -------------------------------------------------------------------------

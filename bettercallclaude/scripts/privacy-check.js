@@ -9,16 +9,16 @@
  *
  * Strategy:
  *   - Strong patterns (attorney-specific terms, legal article references)
- *     return "deny" — the operation is blocked outright.
+ *     return "ask" — the user is prompted and can choose to proceed.
  *   - Weak patterns (bare "confidential", "vertraulich", "confidentiel",
  *     "riservato") return "ask" when a discriminator is present (legal-context
  *     file path or another privilege marker), so routine document footers
  *     do not flood the user with permission prompts.
  *
  * Privacy modes (read from CLAUDE_PLUGIN_USER_CONFIG or default "balanced"):
- *   - strict:   All content → deny. No cloud processing allowed.
- *   - balanced:  Strong → deny, weak+context → ask. Default.
- *   - cloud:     Strong → deny, weak → allow (no prompt).
+ *   - strict:   All non-Ollama tool calls → deny. Ollama (local) is exempt.
+ *   - balanced:  Strong → ask, weak+context → ask. Default.
+ *   - cloud:     Strong → ask, weak → allow (no prompt).
  *
  * Per Anthropic hooks spec, stdin is:
  *   {
@@ -32,7 +32,7 @@
  *
  * Output:
  *   - stdout JSON {hookSpecificOutput:{permissionDecision:"deny"|"ask", ...}}
- *     written only when privileged content is detected.
+ *     written when privileged content is detected or strict mode blocks.
  *   - Exit code 0 in all non-error paths.
  */
 
@@ -62,7 +62,7 @@ function main() {
     if (!content.trim()) { process.exit(0); }
 
     const mode = resolvePrivacyMode();
-    const result = classifyWithMode(content, pathHint, mode);
+    const result = classifyWithMode(content, pathHint, mode, toolName);
     if (!result) { process.exit(0); }
 
     const reason =
@@ -167,7 +167,7 @@ function resolvePrivacyMode() {
 // ---------------------------------------------------------------------------
 
 // Strong: high-precision privilege markers. Word-boundary-anchored.
-// In balanced/cloud modes these return "deny" (block).
+// In balanced/cloud modes these return "ask" (user prompted).
 const STRONG_PATTERNS = [
   // German — attorney-specific
   { rx: /\banwalts?\s*geheimnis(s?e)?\b/i,                cat: 'anwaltsgeheimnis' },
@@ -255,17 +255,24 @@ function classify(content, pathHint) {
   return null;
 }
 
+/** Check if a tool name refers to the local Ollama MCP server. */
+function isOllamaTool(toolName) {
+  return typeof toolName === 'string' && toolName.startsWith('mcp__ollama__');
+}
+
 /**
  * Apply privacy mode logic on top of classify().
  * Returns {category, decision} or null.
+ *
+ * @param {string} toolName — tool being invoked (used for Ollama exemption)
  */
-function classifyWithMode(content, pathHint, mode) {
+function classifyWithMode(content, pathHint, mode, toolName) {
   if (mode === 'strict') {
-    // In strict mode, any content at all is denied.
-    // Check strong first for a specific category, then weak, then generic.
+    // Ollama is local — always exempt from strict blocking.
+    if (isOllamaTool(toolName)) return null;
+    // In strict mode, all other content is denied.
     const result = classify(content, pathHint);
     if (result) return { category: result.category, decision: 'deny' };
-    // Even without pattern match, strict mode blocks everything.
     return { category: 'strict-mode-block', decision: 'deny' };
   }
 
@@ -273,8 +280,8 @@ function classifyWithMode(content, pathHint, mode) {
   if (!result) return null;
 
   if (result.strength === 'strong') {
-    // Strong patterns are always denied regardless of mode.
-    return { category: result.category, decision: 'deny' };
+    // Strong patterns prompt the user — they can choose to proceed.
+    return { category: result.category, decision: 'ask' };
   }
 
   // Weak patterns:
@@ -303,6 +310,7 @@ function hasDiscriminator(content, pathHint) {
 module.exports = {
   classify,
   classifyWithMode,
+  isOllamaTool,
   resolvePrivacyMode,
   extractTextFromInput,
   extractPathHint,
