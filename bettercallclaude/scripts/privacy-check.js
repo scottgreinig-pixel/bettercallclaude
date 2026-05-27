@@ -58,10 +58,26 @@ function main() {
 
     const content = extractTextFromInput(toolName, toolInput);
     const pathHint = extractPathHint(toolInput);
-
-    if (!content.trim()) { process.exit(0); }
-
     const mode = resolvePrivacyMode();
+
+    if (!content.trim()) {
+      // In strict mode, block all non-Ollama calls even with empty content.
+      if (mode === 'strict' && !isOllamaTool(toolName)) {
+        const reason =
+          'Strict privacy mode: all non-local tool calls are blocked. ' +
+          'Swiss law: Art. 321 StGB / Art. 13 BGFA. ' +
+          'This content has been blocked from leaving the machine.';
+        process.stdout.write(JSON.stringify({
+          hookSpecificOutput: {
+            hookEventName: 'PreToolUse',
+            permissionDecision: 'deny',
+            permissionDecisionReason: reason,
+          },
+        }));
+      }
+      process.exit(0);
+    }
+
     const result = classifyWithMode(content, pathHint, mode, toolName);
     if (!result) { process.exit(0); }
 

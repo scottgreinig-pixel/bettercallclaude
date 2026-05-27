@@ -35,7 +35,7 @@
     "privacy_mode": {
       "type": "string",
       "title": "Privacy mode",
-      "description": "Privacy routing mode: strict (block all external calls), balanced (block strong privilege markers, prompt for weak), or cloud (block strong markers only, maximum capability).",
+      "description": "Privacy routing mode: strict (deny all external calls, only Ollama allowed), balanced (prompt on strong privilege markers, prompt on weak with legal context), or cloud (prompt on strong markers only, maximum capability).",
       "default": "balanced",
       "sensitive": false
     }

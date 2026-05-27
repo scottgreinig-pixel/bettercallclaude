@@ -292,6 +292,18 @@ t('strict: Bash tool → deny', () => {
   assert.strictEqual(r.decision, 'deny');
 });
 
+t('strict: empty content non-Ollama MCP → deny (no bypass)', () => {
+  // Regression: MCP calls with only numeric params must still be blocked in strict mode.
+  const r = classifyWithMode('', '', 'strict', 'mcp__entscheidsuche__search');
+  assert.strictEqual(r.decision, 'deny');
+  assert.strictEqual(r.category, 'strict-mode-block');
+});
+
+t('strict: empty content Ollama → null (exempt)', () => {
+  const r = classifyWithMode('', '', 'strict', 'mcp__ollama__translate');
+  assert.strictEqual(r, null);
+});
+
 console.log('privacy-check: classifyWithMode — cloud');
 
 t('cloud: strong pattern → ask', () => {
