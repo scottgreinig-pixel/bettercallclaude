@@ -10,6 +10,19 @@ All notable changes to BetterCallClaude will be documented in this file.
 - `/bettercallclaude:legal-5step` command: sequential 5-step pipeline (intake → research → strategy → adversarial → draft) with `--short/--medium/--long/--no-summary/--stop-after/--lang/--canton` flags and checkpoints at Steps 3 and 4.
 - `legal-5step-framework` skill: coordinates the pipeline, enforces citation integrity (all Step 5 citations must trace to Step 2 memo), propagates Anwaltsgeheimnis privilege flag across all steps, and triggers quality gates on low probability or high strategy delta.
 
+### Fixed — Privacy hardening
+- **Strong privilege patterns now block (`deny`) instead of prompting (`ask`).** Attorney-specific terms (Anwaltsgeheimnis, secret professionnel, segreto professionale, Art. 321 StGB, etc.) now return `permissionDecision: "deny"` — the operation is blocked outright. Weak patterns (bare "vertraulich", "confidentiel", etc.) still use `"ask"` with discriminator gating.
+- **Bash tool added to hook matcher.** `hooks.json` matcher was `Write|Edit|MultiEdit|WebFetch|mcp__.*` — `Bash` was missing despite the JS code already supporting the `command` field. Shell commands that exfiltrate privileged content (e.g. `curl`, `cat`) are now intercepted.
+- **Privacy modes implemented.** The `strict`/`balanced`/`cloud` modes described in the README and `privacy-routing` skill were documentation-only — `privacy-check.js` never read any configuration. Now reads `privacy_mode` from `CLAUDE_PLUGIN_USER_CONFIG` env var: `strict` blocks all content, `balanced` (default) blocks strong + asks for weak, `cloud` blocks strong only.
+- **README privacy section rewritten.** Replaced "compliance" claim with "assistive technology / additional layer of protection". Added professional disclaimer matching `privacy-routing/SKILL.md`. Mode descriptions updated to reflect actual behavior.
+- **Privacy skill Hook Integration section updated** to document deny/ask distinction, Bash coverage, and mode behavior.
+- **Expanded pattern coverage.** Added 14 new strong patterns:
+  - DE: `Verschwiegenheitspflicht`, `Geheimhaltungspflicht`, `anwaltliche Verschwiegenheit`
+  - FR: `obligation de discrétion`, `secret du mandat`, `confidentialité du mandat`
+  - IT: `vincolo professionale`, `obbligo di riservatezza`, `segreto d'ufficio`
+  - EN: `attorney-client privilege`, `legal professional privilege`, `solicitor-client privilege`, `privileged and confidential`
+  - Legal: `Art. 622 CP`
+
 ### Notes
 - No MCP server changes.
 - Agent and skill count: +1 skill (legal-5step-framework). Command count: +1 (/bettercallclaude:legal-5step).
