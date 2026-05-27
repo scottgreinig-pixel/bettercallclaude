@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.6.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.6.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -11,7 +11,7 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 20 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 21 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
@@ -25,13 +25,14 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.6.0
+## What's New in v4.6.1
 
-**v4.6.0 — 5-step legal framework pipeline.** New `/bettercallclaude:legal-5step` command and `legal-5step-framework` skill that chain five agents into a single sequential pipeline, taking any Swiss legal matter from raw intake through a verified drafted document.
+**v4.6.1 — Privacy command + 5-step legal framework pipeline.** New `/bettercallclaude:legal-5step` command and `legal-5step-framework` skill that chain five agents into a single sequential pipeline, taking any Swiss legal matter from raw intake through a verified drafted document.
 
 - **`/bettercallclaude:legal-5step` command** — executes a fixed 5-step pipeline: **(1) Intake** (fact extraction, jurisdiction/language detection, Anwaltsgeheimnis flagging via `doc-analyze`), **(2) Research** (BGE/ATF/DTF precedent lookup, live statute retrieval, doctrine via `swiss-caselaw`, `bge-search`, `entscheidsuche`, `fedlex-sparql`, `onlinekommentar`), **(3) Strategy** (claim strength, success probability, risk matrix, settlement evaluation via `swiss-legal-strategy`), **(4) Adversarial** (Advocate → Adversary → Judicial Analyst stress test via `adversarial-analysis`), **(5) Draft** (verified legal document production via `swiss-legal-drafting` and `swiss-citation-formats`). Supports `--short/--medium/--long/--no-summary` length modes, `--stop-after=N` for partial execution, `--lang=DE|FR|IT|EN`, and `--canton=XX` for cantonal jurisdiction.
 - **`legal-5step-framework` skill** — coordinates the pipeline with structured data flow between steps, enforces citation integrity (all Step 5 citations must trace back to the Step 2 research memo), propagates the Anwaltsgeheimnis privilege flag from Step 1 across all subsequent steps, and triggers quality gates: pause after Step 3 if success probability < 30% or any Critical risk, pause before Step 5 if the adversarial probability diverges from strategy by > 15 percentage points.
-- **No changes to MCP servers, existing agents, existing commands, or existing skills.**
+- **`/bettercallclaude:privacy` command** — view or change the privacy mode (`strict`/`balanced`/`cloud`). Settings stored in `~/.betterask/config.yaml`. The hook reads the config file as fallback when `CLAUDE_PLUGIN_USER_CONFIG` env var is not set.
+- **No changes to MCP servers, existing agents, or existing skills.**
 
 **Content counts**: 20 agents, 21 commands, 15 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
 
