@@ -31,6 +31,13 @@
       "description": "Optional bearer token for accessing a protected BetterCallClaude MCP deployment. Leave blank for the public service.",
       "default": "",
       "sensitive": true
+    },
+    "privacy_mode": {
+      "type": "string",
+      "title": "Privacy mode",
+      "description": "Privacy routing mode: strict (block all external calls), balanced (block strong privilege markers, prompt for weak), or cloud (block strong markers only, maximum capability).",
+      "default": "balanced",
+      "sensitive": false
     }
   }
 }
