@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.5.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.6.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -11,7 +11,7 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 19 commands, 14 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 20 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
@@ -25,21 +25,15 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.5.0
+## What's New in v4.6.0
 
-**v4.5.0 — Skill descriptions v2 + skill-body enrichment + content fixes.** All 14 skill descriptions rewritten with richer trigger semantics so Cowork's auto-router activates the right skill more accurately, and 13 of 14 skill bodies enriched with new MCP-tool reference sections, expanded competence matrices, and clarified handoff blocks. Three concrete content bugs flagged by Devin Review fixed. No changes to MCP servers or agent count.
+**v4.6.0 — 5-step legal framework pipeline.** New `/bettercallclaude:legal-5step` command and `legal-5step-framework` skill that chain five agents into a single sequential pipeline, taking any Swiss legal matter from raw intake through a verified drafted document.
 
-- **Skill descriptions v2** — every skill's `description:` frontmatter now lists concrete trigger conditions, MCP tool names by name, and explicit `Do NOT trigger for:` boundaries with cross-references to other skills. Description sizes grew from short summaries (~300 chars) to 1.5K–2.4K chars each, giving Cowork's skill router much more signal. Example: `swiss-legal-research` description now names 5 MCPs and 14 tools and rules out citation-only / refinement-only / drafting-only / translation-only queries.
-- **Skill bodies enriched** — 13 of 14 skill bodies modified (+411 / −146 lines across `skills/**/SKILL.md`). Examples: `compliance-frameworks` gained a FINIG transitional-period section + Crypto/DLT reference + MCP-tools section (+58 lines); `swiss-legal-research` Step 2 rewritten with explicit MCP-tool listings; `data-protection-law` gained GDPR adequacy + MCP-tools sections; `swiss-jurisdictions` gained a pipeline-role table + expanded competence matrix; `legal-query-refinement` gained an explicit handoff-to-legal-briefing block. Changes are additive references and clarifications — high-level workflow shapes and agent invocations are preserved.
-- **Briefing agent reorganised** — same workflow + agent panel structure, more concise phrasing (net −5 lines).
-- **`/legal` and `/briefing` intent-classification** — routing fixes between the briefing and jurisdiction skills.
-- **Fixed: DLT-Gesetz SR attribution.** `compliance-frameworks` skill incorrectly attributed SR 950.1 to the DLT Act in 3 places. SR 950.1 is FIDLEG; the DLT Act is a Mantelerlass (AS 2021 33) with no own SR number, amending OR/FinfraG/BankG/GwG. Fix prevents `fedlex-sparql.get_article` lookups from returning the wrong statute.
-- **Fixed: `/legal` complexity threshold metadata.** Description claimed briefing activates at complexity ≥ 5; actual body has three tiers (1–3 no briefing, 4–6 inline questions, 7–10 legal-briefing skill). Description aligned with body.
-- **Fixed: `legal-query-refinement` handoff metadata.** Description and body had a 2-tier gap (5–7) where description said don't activate but body had no handoff. Description aligned with body's actual condition (`≥ 8 OR 3+ legal domains OR multi-jurisdictional`).
-- **Fixed: `/version` and `/help` hardcoded version display** — was stale at `4.3.0` even on 4.4.0 installs; now shows the running version.
-- **Removed: dev artifacts shipped in 4.4.0.** The plugin no longer ships `legal-briefing-workspace/` (a ~150 KB / 55-file eval harness with iteration-1 / evals / benchmark JSON runs) or two ad-hoc HTML review exports. `.gitignore` extended to prevent recurrence.
+- **`/bettercallclaude:legal-5step` command** — executes a fixed 5-step pipeline: **(1) Intake** (fact extraction, jurisdiction/language detection, Anwaltsgeheimnis flagging via `doc-analyze`), **(2) Research** (BGE/ATF/DTF precedent lookup, live statute retrieval, doctrine via `swiss-caselaw`, `bge-search`, `entscheidsuche`, `fedlex-sparql`, `onlinekommentar`), **(3) Strategy** (claim strength, success probability, risk matrix, settlement evaluation via `swiss-legal-strategy`), **(4) Adversarial** (Advocate → Adversary → Judicial Analyst stress test via `adversarial-analysis`), **(5) Draft** (verified legal document production via `swiss-legal-drafting` and `swiss-citation-formats`). Supports `--short/--medium/--long/--no-summary` length modes, `--stop-after=N` for partial execution, `--lang=DE|FR|IT|EN`, and `--canton=XX` for cantonal jurisdiction.
+- **`legal-5step-framework` skill** — coordinates the pipeline with structured data flow between steps, enforces citation integrity (all Step 5 citations must trace back to the Step 2 research memo), propagates the Anwaltsgeheimnis privilege flag from Step 1 across all subsequent steps, and triggers quality gates: pause after Step 3 if success probability < 30% or any Critical risk, pause before Step 5 if the adversarial probability diverges from strategy by > 15 percentage points.
+- **No changes to MCP servers, existing agents, existing commands, or existing skills.**
 
-**Content counts**: 20 agents, 19 commands, 14 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO) — unchanged from 4.4.0.
+**Content counts**: 20 agents, 20 commands, 15 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
 
 [Full changelog →](CHANGELOG.md)
 
@@ -85,7 +79,14 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
 | `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 9 servers. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
+| `/bettercallclaude:legal-5step` | Execute the 5-step end-to-end Swiss legal framework: intake → research → strategy → adversarial → draft. |
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
+
+### Skills
+
+| Skill | Description |
+|-------|-------------|
+| `legal-5step-framework` | Coordinates the 5-step pipeline, enforces data flow between agents, manages quality gates and checkpoints. |
 
 ### Usage Examples
 
@@ -147,13 +148,15 @@ See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for detailed API documentati
 
 ## Privacy
 
-BetterCallClaude includes built-in Anwaltsgeheimnis (attorney-client privilege, Art. 321 StGB) compliance. A `PreToolUse` hook scans outgoing tool calls for privilege indicators in German (Anwaltsgeheimnis, Mandantengeheimnis, vertraulich), French (secret professionnel, confidentiel), and Italian (segreto professionale, confidenziale).
+BetterCallClaude includes a built-in Anwaltsgeheimnis (attorney-client privilege, Art. 321 StGB) detection hook as an additional layer of protection. A `PreToolUse` hook scans outgoing tool calls for privilege indicators in German, French, Italian, and English before content leaves the machine. Strong privilege markers (e.g. Anwaltsgeheimnis, secret professionnel, Art. 321 StGB) trigger a confirmation prompt; weaker indicators (e.g. bare "vertraulich", "confidentiel") also prompt when legal context is detected. The user always retains the ability to approve or reject.
 
 | Mode | Behavior |
 |------|----------|
-| `strict` | All external calls require confirmation. Local processing preferred via Ollama. |
-| `balanced` | Privileged content triggers confirmation. Non-privileged content processed normally. |
-| `cloud` | Standard cloud processing with privacy hook active for explicit privilege markers only. |
+| `strict` | All non-local tool calls blocked (`deny`). Only Ollama (local) is exempt — ideal for processing privileged content safely. |
+| `balanced` | Strong privilege markers prompt for confirmation (`ask`). Weak markers with legal context also prompt. Non-privileged content processed normally. Default mode. |
+| `cloud` | Strong privilege markers prompt for confirmation (`ask`). Weak markers allowed without prompt. Maximum capability, reduced privacy. |
+
+> **Disclaimer**: Privacy routing is an assistive technology and does not guarantee compliance with Art. 321 StGB or Art. 13 BGFA. Lawyers remain professionally responsible for protecting client confidentiality. Always verify that appropriate privacy measures are in place before processing sensitive legal content.
 
 ---
 
