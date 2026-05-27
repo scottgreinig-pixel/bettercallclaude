@@ -165,8 +165,17 @@ function walkStrings(node, emit, depth) {
 // Privacy mode resolution
 // ---------------------------------------------------------------------------
 
-/** Read privacy_mode from CLAUDE_PLUGIN_USER_CONFIG env var (JSON). Default: balanced. */
+const fs = require('node:fs');
+const path = require('node:path');
+
+/**
+ * Read privacy_mode with the following precedence:
+ *   1. CLAUDE_PLUGIN_USER_CONFIG env var (JSON, set by Cowork Desktop)
+ *   2. ~/.betterask/config.yaml file (set by /bettercallclaude:privacy command)
+ *   3. Default: 'balanced'
+ */
 function resolvePrivacyMode() {
+  // 1. Try env var (Cowork Desktop userConfig)
   const raw = process.env.CLAUDE_PLUGIN_USER_CONFIG;
   if (raw) {
     try {
@@ -175,6 +184,19 @@ function resolvePrivacyMode() {
       if (m === 'strict' || m === 'balanced' || m === 'cloud') return m;
     } catch { /* ignore malformed config */ }
   }
+
+  // 2. Try ~/.betterask/config.yaml
+  try {
+    const home = process.env.HOME || process.env.USERPROFILE || '';
+    const cfgPath = path.join(home, '.betterask', 'config.yaml');
+    const content = fs.readFileSync(cfgPath, 'utf8');
+    const match = content.match(/^privacy_mode:\s*(\S+)/m);
+    if (match) {
+      const m = match[1].toLowerCase().trim();
+      if (m === 'strict' || m === 'balanced' || m === 'cloud') return m;
+    }
+  } catch { /* file not found or unreadable — use default */ }
+
   return 'balanced';
 }
 

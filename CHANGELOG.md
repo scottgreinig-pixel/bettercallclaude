@@ -4,6 +4,18 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.6.1] - 2026-05-27
+
+### Added
+- `/bettercallclaude:privacy` command: view or change the privacy mode (`strict`/`balanced`/`cloud`). Reads and writes `~/.betterask/config.yaml`.
+- `privacy-check.js` now reads `privacy_mode` from `~/.betterask/config.yaml` as a fallback when `CLAUDE_PLUGIN_USER_CONFIG` is not set.
+
+### Notes
+- No MCP server changes.
+- Command count: +1 (`/bettercallclaude:privacy`). Now 21 commands total.
+
+---
+
 ## [4.6.0] - 2026-05-25
 
 ### Added
