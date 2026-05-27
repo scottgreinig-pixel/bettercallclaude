@@ -18,7 +18,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 ---
 
-## Commands (20)
+## Commands (21)
 
 ### Core Commands
 
@@ -64,6 +64,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 | `/bettercallclaude:version` | Display plugin version, components, and system status |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output with length control (--short/--medium/--long) |
 | `/bettercallclaude:legal-5step` | Execute the 5-step end-to-end Swiss legal framework: intake → research → strategy → adversarial → draft |
+| `/bettercallclaude:privacy` | View or change the privacy mode (strict/balanced/cloud) |
 | `/bettercallclaude:help` | This command reference |
 
 ---
@@ -202,7 +203,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.6.0 -- Swiss Legal Intelligence for Cowork Desktop**
+**BetterCallClaude v4.6.1 -- Swiss Legal Intelligence for Cowork Desktop**
 
 If the user provided additional input, respond to it in the context of this help reference.
 
