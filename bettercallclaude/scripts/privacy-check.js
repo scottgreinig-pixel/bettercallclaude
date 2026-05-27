@@ -3,21 +3,27 @@
  * BetterCallClaude Privacy Check Hook
  *
  * PreToolUse hook that detects potential attorney-client privileged content
- * (Anwaltsgeheimnis / Art. 321 StGB, Art. 13 BGFA) across DE/FR/IT before it
- * leaves the machine via Write, Edit, MultiEdit, WebFetch, or any MCP tool.
+ * (Anwaltsgeheimnis / Art. 321 StGB, Art. 13 BGFA) across DE/FR/IT/EN before
+ * it leaves the machine via Write, Edit, MultiEdit, Bash, WebFetch, or any
+ * MCP tool.
  *
  * Strategy:
  *   - Strong patterns (attorney-specific terms, legal article references)
- *     always trigger a permission prompt.
+ *     return "ask" — the user is prompted and can choose to proceed.
  *   - Weak patterns (bare "confidential", "vertraulich", "confidentiel",
- *     "riservato") require a discriminator — a legal-context file path or
- *     another privilege marker in the content — so routine document footers
+ *     "riservato") return "ask" when a discriminator is present (legal-context
+ *     file path or another privilege marker), so routine document footers
  *     do not flood the user with permission prompts.
+ *
+ * Privacy modes (read from CLAUDE_PLUGIN_USER_CONFIG or default "balanced"):
+ *   - strict:   All non-Ollama tool calls → deny. Ollama (local) is exempt.
+ *   - balanced:  Strong → ask, weak+context → ask. Default.
+ *   - cloud:     Strong → ask, weak → allow (no prompt).
  *
  * Per Anthropic hooks spec, stdin is:
  *   {
  *     session_id, cwd, hook_event_name: "PreToolUse",
- *     tool_name: "Write" | "Edit" | "MultiEdit" | "WebFetch" | "mcp__<server>__<tool>" | ...,
+ *     tool_name: "Write" | "Edit" | "MultiEdit" | "Bash" | "WebFetch" | "mcp__<server>__<tool>" | ...,
  *     tool_input: { ... }
  *   }
  *
@@ -25,8 +31,8 @@
  * as a safety net.
  *
  * Output:
- *   - stdout JSON {hookSpecificOutput:{permissionDecision:"ask", ...}}
- *     written only when privileged content is detected.
+ *   - stdout JSON {hookSpecificOutput:{permissionDecision:"deny"|"ask", ...}}
+ *     written when privileged content is detected or strict mode blocks.
  *   - Exit code 0 in all non-error paths.
  */
 
@@ -55,18 +61,21 @@ function main() {
 
     if (!content.trim()) { process.exit(0); }
 
-    const category = classify(content, pathHint);
-    if (!category) { process.exit(0); }
+    const mode = resolvePrivacyMode();
+    const result = classifyWithMode(content, pathHint, mode, toolName);
+    if (!result) { process.exit(0); }
 
     const reason =
-      `Possible attorney-client privileged content detected (category: ${category}). ` +
+      `Possible attorney-client privileged content detected (category: ${result.category}). ` +
       'Swiss law: Art. 321 StGB / Art. 13 BGFA. ' +
-      'Confirm this content is cleared to leave the machine.';
+      (result.decision === 'deny'
+        ? 'This content has been blocked from leaving the machine.'
+        : 'Confirm this content is cleared to leave the machine.');
 
     process.stdout.write(JSON.stringify({
       hookSpecificOutput: {
         hookEventName: 'PreToolUse',
-        permissionDecision: 'ask',
+        permissionDecision: result.decision,
         permissionDecisionReason: reason,
       },
     }));
@@ -137,10 +146,28 @@ function walkStrings(node, emit, depth) {
 }
 
 // ---------------------------------------------------------------------------
+// Privacy mode resolution
+// ---------------------------------------------------------------------------
+
+/** Read privacy_mode from CLAUDE_PLUGIN_USER_CONFIG env var (JSON). Default: balanced. */
+function resolvePrivacyMode() {
+  const raw = process.env.CLAUDE_PLUGIN_USER_CONFIG;
+  if (raw) {
+    try {
+      const cfg = JSON.parse(raw);
+      const m = (cfg.privacy_mode || '').toLowerCase().trim();
+      if (m === 'strict' || m === 'balanced' || m === 'cloud') return m;
+    } catch { /* ignore malformed config */ }
+  }
+  return 'balanced';
+}
+
+// ---------------------------------------------------------------------------
 // Pattern classification
 // ---------------------------------------------------------------------------
 
 // Strong: high-precision privilege markers. Word-boundary-anchored.
+// In balanced/cloud modes these return "ask" (user prompted).
 const STRONG_PATTERNS = [
   // German — attorney-specific
   { rx: /\banwalts?\s*geheimnis(s?e)?\b/i,                cat: 'anwaltsgeheimnis' },
@@ -148,17 +175,32 @@ const STRONG_PATTERNS = [
   { rx: /\bberufs\s*geheimnis(s?e)?\b/i,                  cat: 'berufsgeheimnis' },
   { rx: /\bgesch(ä|ae)fts\s*geheimnis(s?e)?\b/i,          cat: 'geschaeftsgeheimnis' },
   { rx: /\bstreng(\s+|-)?vertraulich\b/i,                 cat: 'streng-vertraulich' },
+  { rx: /\bverschwiegenheitspflicht\b/i,                   cat: 'verschwiegenheitspflicht' },
+  { rx: /\bgeheimhaltungspflicht\b/i,                      cat: 'geheimhaltungspflicht' },
+  { rx: /\banwaltliche(r|s|n)?\s+verschwiegenheit\b/i,     cat: 'anwaltliche-verschwiegenheit' },
 
   // French
   { rx: /\bsecret\s+professionnel\b/i,                    cat: 'secret-professionnel-fr' },
   { rx: /\bsecret\s+d[' ]affaires?\b/i,                   cat: 'secret-d-affaires-fr' },
   { rx: /\bstrictement\s+confidentiel(le)?\b/i,           cat: 'strictement-confidentiel-fr' },
+  { rx: /\bobligation\s+de\s+discr(é|e)tion\b/i,          cat: 'obligation-discretion-fr' },
+  { rx: /\bsecret\s+du\s+mandat\b/i,                      cat: 'secret-du-mandat-fr' },
+  { rx: /\bconfidentialit(é|e)\s+du\s+mandat\b/i,         cat: 'confidentialite-du-mandat-fr' },
 
   // Italian
   { rx: /\bsegreto\s+professionale\b/i,                   cat: 'segreto-professionale-it' },
   { rx: /\bsegreto\s+commerciale\b/i,                     cat: 'segreto-commerciale-it' },
   { rx: /\bsegreto\s+del\s+mandato\b/i,                   cat: 'segreto-del-mandato-it' },
   { rx: /\bstrettamente\s+riservato\b/i,                  cat: 'strettamente-riservato-it' },
+  { rx: /\bvincolo\s+professionale\b/i,                   cat: 'vincolo-professionale-it' },
+  { rx: /\bobbligo\s+di\s+riservatezza\b/i,               cat: 'obbligo-riservatezza-it' },
+  { rx: /\bsegreto\s+d[' ]ufficio\b/i,                    cat: 'segreto-d-ufficio-it' },
+
+  // English — privilege terms
+  { rx: /\battorney[- ]client\s+privilege\b/i,             cat: 'attorney-client-privilege-en' },
+  { rx: /\blegal\s+professional\s+privilege\b/i,           cat: 'legal-professional-privilege-en' },
+  { rx: /\bsolicitor[- ]client\s+privilege\b/i,            cat: 'solicitor-client-privilege-en' },
+  { rx: /\bprivileged\s+(and\s+)?confidential\b/i,         cat: 'privileged-confidential-en' },
 
   // Legal article references — language-agnostic
   { rx: /\bArt\.?\s*321\s*(StGB|CP|CPS)\b/i,              cat: 'art-321-stgb' },
@@ -166,6 +208,7 @@ const STRONG_PATTERNS = [
   { rx: /\bArt\.?\s*162\s*(StGB|CP|CPS)\b/i,              cat: 'art-162-stgb' },
   { rx: /\bArt\.?\s*47\s*BankG\b/i,                       cat: 'art-47-bankg' },
   { rx: /\bArt\.?\s*35\s*FINMAG\b/i,                      cat: 'art-35-finmag' },
+  { rx: /\bArt\.?\s*622\s*(CP|StGB|CPS)\b/i,              cat: 'art-622-cp' },
 ];
 
 // Weak: low-precision terms. Trigger only with a discriminator present.
@@ -196,16 +239,59 @@ const DISCRIMINATOR_CONTENT = new RegExp(
   'i'
 );
 
+/**
+ * Classify content and return {category, strength} or null.
+ * strength: 'strong' or 'weak' — used by callers to pick deny vs ask.
+ */
 function classify(content, pathHint) {
   for (const p of STRONG_PATTERNS) {
-    if (p.rx.test(content)) return p.cat;
+    if (p.rx.test(content)) return { category: p.cat, strength: 'strong' };
   }
   for (const p of WEAK_PATTERNS) {
     if (p.rx.test(content) && hasDiscriminator(content, pathHint)) {
-      return p.cat + '+context';
+      return { category: p.cat + '+context', strength: 'weak' };
     }
   }
   return null;
+}
+
+/** Check if a tool name refers to the local Ollama MCP server. */
+function isOllamaTool(toolName) {
+  return typeof toolName === 'string' && toolName.startsWith('mcp__ollama__');
+}
+
+/**
+ * Apply privacy mode logic on top of classify().
+ * Returns {category, decision} or null.
+ *
+ * @param {string} toolName — tool being invoked (used for Ollama exemption)
+ */
+function classifyWithMode(content, pathHint, mode, toolName) {
+  if (mode === 'strict') {
+    // Ollama is local — always exempt from strict blocking.
+    if (isOllamaTool(toolName)) return null;
+    // In strict mode, all other content is denied.
+    const result = classify(content, pathHint);
+    if (result) return { category: result.category, decision: 'deny' };
+    return { category: 'strict-mode-block', decision: 'deny' };
+  }
+
+  const result = classify(content, pathHint);
+  if (!result) return null;
+
+  if (result.strength === 'strong') {
+    // Strong patterns prompt the user — they can choose to proceed.
+    return { category: result.category, decision: 'ask' };
+  }
+
+  // Weak patterns:
+  if (mode === 'cloud') {
+    // In cloud mode, weak patterns are allowed without prompt.
+    return null;
+  }
+
+  // balanced (default): weak patterns prompt for confirmation.
+  return { category: result.category, decision: 'ask' };
 }
 
 function hasDiscriminator(content, pathHint) {
@@ -223,6 +309,9 @@ function hasDiscriminator(content, pathHint) {
 
 module.exports = {
   classify,
+  classifyWithMode,
+  isOllamaTool,
+  resolvePrivacyMode,
   extractTextFromInput,
   extractPathHint,
   hasDiscriminator,

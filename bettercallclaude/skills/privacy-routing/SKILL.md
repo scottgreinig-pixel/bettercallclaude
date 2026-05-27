@@ -164,14 +164,15 @@ privacy_mode: balanced    # strict | balanced | cloud
 
 ## Hook Integration
 
-When operating as a Claude Code plugin, the privacy detection runs as a PreToolUse hook on Write, Edit, and Bash tool calls. If privileged content patterns are detected:
+When operating as a Claude Code plugin, the privacy detection runs as a PreToolUse hook on Write, Edit, MultiEdit, Bash, WebFetch, and all MCP tool calls (`mcp__.*`). The hook reads the `privacy_mode` from `userConfig` (strict/balanced/cloud; default: balanced) and enforces:
 
-1. The hook script scans the tool input for privacy patterns
-2. If a PRIVILEGED pattern is found, it returns `{"decision":"ask","reason":"..."}`
-3. The user is prompted to confirm before the operation proceeds
-4. An audit log entry is created
+1. The hook script scans the tool input for privacy patterns across DE/FR/IT/EN
+2. **Strong patterns** (e.g. Anwaltsgeheimnis, Art. 321 StGB, segreto professionale) → `{"decision":"ask"}` — user prompted to confirm and can choose to proceed
+3. **Weak patterns** with legal context (e.g. bare "vertraulich" in a `/klient/` path) → `{"decision":"ask"}` — user prompted to confirm
+4. In **strict** mode, all non-Ollama tool calls are blocked (`deny`). Ollama (`mcp__ollama__*`) is exempt as it processes locally
+5. In **cloud** mode, strong patterns still prompt (`ask`); weak patterns are allowed without prompt
 
-This ensures that privileged content is never accidentally written to files, committed to repositories, or transmitted via shell commands without explicit user consent.
+This ensures that privileged content is never accidentally written to files, committed to repositories, exfiltrated via shell commands, or transmitted to external services without explicit user consent.
 
 ## Professional Disclaimer
 

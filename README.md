@@ -148,13 +148,15 @@ See [CONNECTORS.md](bettercallclaude/CONNECTORS.md) for detailed API documentati
 
 ## Privacy
 
-BetterCallClaude includes built-in Anwaltsgeheimnis (attorney-client privilege, Art. 321 StGB) compliance. A `PreToolUse` hook scans outgoing tool calls for privilege indicators in German (Anwaltsgeheimnis, Mandantengeheimnis, vertraulich), French (secret professionnel, confidentiel), and Italian (segreto professionale, confidenziale).
+BetterCallClaude includes a built-in Anwaltsgeheimnis (attorney-client privilege, Art. 321 StGB) detection hook as an additional layer of protection. A `PreToolUse` hook scans outgoing tool calls for privilege indicators in German, French, Italian, and English before content leaves the machine. Strong privilege markers (e.g. Anwaltsgeheimnis, secret professionnel, Art. 321 StGB) trigger a confirmation prompt; weaker indicators (e.g. bare "vertraulich", "confidentiel") also prompt when legal context is detected. The user always retains the ability to approve or reject.
 
 | Mode | Behavior |
 |------|----------|
-| `strict` | All external calls require confirmation. Local processing preferred via Ollama. |
-| `balanced` | Privileged content triggers confirmation. Non-privileged content processed normally. |
-| `cloud` | Standard cloud processing with privacy hook active for explicit privilege markers only. |
+| `strict` | All non-local tool calls blocked (`deny`). Only Ollama (local) is exempt — ideal for processing privileged content safely. |
+| `balanced` | Strong privilege markers prompt for confirmation (`ask`). Weak markers with legal context also prompt. Non-privileged content processed normally. Default mode. |
+| `cloud` | Strong privilege markers prompt for confirmation (`ask`). Weak markers allowed without prompt. Maximum capability, reduced privacy. |
+
+> **Disclaimer**: Privacy routing is an assistive technology and does not guarantee compliance with Art. 321 StGB or Art. 13 BGFA. Lawyers remain professionally responsible for protecting client confidentiality. Always verify that appropriate privacy measures are in place before processing sensitive legal content.
 
 ---
 
