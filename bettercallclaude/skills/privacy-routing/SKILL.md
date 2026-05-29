@@ -146,10 +146,10 @@ Users can configure privacy behavior in `~/.betterask/config.yaml`:
 ```yaml
 privacy_mode: balanced    # strict | balanced | cloud
 
-# strict: All content treated as CONFIDENTIAL minimum
-#   - Local processing for everything
-#   - No cloud fallback even for public content
-#   - Maximum protection, reduced capability
+# strict: Same pattern matching as balanced but deny instead of ask
+#   - Non-privileged content passes through to cloud MCP servers
+#   - Privilege markers → deny (block without prompt)
+#   - Ollama always exempt from checks
 
 # balanced (default): Auto-detect privacy level
 #   - Pattern detection determines level
