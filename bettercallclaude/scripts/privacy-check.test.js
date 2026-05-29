@@ -555,6 +555,11 @@ t('non-privileged path does not trigger discriminator', () => {
   assert.ok(!paths.some(p => DISCRIMINATOR_PATH.test(p)));
 });
 
+t('extracts head filepath', () => {
+  const paths = extractBashFilePaths('head /case/files/brief.txt');
+  assert.deepStrictEqual(paths, ['/case/files/brief.txt']);
+});
+
 // -------------------------------------------------------------------------
 // False-positive guards
 // -------------------------------------------------------------------------

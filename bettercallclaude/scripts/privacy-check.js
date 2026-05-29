@@ -82,7 +82,8 @@ function main() {
     let result = classifyWithMode(content, pathHint, mode, toolName);
 
     // If content classification found nothing but Bash paths are suspicious, flag it.
-    if (!result && bashPathResult) {
+    // Cloud mode: weak signals (including file path matches) allowed without prompt.
+    if (!result && bashPathResult && mode !== 'cloud') {
       const decision = (mode === 'strict' && !isOllamaTool(toolName)) ? 'deny' : 'ask';
       result = { category: bashPathResult.category, decision };
     }
