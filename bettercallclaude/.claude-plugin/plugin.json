@@ -1,6 +1,6 @@
 {
   "name": "bettercallclaude",
-  "version": "4.6.1",
+  "version": "4.6.2",
   "description": "Swiss Legal Intelligence -- BGE/ATF/DTF precedent research, case strategy, legal drafting, and citation verification across all 26 Swiss cantons with Anwaltsgeheimnis privacy protection.",
   "author": { "name": "Federico Cesconi" },
   "userConfig": {
@@ -35,7 +35,7 @@
     "privacy_mode": {
       "type": "string",
       "title": "Privacy mode",
-      "description": "Privacy routing mode: strict (deny all external calls, only Ollama allowed), balanced (prompt on strong privilege markers, prompt on weak with legal context), or cloud (prompt on strong markers only, maximum capability).",
+      "description": "Privacy routing mode: strict (same pattern matching as balanced but blocks instead of prompting — non-privileged content passes through, only Ollama exempt from all checks), balanced (prompt on privilege markers), or cloud (prompt on strong markers only, weak signals pass through).",
       "default": "balanced",
       "sensitive": false
     }

