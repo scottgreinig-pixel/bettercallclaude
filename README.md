@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.6.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.6.2-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -25,9 +25,9 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.6.1
+## What's New in v4.6.2
 
-**v4.6.1 — Privacy command + 5-step legal framework pipeline.** New `/bettercallclaude:legal-5step` command and `legal-5step-framework` skill that chain five agents into a single sequential pipeline, taking any Swiss legal matter from raw intake through a verified drafted document.
+**v4.6.2 — Audit hardening + privacy command + 5-step legal framework pipeline.** New `/bettercallclaude:legal-5step` command and `legal-5step-framework` skill that chain five agents into a single sequential pipeline, taking any Swiss legal matter from raw intake through a verified drafted document.
 
 - **`/bettercallclaude:legal-5step` command** — executes a fixed 5-step pipeline: **(1) Intake** (fact extraction, jurisdiction/language detection, Anwaltsgeheimnis flagging via `doc-analyze`), **(2) Research** (BGE/ATF/DTF precedent lookup, live statute retrieval, doctrine via `swiss-caselaw`, `bge-search`, `entscheidsuche`, `fedlex-sparql`, `onlinekommentar`), **(3) Strategy** (claim strength, success probability, risk matrix, settlement evaluation via `swiss-legal-strategy`), **(4) Adversarial** (Advocate → Adversary → Judicial Analyst stress test via `adversarial-analysis`), **(5) Draft** (verified legal document production via `swiss-legal-drafting` and `swiss-citation-formats`). Supports `--short/--medium/--long/--no-summary` length modes, `--stop-after=N` for partial execution, `--lang=DE|FR|IT|EN`, and `--canton=XX` for cantonal jurisdiction.
 - **`legal-5step-framework` skill** — coordinates the pipeline with structured data flow between steps, enforces citation integrity (all Step 5 citations must trace back to the Step 2 research memo), propagates the Anwaltsgeheimnis privilege flag from Step 1 across all subsequent steps, and triggers quality gates: pause after Step 3 if success probability < 30% or any Critical risk, pause before Step 5 if the adversarial probability diverges from strategy by > 15 percentage points.
@@ -154,11 +154,13 @@ BetterCallClaude includes a built-in Anwaltsgeheimnis (attorney-client privilege
 
 | Mode | Behavior |
 |------|----------|
-| `strict` | All non-local tool calls blocked (`deny`). Only Ollama (local) is exempt — ideal for processing privileged content safely. |
+| `strict` | Same pattern matching as balanced but blocks (`deny`) instead of prompting. Content without privilege markers passes through so MCP servers remain usable. Ollama (local) always exempt. |
 | `balanced` | Strong privilege markers prompt for confirmation (`ask`). Weak markers with legal context also prompt. Non-privileged content processed normally. Default mode. |
 | `cloud` | Strong privilege markers prompt for confirmation (`ask`). Weak markers allowed without prompt. Maximum capability, reduced privacy. |
 
 > **Disclaimer**: Privacy routing is an assistive technology and does not guarantee compliance with Art. 321 StGB or Art. 13 BGFA. Lawyers remain professionally responsible for protecting client confidentiality. Always verify that appropriate privacy measures are in place before processing sensitive legal content.
+
+> **Known limitations**: The hook uses regex-based pattern matching on text content. Concatenated keywords (e.g. `segretoprofessionale`), accent variations, content encoded as base64, and content inside binary file attachments may bypass detection. The hook is designed to catch accidental leakage, not adversarial evasion. For Bash commands, file paths referencing privileged directories are checked, but the actual file content is not read.
 
 ---
 

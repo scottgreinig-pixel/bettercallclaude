@@ -16,7 +16,9 @@
  *     do not flood the user with permission prompts.
  *
  * Privacy modes (read from CLAUDE_PLUGIN_USER_CONFIG or default "balanced"):
- *   - strict:   All non-Ollama tool calls → deny. Ollama (local) is exempt.
+ *   - strict:   Same pattern matching as balanced but deny instead of ask.
+ *              Content without privilege markers passes through so MCP servers
+ *              remain usable. Ollama (local) is always exempt.
  *   - balanced:  Strong → ask, weak+context → ask. Default.
  *   - cloud:     Strong → ask, weak → allow (no prompt).
  *
@@ -60,25 +62,31 @@ function main() {
     const pathHint = extractPathHint(toolInput);
     const mode = resolvePrivacyMode();
 
-    if (!content.trim()) {
-      // In strict mode, block all non-Ollama calls even with empty content.
-      if (mode === 'strict' && !isOllamaTool(toolName)) {
-        const reason =
-          'Strict privacy mode: all non-local tool calls are blocked. ' +
-          'Swiss law: Art. 321 StGB / Art. 13 BGFA. ' +
-          'This content has been blocked from leaving the machine.';
-        process.stdout.write(JSON.stringify({
-          hookSpecificOutput: {
-            hookEventName: 'PreToolUse',
-            permissionDecision: 'deny',
-            permissionDecisionReason: reason,
-          },
-        }));
+    // Bash file path scanning: check if referenced files live in privileged dirs.
+    let bashPathResult = null;
+    if (toolName === 'Bash' && typeof toolInput.command === 'string') {
+      const filePaths = extractBashFilePaths(toolInput.command);
+      for (const fp of filePaths) {
+        if (DISCRIMINATOR_PATH.test(fp)) {
+          bashPathResult = { category: 'bash-file-path-exfil', strength: 'weak' };
+          break;
+        }
       }
+    }
+
+    if (!content.trim() && !bashPathResult) {
+      // No text content and no suspicious file paths — nothing to classify.
       process.exit(0);
     }
 
-    const result = classifyWithMode(content, pathHint, mode, toolName);
+    let result = classifyWithMode(content, pathHint, mode, toolName);
+
+    // If content classification found nothing but Bash paths are suspicious, flag it.
+    if (!result && bashPathResult) {
+      const decision = (mode === 'strict' && !isOllamaTool(toolName)) ? 'deny' : 'ask';
+      result = { category: bashPathResult.category, decision };
+    }
+
     if (!result) { process.exit(0); }
 
     const reason =
@@ -148,6 +156,36 @@ function extractPathHint(input) {
   return '';
 }
 
+/**
+ * Extract file paths referenced in a Bash command string.
+ * Catches: @filepath (curl --data-binary), < filepath (redirect),
+ * and arguments to cat/head/tail/less/more/base64/xxd/od/strings.
+ */
+function extractBashFilePaths(command) {
+  if (typeof command !== 'string') return [];
+  const paths = [];
+
+  // @filepath (curl --data-binary @/path/to/file)
+  const atPattern = /@(\/[^\s;|&"']+)/g;
+  let m;
+  while ((m = atPattern.exec(command)) !== null) paths.push(m[1]);
+
+  // < filepath (input redirection)
+  const redirectPattern = /<\s*(\/[^\s;|&"']+)/g;
+  while ((m = redirectPattern.exec(command)) !== null) paths.push(m[1]);
+
+  // cat/head/tail/less/more/base64/xxd/od/strings followed by filepath(s)
+  const cmdPattern = /\b(?:cat|head|tail|less|more|base64|xxd|od|strings)\s+((?:\/[^\s;|&"']+\s*)+)/gi;
+  while ((m = cmdPattern.exec(command)) !== null) {
+    const args = m[1].trim().split(/\s+/);
+    for (const a of args) {
+      if (a.startsWith('/')) paths.push(a);
+    }
+  }
+
+  return paths;
+}
+
 function walkStrings(node, emit, depth) {
   if (depth === undefined) depth = 0;
   if (depth > 6) return; // hard cap to avoid pathological MCP payloads
@@ -168,24 +206,30 @@ function walkStrings(node, emit, depth) {
 const fs = require('node:fs');
 const path = require('node:path');
 
+const VALID_MODES = ['strict', 'balanced', 'cloud'];
+const MODE_SEVERITY = { cloud: 0, balanced: 1, strict: 2 };
+const DEFAULT_MODE = 'balanced';
+
 /**
  * Read privacy_mode with the following precedence:
  *   1. CLAUDE_PLUGIN_USER_CONFIG env var (JSON, set by Cowork Desktop)
  *   2. ~/.betterask/config.yaml file (set by /bettercallclaude:privacy command)
+ *      — the file can only RAISE severity above the default (balanced).
+ *        A file requesting 'cloud' (less restrictive) is ignored.
  *   3. Default: 'balanced'
  */
 function resolvePrivacyMode() {
-  // 1. Try env var (Cowork Desktop userConfig)
+  // 1. Try env var (Cowork Desktop userConfig) — trusted source, no restriction.
   const raw = process.env.CLAUDE_PLUGIN_USER_CONFIG;
   if (raw) {
     try {
       const cfg = JSON.parse(raw);
       const m = (cfg.privacy_mode || '').toLowerCase().trim();
-      if (m === 'strict' || m === 'balanced' || m === 'cloud') return m;
+      if (VALID_MODES.includes(m)) return m;
     } catch { /* ignore malformed config */ }
   }
 
-  // 2. Try ~/.betterask/config.yaml
+  // 2. Try ~/.betterask/config.yaml — can only raise, never lower.
   try {
     const home = process.env.HOME || process.env.USERPROFILE || '';
     const cfgPath = path.join(home, '.betterask', 'config.yaml');
@@ -193,11 +237,13 @@ function resolvePrivacyMode() {
     const match = content.match(/^privacy_mode:\s*(\S+)/m);
     if (match) {
       const m = match[1].toLowerCase().trim();
-      if (m === 'strict' || m === 'balanced' || m === 'cloud') return m;
+      if (VALID_MODES.includes(m) && MODE_SEVERITY[m] >= MODE_SEVERITY[DEFAULT_MODE]) {
+        return m;
+      }
     }
   } catch { /* file not found or unreadable — use default */ }
 
-  return 'balanced';
+  return DEFAULT_MODE;
 }
 
 // ---------------------------------------------------------------------------
@@ -308,10 +354,11 @@ function classifyWithMode(content, pathHint, mode, toolName) {
   if (mode === 'strict') {
     // Ollama is local — always exempt from strict blocking.
     if (isOllamaTool(toolName)) return null;
-    // In strict mode, all other content is denied.
+    // Strict applies balanced-like pattern matching but with deny instead of ask.
+    // Content without privilege markers is allowed through so MCP servers remain usable.
     const result = classify(content, pathHint);
     if (result) return { category: result.category, decision: 'deny' };
-    return { category: 'strict-mode-block', decision: 'deny' };
+    return null;
   }
 
   const result = classify(content, pathHint);
@@ -352,9 +399,13 @@ module.exports = {
   resolvePrivacyMode,
   extractTextFromInput,
   extractPathHint,
+  extractBashFilePaths,
   hasDiscriminator,
   STRONG_PATTERNS,
   WEAK_PATTERNS,
+  DISCRIMINATOR_PATH,
+  MODE_SEVERITY,
+  DEFAULT_MODE,
 };
 
 if (require.main === module) {

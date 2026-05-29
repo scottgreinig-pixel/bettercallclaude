@@ -23,9 +23,9 @@ Output the following formatted block (replace the mode with the actual current v
 
   Available modes:
   ┌─────────────┬──────────────────────────────────────────────────┐
-  │ strict      │ All non-local tool calls blocked (deny).        │
-  │             │ Only Ollama (local) is exempt.                   │
-  │             │ Use when handling privileged client content.      │
+  │ strict      │ Same pattern matching as balanced but blocks     │
+  │             │ (deny) instead of prompting. Ollama exempt.      │
+  │             │ MCP servers remain usable for non-privileged.    │
   ├─────────────┼──────────────────────────────────────────────────┤
   │ balanced    │ Strong privilege markers prompt for confirmation │
   │  (default)  │ (ask). Weak markers with legal context also     │
