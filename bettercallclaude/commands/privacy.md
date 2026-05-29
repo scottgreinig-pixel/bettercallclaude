@@ -23,9 +23,9 @@ Output the following formatted block (replace the mode with the actual current v
 
   Available modes:
   ┌─────────────┬──────────────────────────────────────────────────┐
-  │ strict      │ All non-local tool calls blocked (deny).        │
-  │             │ Only Ollama (local) is exempt.                   │
-  │             │ Use when handling privileged client content.      │
+  │ strict      │ Same pattern matching as balanced but blocks     │
+  │             │ (deny) instead of prompting. Ollama exempt.      │
+  │             │ MCP servers remain usable for non-privileged.    │
   ├─────────────┼──────────────────────────────────────────────────┤
   │ balanced    │ Strong privilege markers prompt for confirmation │
   │  (default)  │ (ask). Weak markers with legal context also     │
@@ -46,7 +46,7 @@ Output the following formatted block (replace the mode with the actual current v
 ======================================================
 ```
 
-### Argument is `strict`, `balanced`, or `cloud`
+### Argument is `strict` or `balanced`
 
 1. Read the existing `~/.betterask/config.yaml` file. If it does not exist, create it.
 2. Set or update the `privacy_mode` key to the requested value.
@@ -57,8 +57,22 @@ Output the following formatted block (replace the mode with the actual current v
 ```
 Privacy mode changed: balanced → strict
 
-The hook will now block all non-Ollama tool calls.
+The hook will now deny tool calls containing privilege markers.
 Changes take effect on the next tool call.
+```
+
+### Argument is `cloud`
+
+The config file can only raise privacy severity, never lower it. Since `cloud` is less restrictive than the default `balanced`, it cannot be set via the config file. Respond:
+
+```
+⚠ Cloud mode cannot be set via the config file.
+
+The config file can only raise privacy (balanced → strict), not lower it
+(balanced → cloud). This protects against silent downgrade attacks.
+
+To use cloud mode, set it via Cowork Desktop plugin settings
+(CLAUDE_PLUGIN_USER_CONFIG env var).
 ```
 
 ### Invalid argument

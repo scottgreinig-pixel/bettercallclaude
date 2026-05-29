@@ -169,10 +169,17 @@ When operating as a Claude Code plugin, the privacy detection runs as a PreToolU
 1. The hook script scans the tool input for privacy patterns across DE/FR/IT/EN
 2. **Strong patterns** (e.g. Anwaltsgeheimnis, Art. 321 StGB, segreto professionale) → `{"decision":"ask"}` — user prompted to confirm and can choose to proceed
 3. **Weak patterns** with legal context (e.g. bare "vertraulich" in a `/klient/` path) → `{"decision":"ask"}` — user prompted to confirm
-4. In **strict** mode, all non-Ollama tool calls are blocked (`deny`). Ollama (`mcp__ollama__*`) is exempt as it processes locally
-5. In **cloud** mode, strong patterns still prompt (`ask`); weak patterns are allowed without prompt
+4. **Bash file path scanning** — file paths referenced in Bash commands (`@filepath`, `< filepath`, arguments to `cat`/`head`/`tail`/`base64`, etc.) are checked against privileged directory discriminators. If a path matches (e.g. `/klienten/Meier/gutachten.docx`), the hook prompts (`ask`) even if the command string itself has no privilege markers
+5. In **strict** mode, same pattern matching as balanced but with `deny` instead of `ask`. Content without privilege markers passes through so MCP servers remain usable. Ollama (`mcp__ollama__*`) is always exempt as it processes locally
+6. In **cloud** mode, strong patterns still prompt (`ask`); weak patterns are allowed without prompt
 
-This ensures that privileged content is never accidentally written to files, committed to repositories, exfiltrated via shell commands, or transmitted to external services without explicit user consent.
+This ensures that privileged content is never accidentally written to files, committed to repositories, or transmitted to external services without explicit user consent.
+
+## Known Limitations
+
+- **Regex-based**: Concatenated keywords (e.g. `segretoprofessionale`), accent variations (e.g. `segrèto`), and base64-encoded content bypass detection. The hook targets accidental leakage, not adversarial evasion.
+- **Bash file paths**: The hook checks file path names against directory discriminators but does not read file contents. A file in a non-privileged directory containing privileged content will not be flagged.
+- **Config file downgrade protection**: The `~/.betterask/config.yaml` file can only raise the privacy mode (e.g. balanced → strict), never lower it (e.g. balanced → cloud). The `CLAUDE_PLUGIN_USER_CONFIG` env var from Cowork Desktop is trusted and can set any mode.
 
 ## Professional Disclaimer
 
