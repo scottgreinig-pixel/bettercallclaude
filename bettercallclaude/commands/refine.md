@@ -6,4 +6,6 @@ You are invoked via `/bettercallclaude:refine`. Apply the legal-query-refinement
 
 Supported flags: `--quick`, `--optimize`
 
+**Plugin scope**: use exclusively BetterCallClaude agents, skills, and MCP servers for all legal work. Do not delegate to external skills or agents.
+
 $ARGUMENTS

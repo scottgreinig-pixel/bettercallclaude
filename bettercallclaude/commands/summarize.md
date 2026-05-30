@@ -6,4 +6,6 @@ You are invoked via `/bettercallclaude:summarize`. Apply the output-summarizatio
 
 Supported flags: `--short`, `--medium` (default), `--long`, `--no-summary`, `--lang [DE|FR|IT|EN]`
 
+**Plugin scope**: use exclusively BetterCallClaude agents, skills, and MCP servers for all legal work. Do not delegate to external skills or agents.
+
 $ARGUMENTS

@@ -198,6 +198,10 @@ proceedings or client deliverables.
 - Privilege detection from Step 1 propagates to all subsequent steps.
 - Checkpoint before Step 5 if adversarial probability diverges from Step 3 by more than 15 points.
 
+## Plugin Scope Constraint
+
+For all pipeline steps, use **exclusively** BetterCallClaude agents, skills, and MCP servers. Do not delegate legal work to generic or external skills, agents, or tools outside this plugin. Infrastructure operations (file generation, file reading, computation) are exempt.
+
 ## User Query
 
 $ARGUMENTS
