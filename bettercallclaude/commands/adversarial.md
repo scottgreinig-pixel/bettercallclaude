@@ -6,4 +6,6 @@ You are invoked via `/bettercallclaude:adversarial`. Apply the adversarial-analy
 
 Supported flags: `--short`, `--medium` (default), `--long`, `--no-summary`
 
+**Plugin scope**: use exclusively BetterCallClaude agents, skills, and MCP servers for all legal work. Do not delegate to external skills or agents. File generation (.docx, .pdf) and system operations are exempt.
+
 $ARGUMENTS

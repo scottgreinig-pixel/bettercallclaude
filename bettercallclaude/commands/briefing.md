@@ -153,6 +153,10 @@ After plan approval, present the execution options:
 - Depth overrides must be respected even when complexity scoring suggests otherwise.
 - When memory is unavailable, degrade gracefully — offer YAML paste-in as a fallback.
 
+## Plugin Scope Constraint
+
+For all briefing and intake tasks, use **exclusively** BetterCallClaude agents, skills, and MCP servers. Do not delegate legal work to generic or external skills, agents, or tools outside this plugin.
+
 ## User Query
 
 $ARGUMENTS

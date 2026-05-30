@@ -10,4 +10,6 @@ If no canton is identifiable from the input, respond: "No canton specified. Whic
 
 Use the `entscheidsuche` MCP server filtered by the canton's source code. Apply competence assessment (Art. 49 BV). If the subject is exclusively federal, note this and offer to continue with procedural/organizational cantonal aspects only.
 
+**Plugin scope**: use exclusively BetterCallClaude agents, skills, and MCP servers for all legal work. Do not delegate to external skills or agents.
+
 $ARGUMENTS
