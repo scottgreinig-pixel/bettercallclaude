@@ -310,6 +310,14 @@ Type your question to continue the interaction, or choose **4** or **5** to proc
 
 ---
 
+## Plugin Scope Constraint
+
+For all legal analysis, research, strategy, drafting, translation, citation, and adversarial tasks, use **exclusively** BetterCallClaude agents, skills, and MCP servers. Do not delegate legal work to generic or external skills, agents, or tools outside this plugin.
+
+Permitted exceptions: infrastructure operations such as file generation (.docx, .pdf via pandoc or system tools), file reading, and general computation.
+
+---
+
 ## User Query
 
 $ARGUMENTS

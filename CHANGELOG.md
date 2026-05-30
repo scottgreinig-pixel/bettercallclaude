@@ -4,6 +4,18 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.7.0] - 2026-05-31
+
+### Added
+- **Plugin scope enforcement.** All 17 legal commands now include an explicit "Plugin Scope Constraint" instruction requiring that legal work (research, strategy, drafting, translation, citation, adversarial analysis) uses exclusively BetterCallClaude agents, skills, and MCP servers. This prevents Claude from delegating legal tasks to generic or external skills outside the plugin. Infrastructure operations (file generation, file reading, computation) are exempt.
+
+### Notes
+- No MCP server changes.
+- No new commands, agents, or skills.
+- Commands updated: `legal`, `legal-5step`, `draft`, `research`, `strategy`, `adversarial`, `translate`, `cite`, `validate`, `doc-analyze`, `summarize`, `workflow`, `refine`, `briefing`, `cantonal`, `federal`, `precedent`.
+
+---
+
 ## [4.6.2] - 2026-05-28
 
 ### Fixed — Audit hardening (NEW-1 through NEW-6)

@@ -172,6 +172,10 @@ Validate that the requested agents exist and that the data flow between them is 
 - Final output must synthesize all stages, not merely concatenate them.
 - Multi-agent pipelines (3+ agents) should default to summarized output via the summarizer agent.
 
+## Plugin Scope Constraint
+
+For all workflow stages, use **exclusively** BetterCallClaude agents, skills, and MCP servers. Do not delegate legal work to generic or external skills, agents, or tools outside this plugin. Infrastructure operations (file generation, file reading, computation) are exempt.
+
 ## User Query
 
 $ARGUMENTS
