@@ -236,3 +236,16 @@ When building advocate and adversary positions:
 - Risk probabilities must be calibrated against actual BGE outcome patterns
 - Multi-lingual terminology must be consistent throughout each report
 - Professional disclaimer: analysis does not constitute legal advice and requires lawyer review
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| BGE precedent search | Via `swiss-caselaw`, `entscheidsuche`, `bge-search` | Known landmark BGE from training data only |
+| Success rate analysis | Via `analyze_precedent_success_rate` | Estimated from model knowledge; mark as *(stima non verificata)* |
+| Citation verification | Verified via MCP | Format-checked only; mark as *(non verificato)* |
+
+In reduced mode, add a notice:
+> **Nota**: analisi avversariale in modalità ridotta. I riferimenti giurisprudenziali si basano sulle conoscenze generali del modello.

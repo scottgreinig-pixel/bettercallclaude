@@ -98,7 +98,9 @@ claude --plugin-dir bettercallclaude/
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
-| `/bettercallclaude:setup` | Check MCP server status and auto-install servers to Claude Desktop if needed. |
+| `/bettercallclaude:start` | Welcome and onboarding — checks connectivity, guides playbook creation, shows usage examples. |
+| `/bettercallclaude:doctor` | Diagnose MCP server connectivity — tests each server, reports status and impact. |
+| `/bettercallclaude:setup` | ⚠ Alias for `/start` — will be removed in v5.0. |
 
 ### Usage examples
 

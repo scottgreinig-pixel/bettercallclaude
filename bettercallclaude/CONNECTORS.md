@@ -43,7 +43,7 @@ To switch back to HTTP:
 
 #### Without MCP Servers
 
-BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:setup` to check connectivity.
+BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:doctor` to check connectivity.
 
 ---
 

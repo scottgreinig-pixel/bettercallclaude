@@ -218,3 +218,17 @@ Before delivering any output containing legal citations:
 - Apply the correct judgment type term (Urteil/Arret/Sentenza) based on decision type
 - For nDSG citations: confirm whether the matter arose before or after 1.9.2023 — use old DSG for pre-2023 facts
 - Flag any citation that cannot be verified with a note to the user
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Citation validation | Verified via `legal-citations` MCP | Format check only (syntax, structure); mark as *(formato verificato, esistenza non confermata)* |
+| Citation formatting | Via `format_citation` MCP | Apply formatting rules from this skill manually |
+| BGE citation generation | Via `swiss-caselaw` → `cite()` | **Not available** — do not construct BGE citations manually; flag as unverifiable |
+| Statute text | Via `fedlex-sparql` | From model knowledge; note verification needed |
+
+In reduced mode, add a notice:
+> **Nota**: citazioni verificate solo nel formato (non nell'esistenza). Verifica manuale necessaria.

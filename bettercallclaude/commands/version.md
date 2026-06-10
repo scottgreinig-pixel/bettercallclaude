@@ -14,13 +14,13 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.8.0
+  Version:      4.8.1
   Format:       Claude Code Plugin (Cowork Desktop)
   Author:       Federico Cesconi
   License:      AGPL-3.0
 ======================================================
 
-  COMMANDS (22)
+  COMMANDS (24)
   -------------
   [x] legal          - Intelligent gateway and router
   [x] research       - BGE/ATF/DTF precedent search
@@ -38,7 +38,9 @@ Output the following formatted block:
   [x] briefing       - Structured pre-execution briefing
   [x] translate      - Legal translation DE/FR/IT/EN
   [x] legal-5step    - 5-step end-to-end legal pipeline
-  [x] setup          - MCP server connectivity check
+  [x] start          - Welcome and onboarding
+  [x] doctor         - MCP server diagnostics
+  [x] setup          - Alias for start (deprecated, v5.0 removal)
   [x] version        - This status display
   [x] refine         - Prompt refinement and reformulation
   [x] summarize      - Consolidate multi-agent output
@@ -85,7 +87,7 @@ Output the following formatted block:
   [ ] ollama            - Privacy classification             (Local)
 
   HTTP Service: https://mcp.bettercallclaude.ch
-  Run /bettercallclaude:setup to check connectivity
+  Run /bettercallclaude:doctor to check connectivity
 
   LANGUAGES
   ---------

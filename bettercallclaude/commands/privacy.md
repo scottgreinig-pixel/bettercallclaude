@@ -37,9 +37,9 @@ Output the following formatted block (replace the mode with the actual current v
   └─────────────┴──────────────────────────────────────────────────┘
 
   Config file:   ~/.betterask/config.yaml
-  Hook:          PreToolUse (Write/Edit/MultiEdit/Bash/WebFetch/MCP)
+  Protezione:    Controllo automatico su ogni operazione
 
-  To change:     /bettercallclaude:privacy strict
+  Per cambiare:  /bettercallclaude:privacy strict
                  /bettercallclaude:privacy balanced
                  /bettercallclaude:privacy cloud
 
@@ -88,21 +88,9 @@ Run /bettercallclaude:privacy to see current status.
 
 ## Implementation Notes
 
-- The config file path is `~/.betterask/config.yaml`.
-- Use Bash to read/write the file. Example read:
-  ```bash
-  cat ~/.betterask/config.yaml 2>/dev/null || echo "privacy_mode: balanced"
-  ```
-- Example write (preserving other keys):
-  ```bash
-  mkdir -p ~/.betterask
-  if [ -f ~/.betterask/config.yaml ]; then
-    grep -v '^privacy_mode:' ~/.betterask/config.yaml > ~/.betterask/config.yaml.tmp
-    mv ~/.betterask/config.yaml.tmp ~/.betterask/config.yaml
-  fi
-  echo "privacy_mode: strict" >> ~/.betterask/config.yaml
-  ```
-- The `privacy-check.js` hook reads this file as a fallback when `CLAUDE_PLUGIN_USER_CONFIG` does not contain a `privacy_mode` value.
+- The privacy mode is saved locally in the file `~/.betterask/config.yaml`.
+- Read and write this file to get/set the `privacy_mode` key. Preserve any other keys already in the file.
+- The privacy detection system reads this file as a fallback when the plugin configuration does not contain an explicit `privacy_mode` value.
 
 ## User Query
 

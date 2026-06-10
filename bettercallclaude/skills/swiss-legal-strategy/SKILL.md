@@ -288,3 +288,17 @@ Walk-away: CHF [minimum]
 Always include:
 
 > This strategic assessment is based on information provided and current Swiss law. Actual outcomes may vary based on factual developments, evidence quality, and judicial discretion. Probability estimates are informed by precedent analysis but are not guarantees. Regular strategy review is recommended as the case progresses. Consultation with a licensed Swiss attorney is required for binding legal decisions.
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Precedent success rate | Data from `entscheidsuche` | Estimated from model knowledge; mark as *(stima non verificata)* |
+| Similar cases | `find_similar_cases` via MCP | General model knowledge; reduced precision |
+| Leading cases | `find_leading_cases` via MCP | Known landmark BGE from training data only |
+| Probability estimates | Grounded in MCP data | Less reliable; flag with confidence caveat |
+
+In reduced mode, add a notice to the strategy output:
+> **Nota**: analisi strategica in modalità ridotta. Le stime di probabilità si basano sulle conoscenze generali del modello, non su dati verificati dalle banche dati.

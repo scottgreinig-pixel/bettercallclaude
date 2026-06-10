@@ -16,6 +16,15 @@ You are invoked via `/bettercallclaude:legal-5step`. You coordinate a sequential
 - `--lang=DE|FR|IT|EN`: Force output language. Defaults to auto-detect from input.
 - `--canton=XX`: Set cantonal jurisdiction (e.g., `--canton=ZH`). Defaults to federal.
 
+**Natural language equivalents**: You can also say:
+- "analisi breve" or "short analysis" → `--short`
+- "analisi dettagliata" or "full detail" → `--long`
+- "fermati dopo la ricerca" or "stop after research" → `--stop-after=2`
+- "in tedesco" or "auf Deutsch" → `--lang=DE`
+- "giurisdizione Zurigo" or "Zurich jurisdiction" → `--canton=ZH`
+
+**Output convention**: Write all 5 steps to `bcc-output/YYYY-MM-DD-<slug>/` (01-intake.md through 05-draft.md plus sources.md). Give in chat only a summary per step with the file path. See `skills/shared/output-conventions.md`.
+
 ## Pipeline Overview
 
 ```
