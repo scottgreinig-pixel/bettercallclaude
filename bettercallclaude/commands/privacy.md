@@ -37,9 +37,9 @@ Output the following formatted block (replace the mode with the actual current v
   └─────────────┴──────────────────────────────────────────────────┘
 
   Config file:   ~/.betterask/config.yaml
-  Protezione:    Controllo automatico su ogni operazione
+  Protection:    Automatic check on every operation
 
-  Per cambiare:  /bettercallclaude:privacy strict
+  To change:     /bettercallclaude:privacy strict
                  /bettercallclaude:privacy balanced
                  /bettercallclaude:privacy cloud
 
