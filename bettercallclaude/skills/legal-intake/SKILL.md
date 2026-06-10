@@ -88,3 +88,16 @@ If the user agrees, run the full briefing workflow via `/bettercallclaude:briefi
 - A missed briefing on a complex case causes real harm (wrong agents, wasted effort). When in doubt, suggest.
 - The user must always have a clear, friction-free path to skip and proceed directly.
 - Maximum 3 Socratic rounds in refine mode — do not over-question.
+
+## Widget Integration — Intake Form (W4)
+
+When gathering information in Briefing mode (Socratic dialogue), check whether the `present_intake_form` tool (server `legal-persona`) is available.
+
+**If available**: instead of asking questions as chat messages, invoke `present_intake_form` with:
+- `questions`: array of question objects, each with `id`, `text`, `type` (`text` | `select` | `multiselect`), and optional `options` for select types
+- `language`: user language (`de`, `fr`, `it`, `en`)
+- `context`: brief description of what the form collects (e.g., "Briefing intake — multi-domain IP/employment dispute")
+
+The skill decides WHICH questions to ask; the tool only renders them as a form. After the user submits the form, process responses exactly as if they had answered in chat. Allow maximum one follow-up form round (total: initial + 1 follow-up). Then produce the execution plan as normal.
+
+**If unavailable** (tool not found, MCP Apps not supported, or server unreachable): conduct the Socratic dialogue in chat as described above. This is the current default and must remain fully functional.

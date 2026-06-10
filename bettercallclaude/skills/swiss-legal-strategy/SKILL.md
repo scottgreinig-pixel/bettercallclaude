@@ -117,6 +117,8 @@ Assess:
 
 Timelines vary significantly by canton. ZH Handelsgericht is often faster for commercial disputes. GE and VD courts have French-language proceedings.
 
+**Procedural deadline computation**: When the question involves procedural deadlines under ZPO, BGG, VwVG, or StPO, use the `compute_deadlines` tool (server `legal-persona`) if available instead of calculating manually. The tool applies the correct Fristberechnung rules (Art. 142-149 ZPO, Art. 44-47 BGG) including court holidays (Gerichtsferien), weekend/holiday adjustments, and cantonal variations. Always include the step-by-step computation in the deliverable, plus the mandatory disclaimer that deadlines must be verified with the competent court. If `compute_deadlines` is not available, calculate manually following the same rules and mark the result as *(manuell berechnet — bitte beim zuständigen Gericht verifizieren)*.
+
 ### Provisional Measures (Vorsorgliche Massnahmen)
 - Art. 261-269 ZPO
 - Requirements: Glaubhaftmachung (prima facie showing), urgency, proportionality
@@ -181,7 +183,7 @@ Strategic considerations for administrative matters:
 - **Beschwerde routes**: Federal — BVGer (Art. 31ff VGG); Cantonal — Verwaltungsgericht; then Bundesgericht
 - **Aufschiebende Wirkung** (suspensory effect, Art. 55 VwVG): Request stay of contested decision pending appeal
 - **Kognition** (scope of review): Full review on law + facts at BVGer; more limited at Bundesgericht
-- **Frist** (deadlines): Federal appeals typically 30 days (Art. 50 VwVG); cantonal varies
+- **Frist** (deadlines): Federal appeals typically 30 days (Art. 50 VwVG); cantonal varies. Use `compute_deadlines` tool when available for exact computation; otherwise calculate manually with disclaimer.
 
 ## ADR Assessment
 
