@@ -1,0 +1,48 @@
+# BetterCallClaude — Lokales Playbook
+
+<!-- Speichern Sie diese Datei als:
+     - .claude/bettercallclaude.local.md  (Claude Code, pro Projekt)
+     - oder in einen geteilten Ordner       (Cowork Desktop)
+     Passen Sie die Abschnitte an Ihre Kanzlei/Rechtsabteilung an.
+     Die Sprache dieses Playbooks bestimmt die Standard-Ausgabesprache. -->
+
+## Profil Kanzlei / Rechtsdienst
+
+- **Name**: [Name der Kanzlei / des Unternehmens]
+- **Sitz**: [Stadt, Kanton]
+- **Hauptkantone**: [z.B. ZH, ZG, SZ]
+- **Arbeitssprachen**: [z.B. DE, EN]
+- **Standardsprache für Ausgabe und Zitate**: DE
+- **Typ**: Studio legale | In-house | Treuhand
+
+## Vertragliche Standardpositionen
+
+- **Anwendbares Recht**: Schweizer Recht (CISG-Ausschluss: ja/nein)
+- **Gerichtsstand**: [Sitz der Kanzlei; Swiss Rules Schiedsklausel: ja/nein]
+- **Haftungsbeschränkung**: Akzeptabler Cap [z.B. Vertragswert]; nie akzeptable Ausschlüsse [z.B. Personenschäden]
+  — Hinweis: Vorsatz und grobe Fahrlässigkeit sind zwingend (Art. 100 OR)
+- **Konventionalstrafe**: Akzeptable Schwellen [z.B. max. 10% des Auftragswertes] (Art. 160 ff. OR)
+- **Laufzeit und Kündigung**: Standardpräferenzen [z.B. 12 Monate, 3 Monate Kündigungsfrist]
+- **NDA**: Maximale akzeptable Dauer [z.B. 5 Jahre]; Umfang der Definition "Vertrauliche Informationen"
+
+## Risikoschwellen und Eskalation
+
+- **Schwellenwert für obligatorische menschliche Überprüfung**: [z.B. Streitwert > CHF 500'000]
+- **Klauseln, die immer eine Eskalation auslösen**:
+  - Unbeschränkte Garantien
+  - Verzicht auf zwingende Rechte (zwingendes Recht)
+  - Derogationen von Art. 100 OR (Haftung bei Vorsatz/grober Fahrlässigkeit)
+  - [Weitere nach Bedarf ergänzen]
+- **Eskalationsempfänger**: [Rolle, z.B. Managing Partner / Chefjurist]
+
+## Datenschutz
+
+- **Typische Rolle**: Verantwortlicher / Auftragsbearbeiter
+- **Wiederkehrende Auslandstransfers**: [z.B. EU, USA — Angemessenheitsbeschluss / SCC]
+- **Standard-DPA**: [z.B. Vorlage gemäss nDSG / eigene Vorlage]
+
+## Stil und Format
+
+- **Zitierformat**: [z.B. BGE 144 III 462 E. 3.2; Art. 97 Abs. 1 OR]
+- **Ausgabeformat**: Memo / Redline / Tabelle
+- **Sprache der Zitate**: DE (BGE-Format)

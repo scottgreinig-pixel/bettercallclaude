@@ -18,7 +18,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 ---
 
-## Commands (21)
+## Commands (22)
 
 ### Core Commands
 
@@ -41,7 +41,8 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 | Command | Description |
 |---------|-------------|
-| `/bettercallclaude:doc-analyze` | Analyze legal documents: issues, clauses, citations, compliance |
+| `/bettercallclaude:doc-analyze` | Analyze legal documents: issues, clauses, citations, compliance (playbook-aware) |
+| `/bettercallclaude:nda-triage` | Triage NDAs: GREEN/YELLOW/RED against Swiss law and playbook thresholds (single or batch) |
 | `/bettercallclaude:precedent` | Search and analyze BGE precedent chains and evolution |
 | `/bettercallclaude:validate` | Batch validate Swiss legal citations for format and existence |
 | `/bettercallclaude:adversarial` | Three-agent adversarial analysis: advocate, adversary, judge |
@@ -203,7 +204,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.6.2 -- Swiss Legal Intelligence for Cowork Desktop**
+**BetterCallClaude v4.8.0 -- Swiss Legal Intelligence for Cowork Desktop**
 
 If the user provided additional input, respond to it in the context of this help reference.
 

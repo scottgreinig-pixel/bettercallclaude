@@ -14,13 +14,13 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.7.0
+  Version:      4.8.0
   Format:       Claude Code Plugin (Cowork Desktop)
   Author:       Federico Cesconi
   License:      AGPL-3.0
 ======================================================
 
-  COMMANDS (21)
+  COMMANDS (22)
   -------------
   [x] legal          - Intelligent gateway and router
   [x] research       - BGE/ATF/DTF precedent search
@@ -30,6 +30,7 @@ Output the following formatted block:
   [x] cantonal       - Cantonal law mode
   [x] cite           - Citation formatting
   [x] doc-analyze    - Document analysis
+  [x] nda-triage     - NDA triage (GREEN/YELLOW/RED)
   [x] precedent      - Precedent chain analysis
   [x] validate       - Batch citation validation
   [x] adversarial    - Three-agent adversarial analysis
@@ -43,6 +44,12 @@ Output the following formatted block:
   [x] summarize      - Consolidate multi-agent output
   [x] privacy        - View/change privacy mode
   [x] help           - Command reference
+
+  PLAYBOOK
+  --------
+  Supports bettercallclaude.local.md for firm-specific
+  positions, risk thresholds, and output preferences.
+  Compatible with legal.local.md (Anthropic format).
 
   AGENTS (20)
   -----------

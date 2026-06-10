@@ -1,0 +1,9 @@
+BetterCallClaude — Swiss Legal Intelligence for Cowork Desktop
+
+The Swiss law plugin for Claude. 20 agents, 22 commands, 15 skills, and 9 MCP servers covering federal and cantonal law across all 26 Swiss cantons in DE/FR/IT/EN.
+
+Research BGE/ATF/DTF precedents against official sources. Draft contracts and court submissions with verified Swiss citations. Triage NDAs with Swiss-law criteria (GREEN/YELLOW/RED). Run three-agent adversarial analysis. Protect client confidentiality with built-in Art. 321 StGB privacy routing.
+
+Customize with a local playbook for firm-specific positions, risk thresholds, and citation preferences. Compatible with Anthropic's Legal plugin — BetterCallClaude handles Swiss law, the official plugin handles US law.
+
+No API keys required. MCP servers connect via HTTP.

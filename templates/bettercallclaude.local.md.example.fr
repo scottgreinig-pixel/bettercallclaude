@@ -1,0 +1,48 @@
+# BetterCallClaude — Playbook local
+
+<!-- Enregistrez ce fichier sous :
+     - .claude/bettercallclaude.local.md  (Claude Code, par projet)
+     - ou dans un dossier partage            (Cowork Desktop)
+     Adaptez les sections a votre etude/service juridique.
+     La langue de ce playbook determine la langue de sortie par defaut. -->
+
+## Profil de l'etude / service juridique
+
+- **Nom**: [Nom de l'etude / de l'entreprise]
+- **Siege**: [Ville, canton]
+- **Cantons principaux**: [p. ex. GE, VD, FR]
+- **Langues de travail**: [p. ex. FR, DE, EN]
+- **Langue par defaut pour la sortie et les citations**: FR
+- **Type**: Etude d'avocats | In-house | Fiduciaire
+
+## Positions contractuelles standard
+
+- **Droit applicable**: Droit suisse (exclusion CVIM : oui/non)
+- **For competent**: [Siege de l'etude ; clause arbitrale Swiss Rules : oui/non]
+- **Limitation de responsabilite**: Cap acceptable [p. ex. valeur du contrat] ; exclusions jamais acceptables [p. ex. dommages corporels]
+  — Note : le dol et la faute grave sont imperatifs (art. 100 CO)
+- **Clause penale**: Seuils acceptables [p. ex. max. 10% de la valeur du mandat] (art. 160 ss CO)
+- **Duree et resiliation**: Preferences standard [p. ex. 12 mois, preavis de 3 mois]
+- **NDA**: Duree maximale acceptable [p. ex. 5 ans] ; perimetre de la definition « informations confidentielles »
+
+## Seuils de risque et escalade
+
+- **Seuil pour revision humaine obligatoire**: [p. ex. valeur litigieuse > CHF 500'000]
+- **Clauses declenchant systematiquement une escalade**:
+  - Garanties illimitees
+  - Renonciation preventive a des droits imperatifs (droit imperatif)
+  - Derogations a l'art. 100 CO (responsabilite en cas de dol/faute grave)
+  - [Completer selon les besoins]
+- **Destinataire de l'escalade**: [Role, p. ex. associe gerant / responsable juridique]
+
+## Protection des donnees
+
+- **Role typique**: Responsable du traitement / sous-traitant
+- **Transferts a l'etranger recurrents**: [p. ex. UE, USA — decision d'adequation / CSC]
+- **DPA standard**: [p. ex. modele nLPD / modele interne]
+
+## Style et format
+
+- **Format de citation**: [p. ex. ATF 144 III 462 consid. 3.2 ; art. 97 al. 1 CO]
+- **Format de sortie**: Memo / Redline / Tableau
+- **Langue des citations**: FR (format ATF)
