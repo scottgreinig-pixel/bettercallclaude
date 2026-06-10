@@ -16,6 +16,7 @@ All notable changes to BetterCallClaude will be documented in this file.
 - `docs/PLAYBOOK.md` — playbook pattern documentation.
 - `docs/MIGRATION-FROM-ANTHROPIC-LEGAL.md` — migration and coexistence guide.
 - `docs/listing-copy-en.txt` — plugin listing copy for claude.com/plugins.
+- Playbook integration added to `swiss-legal-strategy` skill (escalation thresholds).
 
 ### Notes
 - No MCP server changes.
