@@ -55,4 +55,4 @@ Structure output as: Summary, BGE Precedents (verified), Legal Framework, Multi-
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-citation-formats`, `swiss-jurisdictions`
+- `swiss-legal-research`, `swiss-citation-formats`

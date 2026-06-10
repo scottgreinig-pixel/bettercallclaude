@@ -53,16 +53,15 @@
 | 3 | `swiss-legal-strategy` | `.claude/` in playbook path (ok) | Yes (entscheidsuche, swiss-caselaw) | No | FIX: added reduced mode section |
 | 4 | `swiss-document-analysis` | `.claude/` in playbook path (ok) | Yes (6 servers) | No | FIX: added reduced mode section |
 | 5 | `swiss-citation-formats` | No | Yes (legal-citations, swiss-caselaw, fedlex) | No | FIX: added reduced mode section |
-| 6 | `swiss-jurisdictions` | No | Yes (entscheidsuche) | No | FIX: added reduced mode section |
-| 7 | `swiss-legal-translation` | No | Yes (legal-citations, fedlex) | No | FIX: added reduced mode section |
-| 8 | `adversarial-analysis` | No | Yes (swiss-caselaw, entscheidsuche, bge-search) | No | FIX: added reduced mode section |
-| 9 | `compliance-frameworks` | No | Yes (fedlex, entscheidsuche, onlinekommentar) | No | FIX: added reduced mode section |
-| 10 | `data-protection-law` | No | Yes (entscheidsuche, swiss-caselaw, fedlex, onlinekommentar) | No | FIX: added reduced mode section |
-| 11 | `privacy-routing` | Refs to `PreToolUse` hook, `userConfig` | Local (ollama) | Partial (privacy routing table) | FIX: added Cowork fallback section (D5) |
-| 12 | `legal-briefing` | No | No (orchestration only) | N/A | NONE |
-| 13 | `output-summarization` | No | No | N/A | NONE |
-| 14 | `legal-query-refinement` | Minor MCP ref | Minimal | N/A | NONE |
-| 15 | `legal-5step-framework` | No | Yes (via sub-commands) | Inherits from sub-skills | NONE |
+| 6 | `swiss-legal-translation` | No | Yes (legal-citations, fedlex) | No | FIX: added reduced mode section |
+| 7 | `adversarial-analysis` | No | Yes (swiss-caselaw, entscheidsuche, bge-search) | No | FIX: added reduced mode section |
+| 8 | `compliance-frameworks` | No | Yes (fedlex, entscheidsuche, onlinekommentar) | No | FIX: added reduced mode section |
+| 9 | `data-protection-law` | No | Yes (entscheidsuche, swiss-caselaw, fedlex, onlinekommentar) | No | FIX: added reduced mode section |
+| 10 | `privacy-routing` | Refs to `PreToolUse` hook, `userConfig` | Local (ollama) | Partial (privacy routing table) | FIX: added Cowork fallback section (D5) |
+| 11 | `legal-intake` | No | No (orchestration only) | N/A | NONE (merged from legal-briefing + legal-query-refinement in v4.8.2) |
+| 12 | `legal-5step-framework` | No | Yes (via sub-commands) | Inherits from sub-skills | NONE |
+
+> **Note (v4.8.2)**: `swiss-jurisdictions`, `output-summarization`, `legal-briefing`, and `legal-query-refinement` were consolidated in Spec D. See `docs/audit/SKILLS-AUDIT.md` for the full mapping.
 
 ---
 

@@ -62,4 +62,4 @@ Document Summary (type, language, applicable law, key provisions), Full Document
 
 ## Skills Referenced
 
-- `swiss-legal-drafting`, `swiss-citation-formats`, `swiss-jurisdictions`
+- `swiss-legal-drafting`, `swiss-citation-formats`

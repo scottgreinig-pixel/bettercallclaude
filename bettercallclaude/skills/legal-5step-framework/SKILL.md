@@ -1,6 +1,6 @@
 ---
 name: legal-5step-framework
-description: "BetterCallClaude 5-step Swiss legal framework — an end-to-end pipeline that chains five agents sequentially: (1) doc-analyze for intake and fact extraction, (2) swiss-legal-research for precedent and statute lookup via BGE/ATF/DTF, fedlex-sparql, entscheidsuche, and onlinekommentar MCP servers, (3) swiss-legal-strategy for claim strength, risk matrix, and settlement evaluation, (4) adversarial-analysis for three-agent Erwägung-style stress test, (5) swiss-legal-drafting for verified document production. Trigger when: a user invokes /bettercallclaude:legal-5step, asks to run the full framework on a case, wants a complete legal analysis from intake to draft, or says 'run all steps', 'full pipeline', 'end-to-end analysis', or 'complete legal workflow'. Do NOT trigger for: single-step tasks (use the individual command: research, strategy, adversarial, draft, or doc-analyze), citation-only work (use swiss-citation-formats), quick legal questions (use swiss-legal-research directly), or translation only (use swiss-legal-translation). Boundary with /bettercallclaude:workflow: the workflow command executes predefined pipelines (litigation-prep, due-diligence, etc.); legal-5step is a fixed five-step framework that always runs the same sequence and is optimized for repeatable client intake."
+description: "End-to-end 5-step Swiss legal pipeline: (1) intake/fact extraction, (2) BGE/statute research, (3) strategy/risk assessment, (4) adversarial stress test, (5) verified document drafting. Trigger when: user asks for full analysis, 'run all steps', 'full pipeline', or 'end-to-end'. Do NOT trigger for: single-step tasks (use individual commands), citation-only work, or translation. Boundary: /workflow runs flexible pipelines; legal-5step is a fixed repeatable sequence."
 ---
 
 # BetterCallClaude 5-Step Legal Framework
@@ -24,7 +24,7 @@ The five steps map to the five cognitive moves on any new Swiss legal matter:
 ## Step Definitions
 
 ### Step 1: INTAKE
-**Agent**: doc-analyzer | **Skill**: `swiss-jurisdictions`, `privacy-routing`
+**Agent**: doc-analyzer | **Skill**: `swiss-legal-research` (jurisdiction resolution), `privacy-routing`
 
 Extracts facts, identifies legal issues, determines jurisdiction and language, flags Anwaltsgeheimnis markers before any external MCP call. Privilege flag propagates through Steps 2–5.
 

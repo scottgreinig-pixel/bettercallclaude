@@ -144,4 +144,4 @@ You are a Swiss legal translation specialist. You translate legal texts between 
 
 ## Skills Referenced
 
-- `swiss-citation-formats`, `swiss-legal-research`, `swiss-jurisdictions`
+- `swiss-citation-formats`, `swiss-legal-research`

@@ -112,4 +112,4 @@ You are a Swiss data protection specialist. You analyze compliance with the revi
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `privacy-routing`, `swiss-jurisdictions`
+- `swiss-legal-research`, `privacy-routing`

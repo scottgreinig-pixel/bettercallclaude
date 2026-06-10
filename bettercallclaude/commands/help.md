@@ -111,26 +111,23 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 ---
 
-## Skills (15)
+## Skills (12)
 
 Skills activate automatically when Claude detects relevant context.
 
 | Skill | Auto-Activates When |
 |-------|---------------------|
-| swiss-legal-research | Legal research queries, BGE/ATF/DTF references |
+| swiss-legal-research | Legal research queries, BGE/ATF/DTF references, jurisdiction resolution |
 | swiss-legal-drafting | Document creation, contract drafting requests |
 | swiss-legal-strategy | Litigation planning, risk assessment questions |
 | swiss-legal-translation | Translation requests between DE/FR/IT/EN legal texts |
 | swiss-document-analysis | Legal document review, clause analysis, compliance checks |
 | swiss-citation-formats | Citation formatting, BGE/ATF/DTF references in text |
-| swiss-jurisdictions | Canton-specific questions, federal vs. cantonal law |
 | adversarial-analysis | Three-agent adversarial legal analysis requests |
-| output-summarization | Multi-agent pipeline output consolidation |
-| legal-query-refinement | Vague legal queries needing Socratic refinement |
+| legal-intake | Vague or complex queries — Socratic refinement (single-domain) or structured briefing (multi-domain) |
 | data-protection-law | DSG/FADP, GDPR adequacy, privacy compliance questions |
 | compliance-frameworks | FINMA, AML/KYC, financial regulatory compliance |
 | privacy-routing | Sensitive client data patterns detected (Anwaltsgeheimnis) |
-| legal-briefing | Complex queries needing structured intake before agent execution |
 | legal-5step-framework | Sequential 5-step legal pipeline with quality gates and checkpoints |
 
 ---
@@ -211,7 +208,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.8.1 -- Swiss Legal Intelligence for Cowork Desktop**
+**BetterCallClaude v4.8.2 -- Swiss Legal Intelligence for Cowork Desktop**
 
 If the user provided additional input, respond to it in the context of this help reference.
 

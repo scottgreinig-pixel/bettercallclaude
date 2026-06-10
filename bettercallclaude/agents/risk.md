@@ -113,4 +113,4 @@ Optimal Settlement Range: CHF [X] - CHF [Y]
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-citation-formats`, `swiss-jurisdictions`
+- `swiss-legal-research`, `swiss-citation-formats`

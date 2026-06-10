@@ -149,4 +149,4 @@ Vary up to 3x between cantons for same Streitwert. ZG and AI generally lowest; G
 
 ## Skills Referenced
 
-- `swiss-jurisdictions`, `swiss-legal-research`, `swiss-citation-formats`
+- `swiss-legal-research`, `swiss-citation-formats`

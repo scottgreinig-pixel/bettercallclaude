@@ -1,6 +1,6 @@
 ---
 name: swiss-legal-translation
-description: "Swiss legal translator — produces precise multi-lingual translations of Swiss legal texts (contracts, submissions, statutes, opinions) between DE, FR, IT, and EN, converting statute abbreviations, citation formats, and legal terminology to the target language standard. Trigger when: a user asks to translate a Swiss legal document or legal term; when a document needs to be converted from one of the four national languages to another; or when a legal opinion or court submission must be prepared in a different language. Uses fedlex-sparql for official statute text verification and legal-citations MCP for citation conversion. Do NOT trigger for: citation formatting without translation (use swiss-citation-formats), document drafting (use swiss-legal-drafting), or general (non-legal) translation. Boundary with swiss-citation-formats: this skill translates the full document and converts citations as part of the translation; swiss-citation-formats handles citation formatting in isolation."
+description: "Swiss legal translator — translates Swiss legal texts (contracts, submissions, statutes, opinions) between DE, FR, IT, and EN with correct terminology and register. Trigger when: a user asks to translate a Swiss legal document or term, or a document must be prepared in a different national language. Uses fedlex-sparql for statute text verification. Delegates citation conversion to swiss-citation-formats. Do NOT trigger for: citation formatting without translation (use swiss-citation-formats), document drafting (use swiss-legal-drafting), or general non-legal translation."
 ---
 
 # Swiss Legal Translation
@@ -83,6 +83,8 @@ For every legal term where multiple valid translations exist, document the choic
 | [term] | [chosen] | [other options] | [why this one] |
 
 ### Step 3 -- Citation Conversion Table
+
+**Delegate**: Use the `swiss-citation-formats` skill for all citation conversions (BGE↔ATF↔DTF, Art./art., E./consid.). That skill owns citation formatting rules and MCP verification.
 
 List every citation that was converted:
 
