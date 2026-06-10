@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.8.2-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.8.3-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -46,18 +46,13 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.8.2
+## What's New in v4.8.3
 
-**v4.8.2 — Skills audit and context tax reduction (Spec D).**
+**v4.8.3 — MCP tool fixes, CONNECTORS documentation, widget integration hooks.**
 
-- **Skill consolidation**: 15 → 12 skills. Three skills absorbed with zero capability loss:
-  - `output-summarization` → embedded in `/summarize` command (process step, not domain knowledge)
-  - `swiss-jurisdictions` → routing logic absorbed by `swiss-legal-research`, canton profiles moved to `skills/shared/references/swiss-jurisdictions.md` (loaded on demand)
-  - `legal-query-refinement` + `legal-briefing` → merged into `legal-intake` with two modes (refine / briefing)
-- **Description budget**: all descriptions trimmed to ~80 words (from 100-167). Reduced permanent context tax.
-- **Citation delegation**: `swiss-legal-translation` now delegates citation conversion to `swiss-citation-formats` (eliminated boundary duplication).
-- **Progressive disclosure**: large reference data loaded on demand instead of always in context.
-- **Skills audit**: `docs/audit/SKILLS-AUDIT.md` — full inventory, token measurements, consolidation decisions with rationale.
+- **MCP tool name corrections**: fixed incorrect tool probe names in `doctor.md` (`search_personas` → `legal_analyze`, `search_tas_awards` → `cas_search`). Corrected `legal-persona` description across `doctor`, `help`, `version`, and `README`.
+- **CONNECTORS.md completed**: documented all 9 MCP servers with full tool specifications. Added `legal-persona` (3 tools), `tas-jurisprudence` (4 tools), `swiss-caselaw` (SSE, opencaselaw.ch).
+- **Widget hooks**: conditional invocation of `present_adversarial_analysis` (W2 dashboard) in adversarial-analysis, `present_intake_form` (W4 form) in legal-intake, `compute_deadlines` in swiss-legal-strategy. All with graceful text fallback when tools unavailable.
 
 **Content counts**: 20 agents, 24 commands, 12 skills, 9 MCP servers.
 

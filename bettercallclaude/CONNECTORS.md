@@ -1,6 +1,6 @@
 # MCP Server Integration -- CONNECTORS
 
-This document describes the six MCP (Model Context Protocol) servers included with the BetterCallClaude plugin. These servers provide direct integration with Swiss legal databases for precedent search, court decision retrieval, citation verification, federal legislation lookup, legal commentary access, and local privacy classification.
+This document describes the nine MCP (Model Context Protocol) servers included with the BetterCallClaude plugin. These servers provide direct integration with Swiss legal databases for precedent search, court decision retrieval, citation verification, federal legislation lookup, legal commentary access, document intelligence (strategy/drafting/analysis), CAS/TAS sports arbitration, case law graphs, and local privacy classification.
 
 ---
 
@@ -13,17 +13,20 @@ This document describes the six MCP (Model Context Protocol) servers included wi
 | `legal-citations` | Validate citation format and convert between languages | HTTP |
 | `fedlex-sparql` | Look up Swiss federal legislation via the Fedlex SPARQL endpoint | HTTP |
 | `onlinekommentar` | Search and retrieve Swiss legal commentaries (Kommentare) | HTTP |
+| `legal-persona` | Swiss-law document intelligence — strategy, drafting, analysis | HTTP |
+| `tas-jurisprudence` | CAS/TAS sports arbitration awards and jurisprudence | HTTP |
+| `swiss-caselaw` | Case law search, citation graphs, appeal chains, doctrine (opencaselaw.ch) | SSE |
 | `ollama` | Privacy classification for privileged content (offline regex) | Local (stdio) |
 
 ### Configuration
 
 #### All platforms (default -- HTTP transport)
 
-Five servers connect to the hosted HTTP MCP service at `https://mcp.bettercallclaude.ch`. The plugin's `.mcp.json` configures these automatically — no local setup, Node.js, or API keys are required.
+Seven servers connect to the hosted HTTP MCP service at `https://mcp.bettercallclaude.ch`. One server (`swiss-caselaw`) connects via SSE to `https://mcp.opencaselaw.ch`. The plugin's `.mcp.json` configures these automatically — no local setup, Node.js, or API keys are required.
 
 The ollama privacy classifier runs locally via stdio to ensure sensitive content never leaves your machine.
 
-After plugin installation, verify with `/mcp` that all 6 servers appear. Restart Claude Code or Cowork if needed.
+After plugin installation, verify with `/mcp` that all 9 servers appear. Restart Claude Code or Cowork if needed.
 
 #### Local mode (optional -- stdio transport, Claude Code only)
 
@@ -720,9 +723,159 @@ List all available Swiss legislative acts with their UUIDs, names, and abbreviat
 
 ---
 
+## legal-persona
+
+Provides Swiss-law document intelligence: strategy analysis, automated drafting, and compliance checking. Connects to the HTTP MCP service at `https://mcp.bettercallclaude.ch/legal-persona/mcp`.
+
+### Tools
+
+#### legal_strategy
+
+Develops comprehensive legal strategy for Swiss law cases. Analyzes case facts and provides strength/weakness assessment, success likelihood, strategic approach recommendations, settlement analysis, procedural guidance, risk assessment, and next steps.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `case_facts` | string | Yes | Detailed description of the case facts. |
+| `legal_area` | string | Yes | Area of law: `contract`, `corporate`, `employment`, `tort`, `property`, `family`, `succession`, `intellectual_property`, `competition`, `banking`, `tax`, `administrative`, `criminal`. |
+| `client_position` | string | Yes | Client's position: `plaintiff`, `defendant`, `appellant`, `respondent`. |
+| `jurisdiction` | string | No | Jurisdiction level: `federal` (default), `cantonal`. |
+| `canton` | string | No | Canton for cantonal jurisdiction: `ZH`, `BE`, `GE`, `BS`, `VD`, `TI`. |
+| `dispute_amount` | number | No | Amount in dispute in CHF. |
+| `deadline_pressure` | string | No | Timeline urgency: `urgent`, `normal` (default), `flexible`. |
+| `language` | string | No | Output language: `de` (default), `fr`, `it`, `en`. |
+
+**Response**: Returns a structured strategy object with assessment sections, risk analysis, and recommended next steps.
+
+#### legal_draft
+
+Drafts Swiss legal documents with proper structure and terminology. Supports contracts (service agreement, employment contract, NDA, shareholders' agreement, loan agreement, lease agreement), litigation documents (Klageschrift, Klageantwort, Berufung, Beschwerde, Replik, Duplik), and opinions (Rechtsgutachten, memorandum, legal brief).
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `document_type` | string | Yes | Type of document: `service_agreement`, `employment_contract`, `nda`, `shareholders_agreement`, `loan_agreement`, `lease_agreement`, `klageschrift`, `klageantwort`, `berufung`, `beschwerde`, `replik`, `duplik`, `rechtsgutachten`, `memorandum`, `legal_brief`. |
+| `context` | string | Yes | Description of the situation and requirements. |
+| `parties` | array | Yes | Parties involved. Each party object has: `name` (required), `role` (required), `address` (optional), `representative` (optional). |
+| `jurisdiction` | string | No | Jurisdiction level: `federal` (default), `cantonal`. |
+| `canton` | string | No | Canton for cantonal jurisdiction: `ZH`, `BE`, `GE`, `BS`, `VD`, `TI`. |
+| `language` | string | No | Output language: `de` (default), `fr`, `it`, `en`. |
+| `format` | string | No | Output format: `full` (default), `outline`, `template`. |
+| `include_comments` | boolean | No | Include explanatory comments (default: false). |
+
+**Response**: Returns a structured document object with content, metadata, and format information.
+
+#### legal_analyze
+
+Analyzes legal documents for issues, risks, and compliance. Performs document type identification, party extraction, issue detection with severity levels, missing clause identification, compliance checking (OR, ZGB, DSG, etc.), and recommendations with priorities.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `document` | string | Yes | Full text of the document to analyze. |
+| `document_type` | string | No | Expected document type (auto-detected if not specified). Same values as `legal_draft`. |
+| `analysis_depth` | string | No | Depth of analysis: `quick`, `standard` (default), `comprehensive`. |
+| `focus_areas` | array | No | Areas to focus on: `liability`, `termination`, `payment`, `ip`, `confidentiality`, `dispute`, `compliance`, `data_protection`, `employment`, `general` (default). |
+| `language` | string | No | Output language: `de` (default), `fr`, `it`, `en`. |
+| `check_compliance` | boolean | No | Run compliance checks (default: true). |
+
+**Response**: Returns a structured analysis with identified issues, risk scores, compliance status, and prioritized recommendations.
+
+---
+
+## tas-jurisprudence
+
+Provides search and retrieval of CAS/TAS (Court of Arbitration for Sport) arbitration awards. Connects to `https://mcp.bettercallclaude.ch/tas-jurisprudence/mcp`.
+
+### Tools
+
+#### cas_search
+
+Search CAS/TAS arbitration decisions by keywords, sport, year range, or procedure type.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `query` | string | Yes | Search query for case content, parties, or keywords. |
+| `sport` | string | No | Filter by sport (e.g., "Football", "Cycling", "Athletics"). |
+| `year_from` | number | No | Filter decisions from this year (1984–2026). |
+| `year_to` | number | No | Filter decisions until this year (1984–2026). |
+| `procedure_type` | string | No | Filter by procedure type: `Appeal`, `Ordinary`, `Anti-Doping`, `Advisory`. |
+| `page` | number | No | Page number for pagination (default: 1). |
+| `page_size` | number | No | Results per page, max 25 (default: 10). |
+
+**Response**: Returns an array of award summaries with case number, parties, sport, date, procedure type, and links to full awards.
+
+#### cas_get_award
+
+Retrieve detailed information about a specific CAS/TAS award including parties, arbitrators, keywords, and optionally the full text.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `case_number` | string | No | CAS case number (e.g., "CAS 2023/A/9876"). |
+| `url` | string | No | Direct URL to the award page. |
+| `include_full_text` | boolean | No | Include full PDF text (default: false). |
+
+At least one of `case_number` or `url` must be provided.
+
+**Response**: Returns detailed award information: parties, arbitrators, keywords, summary, and optionally full text.
+
+#### cas_recent
+
+Get the most recent CAS/TAS arbitration decisions.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | number | No | Maximum number of recent decisions (1–50, default: 10). |
+
+**Response**: Returns a list of the latest published awards with basic information and PDF links.
+
+#### cas_by_sport
+
+Browse CAS/TAS decisions by sport category.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `sport` | string | Yes | Sport to browse (e.g., "Football", "Cycling"). |
+| `page` | number | No | Page number for pagination (default: 1). |
+
+**Response**: Returns paginated results for a specific sport with case summaries.
+
+---
+
+## swiss-caselaw
+
+Provides case law search, citation graphs, appeal chains, and doctrine via the opencaselaw.ch platform. Connects via SSE to `https://mcp.opencaselaw.ch`.
+
+This is an external server operated by opencaselaw.ch. The database contains 969K+ decisions with full text. Unlike the HTTP servers hosted at `mcp.bettercallclaude.ch`, this server uses SSE (Server-Sent Events) transport.
+
+### Tools
+
+Tools exposed by this server include:
+
+- `search_decisions(query, filters)` — fulltext search across federal and cantonal courts
+- `get_decision(id)` — retrieve full decision text
+- `find_leading_cases(topic)` — locate Leitentscheide for a legal topic
+- `get_citation_graph(decision_id)` — map citing and cited-by relationships
+- `get_legislation(canton?, topic)` — retrieve cantonal legislation
+
+Refer to the opencaselaw.ch MCP documentation for the full parameter specifications. The server is read-only and idempotent.
+
+---
+
 ## Error Handling
 
-All five servers return errors in a consistent format:
+All nine servers return errors in a consistent format:
 
 ```json
 {

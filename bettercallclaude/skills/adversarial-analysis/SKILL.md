@@ -249,3 +249,18 @@ When MCP servers are not available, the following degradation applies:
 
 In reduced mode, add a notice:
 > **Nota**: analisi avversariale in modalità ridotta. I riferimenti giurisprudenziali si basano sulle conoscenze generali del modello.
+
+## Widget Integration — Adversarial Dashboard (W2)
+
+After the Judicial synthesis is complete, check whether the `present_adversarial_analysis` tool (server `legal-persona`) is available.
+
+**If available**: invoke `present_adversarial_analysis` passing the structured synthesis in this format:
+- `advocate_summary`: the Advocate's key arguments with strength scores and citations
+- `adversary_summary`: the Adversary's key arguments with strength scores and citations
+- `judicial_synthesis`: the Judicial agent's Erwägung synthesis with risk probabilities
+- `overall_assessment`: the overall risk level and recommendation
+- `language`: analysis language (`de`, `fr`, `it`, `en`)
+
+The tool renders an interactive dashboard; the skill does NOT duplicate the output in chat. Provide only a brief confirmation in chat (e.g., "Analisi avversariale completata — vedi dashboard interattiva").
+
+**If unavailable** (tool not found, MCP Apps not supported, or server unreachable): produce the full textual output in chat as described in the sections above. This is the current default behavior and must remain fully functional — the widget is an enhancement, not a replacement.
