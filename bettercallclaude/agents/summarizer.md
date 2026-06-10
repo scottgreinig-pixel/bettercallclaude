@@ -224,4 +224,4 @@ Append to every output: "This summarized output consolidates analyses from multi
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-citation-formats`, `swiss-jurisdictions`, `swiss-legal-strategy`, `adversarial-analysis`
+- `swiss-legal-research`, `swiss-citation-formats`, `swiss-legal-strategy`, `adversarial-analysis`

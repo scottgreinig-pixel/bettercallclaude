@@ -4,6 +4,37 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.8.2] - 2026-06-10
+
+### Skills Consolidated (Spec D)
+
+Skill count reduced from 15 to 12 with zero capability loss. All content migrated integrally.
+
+| Removed Skill | Migrated To | Rationale |
+|---------------|-------------|-----------|
+| `output-summarization` | `/bettercallclaude:summarize` command (full content embedded) | Process step, not domain knowledge — invoked only by orchestration |
+| `swiss-jurisdictions` | Routing logic → `swiss-legal-research`; canton profiles → `skills/shared/references/swiss-jurisdictions.md` (on-demand) | Already used as library, not user-activated; 686 lines of reference data freed from permanent context |
+| `legal-query-refinement` | `legal-intake` (refine mode) + `legal-intake/references/refinement-workflow.md` | Merged with `legal-briefing` — same job (query → plan), different complexity modes |
+| `legal-briefing` | `legal-intake` (briefing mode) | See above |
+
+### Added
+- **`legal-intake` skill**: unified intake with two modes — Refine (single-domain, ≤3 Socratic rounds) and Briefing (multi-domain, specialist panel + execution plan). Replaces both `legal-query-refinement` and `legal-briefing`.
+- **`docs/audit/SKILLS-AUDIT.md`**: full inventory, token measurements, overlap mapping, consolidation decisions with rationale, before/after metrics.
+- **`skills/shared/references/swiss-jurisdictions.md`**: 26 canton profiles (court hierarchies, data sources, special courts) loaded on demand.
+- **Citation delegation**: `swiss-legal-translation` now explicitly delegates citation conversion to `swiss-citation-formats` (eliminated duplicated boundary explanation).
+
+### Changed
+- **All skill descriptions** trimmed to ~80 words or fewer (previously 98-167 words). Reduced permanent context tax.
+- **`swiss-legal-research`**: absorbed jurisdiction resolution from `swiss-jurisdictions` — now includes federal/cantonal routing logic.
+- **`swiss-legal-drafting`**: updated references from `swiss-jurisdictions` to `swiss-legal-research` + reference module.
+- **`legal-5step-framework`**: Step 1 now references `swiss-legal-research` for jurisdiction resolution.
+- **Commands updated**: `legal`, `federal`, `cantonal`, `refine`, `briefing`, `summarize` — all references to removed skills replaced.
+- **Agents updated**: all 20 agents' skill reference lists updated to remove `swiss-jurisdictions`.
+- **`help` and `version` commands**: skill list updated to 12, version bumped to 4.8.2.
+- **README and plugin.json**: version bumped, skill counts updated, What's New section added.
+
+---
+
 ## [4.8.1] - 2026-06-10
 
 ### Added

@@ -1,6 +1,6 @@
 ---
 name: swiss-legal-strategy
-description: "Swiss legal strategy specialist — develops case strategy across civil (ZPO), criminal (StPO), and administrative (VwVG) proceedings including case strength analysis, risk probability, cost-benefit, settlement/BATNA evaluation, and ADR assessment. Trigger when: a user needs to assess litigation viability, decide whether to sue or settle, understand procedural options, evaluate a settlement offer, or prepare a strategy memo. Uses entscheidsuche MCP (find_similar_cases, analyze_precedent_success_rate) for precedent-based probability. Do NOT trigger for: drafting court documents (use swiss-legal-drafting), deadline calculation (use procedure agent), pure legal research (use swiss-legal-research). Boundary with swiss-legal-research: research produces legal analysis; this skill converts that analysis into a decision-oriented strategic recommendation."
+description: "Swiss legal strategy — case strength, risk probability, cost-benefit, settlement/BATNA, and ADR assessment across ZPO/StPO/VwVG proceedings. Trigger when: user needs litigation viability, settle-or-sue decision, procedural options, or strategy memo. Uses entscheidsuche MCP for precedent-based probability. Do NOT trigger for: drafting (swiss-legal-drafting), deadlines (procedure agent), or pure research (swiss-legal-research)."
 ---
 
 # Swiss Legal Strategy

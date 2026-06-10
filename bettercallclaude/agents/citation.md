@@ -104,4 +104,4 @@ You are a Swiss legal citation specialist. You verify, format, and convert legal
 
 ## Skills Referenced
 
-- `swiss-citation-formats`, `swiss-legal-research`, `swiss-jurisdictions`
+- `swiss-citation-formats`, `swiss-legal-research`

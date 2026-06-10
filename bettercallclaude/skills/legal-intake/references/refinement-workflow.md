@@ -1,7 +1,9 @@
 ---
-name: legal-query-refinement
-description: "Swiss legal query refinement — transforms vague, colloquial, or incomplete queries into precise structured prompts through targeted Socratic dialogue (max 3 rounds). Trigger when: the user's query is unclear, missing jurisdiction or domain, uses non-legal language ('I have a problem with my landlord', 'can they fire me?', 'what are my options?'), or needs a structured prompt before agent execution. Supports --quick (no dialogue, prompt from available info) and --optimize (expert mode, workflow-only). Do NOT trigger for: queries already refined or precise, citation lookups, translation requests, document drafting, or queries that score ≥ 8 on the complexity scale, span 3+ legal domains, or are multi-jurisdictional (those should go to legal-briefing for a full intake session instead). Boundary with legal-briefing: use this skill for single-domain clarification; use legal-briefing when the query spans 3+ legal domains or requires multi-agent coordination planning."
+name: refinement-workflow
+description: "Reference module for legal-intake refine mode. Detailed Socratic dialogue workflow for transforming vague queries into precise structured prompts (max 3 rounds)."
 ---
+
+> **Note**: This is a reference module loaded on-demand by the `legal-intake` skill's Refine mode. For high-complexity queries (≥8, 3+ domains, multi-jurisdictional), use legal-intake's Briefing mode instead.
 
 # Legal Query Refinement
 
@@ -48,7 +50,7 @@ Detect:
 
 If clarity ≥ 7 AND completeness ≥ 7: Generate structured prompt directly.
 
-**Handoff to legal-briefing**: If complexity ≥ 8 OR 3+ distinct legal domains detected OR multi-jurisdictional → stop and suggest:
+**Handoff to briefing mode**: If complexity ≥ 8 OR 3+ distinct legal domains detected OR multi-jurisdictional → stop and suggest:
 > "This query involves [N domains / multi-jurisdiction]. I recommend a full briefing session instead of quick refinement — it builds a precise execution plan rather than a single prompt. Shall I start a briefing session? Or use `--skip-briefing` to proceed with refinement."
 
 ### Step 2: Socratic Questioning
@@ -83,13 +85,13 @@ During dialogue, naturally introduce proper Swiss legal terminology:
 
 ### Step 4: Jurisdiction Detection
 
-Apply the `swiss-jurisdictions` skill for authoritative jurisdiction resolution:
+Apply the `swiss-legal-research` skill's jurisdiction resolution for authoritative routing:
 - If canton name/code present → cantonal mode, load canton court profile
 - If federal statute cited or no canton mentioned → federal mode (default)
 - If ambiguous → ask: "Betrifft dies Bundesrecht oder das Recht eines bestimmten Kantons?" / "Cela relève-t-il du droit fédéral ou d'un canton spécifique?"
 - If multiple cantons → federal baseline + cantonal comparison mode
 
-Do not independently determine jurisdiction competence — delegate to the swiss-jurisdictions skill's competence matrix and routing rules.
+Do not independently determine jurisdiction competence — delegate to swiss-legal-research's jurisdiction resolution and `skills/shared/references/swiss-jurisdictions.md`.
 
 ### Step 5: Workflow Recommendation
 
@@ -211,7 +213,7 @@ After refinement is complete, always provide the structured prompt followed by e
 
 - Never fabricate legal information
 - Always verify citations before including — use the `legal-citations` MCP (`validate_citation`, `format_citation`) when a citation is present in the user's query
-- For jurisdiction resolution, delegate to `swiss-jurisdictions` skill rather than inferring independently
+- For jurisdiction resolution, delegate to `swiss-legal-research` rather than inferring independently
 - Respect user's language throughout the dialogue
 - Keep dialogues efficient — maximum 3 rounds, 2-4 questions per round
 - If the dialogue reveals complexity ≥ 8 or 3+ domains mid-session, pivot to briefing recommendation

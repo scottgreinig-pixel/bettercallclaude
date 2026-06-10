@@ -295,4 +295,4 @@ If the user chooses "save for later":
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-legal-strategy`, `swiss-jurisdictions`, `swiss-citation-formats`, `privacy-routing`
+- `swiss-legal-research`, `swiss-legal-strategy`, `swiss-citation-formats`, `privacy-routing`

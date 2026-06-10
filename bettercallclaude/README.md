@@ -6,7 +6,7 @@ BetterCallClaude is a plugin for legal professionals working in Cowork or Claude
 
 The plugin covers the full spectrum of Swiss legal work: BGE/ATF/DTF precedent research, case strategy development with risk assessment, adversarial legal analysis, compliance and data protection advisory, fiscal and corporate law expertise, real estate law, legal drafting with jurisdiction-aware templates, legal translation, and citation verification across all 26 Swiss cantons. Privacy compliance with Anwaltsgeheimnis (Art. 321 StGB) is enforced automatically through a pre-tool-use hook that detects privileged content before it leaves the local environment.
 
-**Version**: 4.8.1 -- 20 agents, 24 commands, 15 skills, 9 MCP servers.
+**Version**: 4.8.2 -- 20 agents, 24 commands, 12 skills, 9 MCP servers.
 
 > Love BetterCallClaude? Support the project — [**Buy me a coffee**](https://buymeacoffee.com/federicocesconi) ☕
 
@@ -144,12 +144,12 @@ Skills are activated automatically when Claude detects relevant legal context in
 | `swiss-legal-strategy` | Case assessment frameworks, risk matrices, procedural pathway analysis, and settlement evaluation. |
 | `swiss-legal-drafting` | Document generation standards, clause libraries, mandatory law compliance checks, and formatting rules. |
 | `swiss-citation-formats` | Citation format tables for DE/FR/IT/EN, BGE/ATF/DTF reference standards, doctrine citation rules, and cross-language conversion. |
-| `swiss-jurisdictions` | Federal vs. cantonal jurisdiction routing, competence analysis, court system hierarchies for all 26 cantons, and conflict-of-law rules. |
 | `privacy-routing` | Anwaltsgeheimnis detection patterns, privacy classification, and local processing triggers for privileged content. |
 | `adversarial-analysis` | Three-agent adversarial methodology (advocate/adversary/judicial), argument scoring, objectivity validation, and Erwagung synthesis structure. |
 | `compliance-frameworks` | FINMA supervision, GwG/AMLA anti-money laundering, FIDLEG/FINIG financial institution licensing, banking secrecy, and cross-border compliance. |
 | `data-protection-law` | nDSG/FADP framework, GDPR adequacy, cantonal data protection laws (IDG/KDSG/LIPAD), DPIA methodology, and cross-border data transfers. |
-| `legal-briefing` | Auto-detects complex queries that benefit from structured intake before agent execution. Suggests briefing sessions when complexity, ambiguity, or pipeline coordination is detected. |
+| `legal-intake` | Transforms vague or complex queries into actionable plans — Refine mode (single-domain Socratic dialogue) or Briefing mode (multi-domain specialist panel + execution plan). |
+| `legal-5step-framework` | Sequential 5-step legal pipeline: intake → research → strategy → adversarial → draft, with quality gates and checkpoints. |
 
 ---
 

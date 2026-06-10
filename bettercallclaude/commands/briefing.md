@@ -13,7 +13,7 @@ Parse flags from the user's input to determine the mode:
 1. **New briefing** (default): Start a fresh briefing session for the provided query.
 2. **Resume** (`--resume [id]`): Resume a previously saved or paused briefing. If no ID provided, load `briefing_latest`.
 3. **List** (`--list`): Display all saved briefings from `briefing_index`.
-4. **Skip** (`--skip-briefing`): Bypass the briefing flow entirely and route the query straight to `/bettercallclaude:legal --skip-briefing`. The briefing coordinator is **not** invoked. Used by the `legal-briefing` skill on the user's "Skip briefing" choice and by users who explicitly want to bypass intake on a `/briefing` invocation.
+4. **Skip** (`--skip-briefing`): Bypass the briefing flow entirely and route the query straight to `/bettercallclaude:legal --skip-briefing`. The briefing coordinator is **not** invoked. Used by the `legal-intake` skill on the user's "Skip briefing" choice and by users who explicitly want to bypass intake on a `/briefing` invocation.
 
 ## Flags
 
@@ -46,7 +46,7 @@ Parse flags from the user's input to determine the mode:
 
 ## Pre-flight: Vagueness Check
 
-> **When to run this check:** Only when the user invokes `/bettercallclaude:briefing` directly (explicit invocation). If this command was triggered by the `legal-briefing` skill after it already detected complexity, skip this step — the query has already been assessed.
+> **When to run this check:** Only when the user invokes `/bettercallclaude:briefing` directly (explicit invocation). If this command was triggered by the `legal-intake` skill's briefing mode after it already detected complexity, skip this step — the query has already been assessed.
 
 A query is vague if it lacks **two or more** of:
 1. A clear legal question (not just a topic area)
@@ -86,7 +86,7 @@ If the user skips, proceed with the original query and flag the gaps in the exec
 
 1. Do **not** invoke the briefing coordinator, the vagueness check, or the specialist panel.
 2. Strip the `--skip-briefing` flag from the parsed flag list (it has been consumed here).
-3. Route the original query directly to `/bettercallclaude:legal --skip-briefing [remaining flags] [query]`. The downstream `/legal` command will see the flag and will not re-activate the `legal-briefing` skill on the same query.
+3. Route the original query directly to `/bettercallclaude:legal --skip-briefing [remaining flags] [query]`. The downstream `/legal` command will see the flag and will not re-activate the `legal-intake` skill on the same query.
 4. Stop. Do not continue into the New / Resume / List branches below.
 
 ### New Briefing

@@ -112,4 +112,4 @@ You are a Swiss regulatory compliance specialist. You evaluate compliance with S
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-jurisdictions`, `privacy-routing`
+- `swiss-legal-research`, `privacy-routing`

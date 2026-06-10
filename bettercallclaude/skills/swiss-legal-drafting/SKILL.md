@@ -1,6 +1,6 @@
 ---
 name: swiss-legal-drafting
-description: "Swiss legal document drafter — creates professional contracts (OR), court submissions (Klageschrift, Klageantwort, Berufung per ZPO), and legal opinions (Gutachten) in DE/FR/IT/EN with correct Swiss citation standards and Gutachtenstil reasoning. Trigger when: a user asks to draft, write, or create a legal document, contract, court filing, legal opinion, or template; or when analysis output needs to be converted into a formal document. Use swiss-citation-formats skill for citation verification before delivery. Use swiss-jurisdictions skill to resolve cantonal form requirements. Do NOT trigger for: document analysis (use swiss-document-analysis), legal research (use swiss-legal-research), or pure citation formatting. Note: /bettercallclaude:draft is the command-layer interface to this skill — use this skill directly when called by agents or orchestrator."
+description: "Swiss legal document drafter — creates contracts (OR), court submissions (ZPO), and legal opinions (Gutachten) in DE/FR/IT/EN with correct Swiss citations and Gutachtenstil. Trigger when: a user asks to draft, write, or create a legal document. Uses swiss-citation-formats for citation verification and swiss-legal-research for jurisdiction resolution. Do NOT trigger for: document analysis (swiss-document-analysis), research (swiss-legal-research), or citation formatting only."
 ---
 
 # Swiss Legal Drafting
@@ -62,7 +62,7 @@ When a playbook is loaded, apply its preferences for: governing law, jurisdictio
 - Identify applicable OR articles
 - Distinguish mandatory from dispositive provisions
 - Check canton-specific requirements (form, registration)
-- Note any special regulatory obligations (nDSG for data post-1.9.2023, UWG, GwG, FINMAG if applicable); for cantonal form requirements consult swiss-jurisdictions skill
+- Note any special regulatory obligations (nDSG for data post-1.9.2023, UWG, GwG, FINMAG if applicable); for cantonal form requirements consult swiss-legal-research (jurisdiction resolution) and `skills/shared/references/swiss-jurisdictions.md`
 
 ### Step 3: Structure the Contract
 Standard Swiss contract structure:
@@ -107,7 +107,7 @@ For BGE citation strings: use `swiss-caselaw` → `cite(decision_id)` — never 
 - Mandatory law compliance verified (especially employment, lease, consumer contracts)
 - Internal consistency
 - Proper formatting
-- Cantonal form requirements checked (consult swiss-jurisdictions for canton-specific rules)
+- Cantonal form requirements checked (consult `skills/shared/references/swiss-jurisdictions.md` for canton-specific rules)
 - For confidential or privileged documents: activate privacy-routing skill before processing
 
 ## Court Document Structure

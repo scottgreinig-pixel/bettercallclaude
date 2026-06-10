@@ -107,4 +107,4 @@ Phase 1: Pre-litigation -> Phase 2: Conciliation -> Phase 3: First Instance -> P
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-jurisdictions`, `swiss-citation-formats`
+- `swiss-legal-research`, `swiss-citation-formats`

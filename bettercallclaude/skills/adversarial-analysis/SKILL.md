@@ -1,6 +1,6 @@
 ---
 name: adversarial-analysis
-description: "Swiss adversarial legal analysis — stress-tests any legal position by running three independent agents: Advocate (strongest case FOR), Adversary (strongest case AGAINST), and Judicial synthesizer (Erwägung-style balanced conclusion with probability). Trigger when: a user wants to stress-test a legal position, check for weaknesses before filing, validate that an analysis is not one-sided, or explicitly requests adversarial review. Also triggered as option '4' in the /legal post-execution framework menu. Invoked via /bettercallclaude:adversarial. Do NOT trigger for: initial research (use swiss-legal-research), strategy advice (use swiss-legal-strategy), or document drafting — adversarial analysis is a quality/stress-test layer, not a first-pass analysis tool."
+description: "Adversarial stress test — three agents (Advocate FOR, Adversary AGAINST, Judicial synthesis with probability). Trigger when: user wants to stress-test a position, check weaknesses before filing, or requests adversarial review. Also option '4' in /legal menu. Do NOT trigger for: initial research (swiss-legal-research), strategy (swiss-legal-strategy), or drafting — this is a quality layer, not first-pass analysis."
 ---
 
 # Adversarial Legal Analysis

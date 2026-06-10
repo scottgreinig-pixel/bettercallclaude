@@ -1,6 +1,6 @@
 ---
 name: swiss-citation-formats
-description: "Swiss legal citation formatter — ensures every BGE/ATF/DTF, statutory, cantonal court, and doctrine citation follows the correct language convention (DE/FR/IT/EN) and is internally consistent. Trigger when: a document or response contains legal citations that need formatting, validation, or language conversion; when the user asks how to cite a Swiss decision or statute; or when batch-standardizing citations in a draft. Use legal-citations MCP tools (validate_citation, format_citation, convert_citation) for verification. Do NOT trigger for: legal research (use swiss-legal-research), document drafting (use swiss-legal-drafting), or pure translation without citations. Boundary with swiss-legal-research: that skill produces analysis and raw citations; this skill ensures those citations are correctly formatted before delivery."
+description: "Swiss legal citation formatter — validates, formats, and converts BGE/ATF/DTF, statutory, and cantonal citations across DE/FR/IT/EN. Trigger when: citations need formatting, validation, or cross-language conversion. Uses legal-citations MCP (validate, format, convert). Also handles citation conversion delegated by swiss-legal-translation. Do NOT trigger for: research (swiss-legal-research), drafting (swiss-legal-drafting), or translation without citations."
 ---
 
 # Swiss Citation Formats
