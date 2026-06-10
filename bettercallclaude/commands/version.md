@@ -14,7 +14,7 @@ Output the following formatted block:
 ======================================================
   BetterCallClaude - Swiss Legal Intelligence Plugin
 ======================================================
-  Version:      4.8.2
+  Version:      4.8.3
   Format:       Claude Code Plugin (Cowork Desktop)
   Author:       Federico Cesconi
   License:      AGPL-3.0
@@ -79,7 +79,7 @@ Output the following formatted block:
   [ ] legal-citations   - Citation verification              (HTTP)
   [ ] fedlex-sparql     - Federal legislation database       (HTTP)
   [ ] onlinekommentar   - Legal commentary access            (HTTP)
-  [ ] legal-persona     - Swiss judicial personas            (HTTP)
+  [ ] legal-persona     - Document intelligence (strategy/draft) (HTTP)
   [ ] tas-jurisprudence - CAS/TAS sports arbitration awards  (HTTP)
   [ ] swiss-caselaw     - Case law, citation graphs, doctrine (SSE)
   [ ] ollama            - Privacy classification             (Local)

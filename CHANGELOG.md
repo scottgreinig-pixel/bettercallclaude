@@ -4,6 +4,24 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.8.3] - 2026-05-25
+
+### Fixed — MCP Tool References
+- **`doctor.md`**: corrected tool probe names — `search_personas` → `legal_analyze`, `search_tas_awards` → `cas_search`, `search_decisions` for swiss-caselaw. Updated `legal-persona` description from "Profili magistrati svizzeri" to "Analisi, strategia e drafting documenti legali svizzeri".
+- **`help.md`**: corrected `legal-persona` description from "Swiss judicial personas — profiles, voting patterns, doctrinal positions" to "Swiss-law document intelligence (strategy, drafting, analysis)".
+- **`version.md`**: corrected `legal-persona` description.
+- **`README.md`**: added missing servers (legal-persona, tas-jurisprudence, swiss-caselaw, ollama) to MCP server table; updated server counts (6 → 9).
+
+### Added — CONNECTORS Documentation
+- **`CONNECTORS.md`**: added complete sections for `legal-persona` (tools: `legal_strategy`, `legal_draft`, `legal_analyze`), `tas-jurisprudence` (tools: `cas_search`, `cas_get_award`, `cas_recent`, `cas_by_sport`), and `swiss-caselaw` (SSE, opencaselaw.ch). Updated overview table and server counts from 6 to 9.
+
+### Added — Widget Integration Hooks
+- **Adversarial Dashboard (W2)**: `adversarial-analysis` SKILL.md now checks for `present_adversarial_analysis` tool after Judicial synthesis — invokes it with structured advocate/adversary/judge data if available; falls back to full textual output if not.
+- **Intake Form (W4)**: `legal-intake` SKILL.md now checks for `present_intake_form` tool in Briefing mode — renders Socratic questions as a form widget (max 1 follow-up round) if available; falls back to chat dialogue if not.
+- **`compute_deadlines`**: `swiss-legal-strategy` SKILL.md now references the `compute_deadlines` tool for procedural deadline computation under ZPO/BGG/VwVG/StPO. Includes Fristberechnung rules, Gerichtsferien, and mandatory verification disclaimer. Falls back to manual calculation with disclaimer if tool unavailable.
+
+---
+
 ## [4.8.2] - 2026-06-10
 
 ### Skills Consolidated (Spec D)

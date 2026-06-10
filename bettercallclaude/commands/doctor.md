@@ -29,8 +29,8 @@ For each of the 9 MCP servers, use a **two-stage approach**:
 | legal-citations | Verifica e formattazione citazioni | `validate_citation` (minimal) |
 | fedlex-sparql | Banca dati legislativa federale | `search_legislation` (minimal) |
 | onlinekommentar | Commentari giuridici online | `search_commentaries` (minimal) |
-| legal-persona | Profili magistrati svizzeri | `search_personas` (minimal) |
-| tas-jurisprudence | Lodi arbitrali CAS/TAS | `search_tas_awards` (minimal) |
+| legal-persona | Analisi, strategia e drafting documenti legali svizzeri | `legal_analyze` (minimal) |
+| tas-jurisprudence | Lodi arbitrali CAS/TAS | `cas_search` (minimal) |
 | swiss-caselaw | Giurisprudenza, catene citazioni, dottrina | `search_decisions` (minimal) |
 | ollama | Classificatore privacy locale | `ollama_check_status` |
 
@@ -50,7 +50,7 @@ Present results in the user's language, without technical jargon. Example (IT):
   Banca dati legislativa         ✓ attivo     —
   Verifica citazioni             ✓ attivo     —
   Commentari online              ✓ attivo     —
-  Profili magistrati             ✓ attivo     —
+  Analisi documenti (MCP)        ✓ attivo     —
   Arbitrato sportivo (TAS)       ✓ attivo     —
   Giurisprudenza svizzera        ✓ attivo     —
   Classificatore privacy         ✗ assente    Traduzioni/riassunti non filtrati localmente
@@ -78,7 +78,7 @@ For each unavailable server, explain in plain language:
 | legal-citations | Le citazioni non vengono verificate automaticamente — controllare manualmente. |
 | fedlex-sparql | I testi di legge non vengono recuperati in tempo reale. Le citazioni di articoli si basano sulle conoscenze del modello. |
 | onlinekommentar | I commentari dottrinali non sono accessibili. |
-| legal-persona | I profili dei magistrati non sono disponibili. |
+| legal-persona | L'analisi documenti, la strategia legale e il drafting automatizzato non sono disponibili via MCP. |
 | tas-jurisprudence | La ricerca di lodi CAS/TAS non è disponibile. |
 | swiss-caselaw | Ricerca giurisprudenziale, catene di citazioni e analisi dottrinale non disponibili. |
 | ollama | La classificazione di privacy locale non è attiva. Traduzioni e riassunti non vengono filtrati localmente. |
