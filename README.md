@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.8.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.8.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -11,7 +11,7 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 22 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, NDA triage, and CAS/TAS sports arbitration across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 24 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, NDA triage, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
@@ -46,17 +46,21 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.8.0
+## What's New in v4.8.1
 
-**v4.8.0 — Repositioning vs Anthropic Legal plugin + playbook pattern + NDA triage.**
+**v4.8.1 — Cowork-first audit and adaptation.**
 
-- **Local playbook pattern** (`bettercallclaude.local.md`): firm-specific contractual positions, risk thresholds, escalation rules, citation format, and output language. Templates in DE/FR/IT/EN. Compatible with Anthropic's `legal.local.md` format (read in compat mode if no BCC playbook exists).
-- **NDA triage** (`/bettercallclaude:nda-triage`): classify NDAs as GREEN (standard) / YELLOW (review) / RED (issues) against Swiss law criteria and playbook thresholds. Supports single file and batch (folder) mode.
-- **Playbook-aware contract review**: `swiss-document-analysis` skill now compares contract clauses against playbook positions with deviation classification (conforme / scostamento accettabile / da negoziare / inaccettabile).
-- **Coexistence with Anthropic Legal plugin**: migration guide, `legal.local.md` compatibility, explicit plugin boundary lines in skills.
-- **Positioning**: new README section with comparison table, `docs/PLAYBOOK.md`, `docs/MIGRATION-FROM-ANTHROPIC-LEGAL.md`.
+- **Cowork audit** (`docs/audit/COWORK-AUDIT.md`): systematic review of all 24 commands and 15 skills for Cowork compatibility. Terminal assumptions identified and fixed.
+- **`/bettercallclaude:start`**: new onboarding command — language detection, MCP connectivity check, guided playbook creation, profile-specific examples. Absorbs `/setup`.
+- **`/bettercallclaude:doctor`**: MCP diagnostics — tests each server, reports status and impact in plain language, suggests fixes.
+- **Deliverable-as-file convention** (`bcc-output/`): long outputs are saved as files with a chat summary. Standard folder structure with `sources.md` for citation trails.
+- **Reduced mode** declared in all 10 MCP-dependent skills: explicit degradation table when servers are unavailable.
+- **Privacy-routing Cowork fallback**: skill-level privacy check as defense-in-depth when the `PreToolUse` hook is absent.
+- **Natural language flag equivalents**: all commands with flags now include plain-language alternatives (e.g. "analisi breve" instead of `--short`).
+- **Command overlap policy**: `setup` → alias of `start` with deprecation notice (removed in v5.0). Policy documented for future overlaps.
+- **Quickstart guide** (`docs/QUICKSTART-COWORK.md`): one-page, zero-jargon guide in DE/FR/IT/EN.
 
-**Content counts**: 20 agents, 22 commands, 15 skills, 9 MCP servers.
+**Content counts**: 20 agents, 24 commands, 15 skills, 9 MCP servers.
 
 [Full changelog →](CHANGELOG.md)
 
@@ -64,11 +68,25 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 - **HTTP-only transport**: 8 of 9 MCP servers connect via `mcp.bettercallclaude.ch` / `mcp.opencaselaw.ch` -- no local Node.js build required for those
 - **Local STDIO server** (`ollama`): bundled and only touches `http://localhost:11434` for privacy-routed translation/summarisation
-- **Simplified setup**: `/setup` checks connectivity only -- no transport switching needed in Cowork
+- **Onboarding**: `/bettercallclaude:start` guides you from installation to first deliverable
 
 ---
 
-## Installation
+## Getting Started (Cowork Desktop)
+
+> **[Quickstart guide →](docs/QUICKSTART-COWORK.md)** (DE/FR/IT/EN, zero jargon, one page)
+
+1. Install from [claude.com/plugins](https://claude.com/plugins) — search **BetterCallClaude** and click **Install**
+2. Share a folder containing your case files or documents
+3. Type `/bettercallclaude:start` to begin — BetterCallClaude checks connectivity, helps create your local playbook, and shows usage examples tailored to your profile
+
+All results are saved as files in your shared folder (`bcc-output/`) — the chat shows only a brief summary.
+
+MCP servers connect automatically. No setup, no API keys required.
+
+---
+
+## Installation (Advanced)
 
 > **Full installation guide with screenshots:** [BetterCallClaude Tutorial →](https://github.com/fedec65/bettercallclaude_tutorial)
 
@@ -101,7 +119,9 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 | `/bettercallclaude:doc-analyze` | Analyze Swiss legal documents -- identify legal issues, extract key clauses, verify citations, assess compliance. Playbook-aware deviation analysis when `bettercallclaude.local.md` is present. |
 | `/bettercallclaude:nda-triage` | Triage NDAs against Swiss law: GREEN (standard) / YELLOW (review) / RED (issues). Single file or batch mode. Uses playbook thresholds. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
-| `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 9 servers. |
+| `/bettercallclaude:start` | Welcome and onboarding — checks connectivity, guides playbook creation, shows usage examples. |
+| `/bettercallclaude:doctor` | Diagnose MCP server connectivity — tests each server, reports status and impact. |
+| `/bettercallclaude:setup` | ⚠ Alias for `/start` — will be removed in v5.0. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:legal-5step` | Execute the 5-step end-to-end Swiss legal framework: intake → research → strategy → adversarial → draft. |
 | `/bettercallclaude:privacy` | View or change the privacy mode (`strict` / `balanced` / `cloud`). Settings stored in `~/.betterask/config.yaml`. |
@@ -115,27 +135,42 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 
 ### Usage Examples
 
+**For law firms:**
+```
+"Analizza questo NDA e dimmi se è accettabile"
+
+"Cerca la giurisprudenza recente sulla disdetta anticipata del contratto di locazione a Zurigo"
+
+"Prepara una Klageschrift per inadempimento contrattuale"
+```
+
+**For in-house counsel:**
+```
+"Controlla questi 5 NDA nella cartella e dammi un riepilogo"
+
+"Il nostro fornitore vuole modificare la clausola di responsabilità — è accettabile?"
+
+"Prepara un briefing sul nuovo nDSG per il management"
+```
+
+**With slash commands:**
 ```
 /bettercallclaude:legal I need to assess our exposure under Art. 97 OR for late delivery
 
-/bettercallclaude:refine I have problems with my landlord
-
 /bettercallclaude:research Art. 97 OR contractual liability for late delivery
 
-/bettercallclaude:strategy Commercial lease dispute in Zurich, landlord claims CHF 200k damages
+/bettercallclaude:nda-triage @nda-folder/ Batch triage all NDAs
 
-/bettercallclaude:draft Employment contract for a software engineer in Geneva, bilingual DE/FR
+/bettercallclaude:adversarial Is the non-compete clause enforceable?
 
-/bettercallclaude:adversarial Is the non-compete clause in this employment contract enforceable?
-
-/bettercallclaude:workflow litigation-prep Personal injury claim against manufacturer
-
-/bettercallclaude:briefing Prepare full litigation for Art. 97 OR breach, CHF 500K, Zurich
-
-/bettercallclaude:cantonal ZH Commercial court jurisdiction for contract disputes over CHF 30k
-
-/bettercallclaude:doc-analyze @contract.pdf Review this commercial lease agreement
+/bettercallclaude:doctor
 ```
+
+### Renamed Commands
+
+| Old Command | New Command | Status |
+|-------------|-------------|--------|
+| `/bettercallclaude:setup` | `/bettercallclaude:start` | Alias active until v5.0 |
 
 ---
 

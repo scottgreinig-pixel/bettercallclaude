@@ -166,7 +166,7 @@ BetterCallClaude MCP servers provide live database access. When servers are unav
 When operating in reduced mode:
 - Inform the user that MCP servers are not connected
 - Mark all citations as **unverified** (do not use the "Verified" label)
-- Suggest running `/bettercallclaude:setup` to configure MCP servers
+- Suggest running `/bettercallclaude:doctor` to check MCP server connectivity
 - Still provide analysis using built-in Swiss law knowledge
 - Note limitations in the professional disclaimer
 

@@ -234,3 +234,19 @@ current session.
 - Verify every citation before marking it as correct.
 - Distinguish between critical issues and minor observations.
 - Provide actionable recommendations, not generic advice.
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Citation verification | Verified via `legal-citations` / `swiss-caselaw` | Format-checked only; mark as *(non verificato)* |
+| Statute text lookup | Live from `fedlex-sparql` | From model knowledge; note *(non verificato da Fedlex)* |
+| Commentary access | Via `onlinekommentar` | Not available; omit commentary references |
+| Precedent search | Via `entscheidsuche` / `bge-search` | Known BGE from training data only |
+| NDA triage criteria | Unchanged (criteria are in skill, not MCP) | Unchanged |
+| Playbook integration | Unchanged | Unchanged |
+
+In reduced mode, add a notice to the analysis output:
+> **Nota**: analisi effettuata in modalità ridotta (senza accesso alle banche dati). I riferimenti normativi e le citazioni richiedono verifica manuale.

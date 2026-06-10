@@ -237,3 +237,17 @@ SR numbers: nDSG = 235.1, DSV = 235.11, old DSG = 235.1 (pre-2023 version via Fe
 - Professional disclaimer: data protection analysis does not constitute legal advice and requires lawyer review
 - When professional secrecy (Art. 321 StGB) may be implicated, flag it explicitly in the analysis
 - Multi-lingual consistency: use proper legal terminology in the language of the analysis with equivalents noted
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| nDSG article text | Live from `fedlex-sparql` (SR 235.1) | From model knowledge; mark as *(non verificato)* |
+| FDPIC decisions | Via `entscheidsuche` | Known decisions from training data only |
+| BGE precedents | Via `swiss-caselaw` | Known landmark BGE from training data only |
+| Commentary | Via `onlinekommentar` | Not available; omit commentary references |
+
+In reduced mode, add a notice:
+> **Nota**: analisi sulla protezione dati in modalità ridotta. I riferimenti al nDSG e alla giurisprudenza richiedono verifica manuale.

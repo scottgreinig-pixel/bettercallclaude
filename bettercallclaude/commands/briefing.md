@@ -30,7 +30,17 @@ Parse flags from the user's input to determine the mode:
 | `--long` | Set execution plan output length to long (full detail) |
 | `--skip-briefing` | Bypass briefing and route directly (pass through to `/legal`) |
 
+**Natural language equivalents**: You can also say:
+- "riprendi il briefing precedente" or "resume the last briefing" → `--resume`
+- "elenca i briefing salvati" → `--list`
+- "briefing veloce" or "quick briefing" → `--depth quick`
+- "briefing approfondito" or "deep briefing" → `--depth deep`
+- "salta il briefing" or "skip the briefing" → `--skip-briefing`
+- "output breve / medio / dettagliato" → `--short` / `--medium` / `--long`
+
 **Flag parsing tip**: Flags appear anywhere in the input. Extract them before passing the query text to the briefing coordinator. Example: `"Advise on termination --depth quick"` → flag: `--depth quick`, query: `"Advise on termination"`.
+
+**Output convention**: Write the briefing plan to `bcc-output/YYYY-MM-DD-<slug>/briefing-plan.md` and give in chat only a summary. See `skills/shared/output-conventions.md`.
 
 ---
 

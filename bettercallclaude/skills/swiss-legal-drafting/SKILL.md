@@ -261,3 +261,17 @@ BEILAGEN / ANNEXES
 Always include on all drafted documents:
 
 > This document template is for general guidance and requires adaptation to specific circumstances. Professional legal review is recommended before execution or filing. This does not constitute legal advice. All statutory citations should be independently verified for the most current text.
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Citation verification | Verified via `legal-citations` MCP | Format-checked only; mark as *(non verificato)* |
+| Statute text | Live from `fedlex-sparql` | From model knowledge; mark as *(testo non verificato da Fedlex)* |
+| Drafting methodology | Unchanged | Unchanged |
+| Playbook integration | Unchanged | Unchanged |
+
+In reduced mode, add a notice at the top of the drafted document:
+> **Nota**: documento generato in modalità ridotta (senza accesso alle banche dati). Le citazioni e i riferimenti legislativi richiedono verifica manuale.
