@@ -144,6 +144,8 @@ Skills are activated automatically when Claude detects relevant legal context in
 | `swiss-legal-strategy` | Case assessment frameworks, risk matrices, procedural pathway analysis, and settlement evaluation. |
 | `swiss-legal-drafting` | Document generation standards, clause libraries, mandatory law compliance checks, and formatting rules. |
 | `swiss-citation-formats` | Citation format tables for DE/FR/IT/EN, BGE/ATF/DTF reference standards, doctrine citation rules, and cross-language conversion. |
+| `swiss-document-analysis` | Legal document analysis — structured review of contracts, court decisions, statutes, NDA triage (GREEN/YELLOW/RED), playbook-aware deviation analysis. |
+| `swiss-legal-translation` | Legal translation between DE, FR, IT, and EN with correct terminology, citation conversion delegation, and formal register preservation. |
 | `privacy-routing` | Anwaltsgeheimnis detection patterns, privacy classification, and local processing triggers for privileged content. |
 | `adversarial-analysis` | Three-agent adversarial methodology (advocate/adversary/judicial), argument scoring, objectivity validation, and Erwagung synthesis structure. |
 | `compliance-frameworks` | FINMA supervision, GwG/AMLA anti-money laundering, FIDLEG/FINIG financial institution licensing, banking secrecy, and cross-border compliance. |

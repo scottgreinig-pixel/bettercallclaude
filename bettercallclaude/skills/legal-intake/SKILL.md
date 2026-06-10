@@ -13,8 +13,8 @@ Score the query on **complexity** (1-10) and **domain count**:
 
 | Condition | Mode | Command Entry |
 |-----------|------|---------------|
-| Single domain, complexity < 8 | **Refine** | `/bettercallclaude:refine` |
-| 3+ domains, multi-jurisdiction, or complexity ≥ 8 | **Briefing** | `/bettercallclaude:briefing` |
+| Single domain, complexity < 7 | **Refine** | `/bettercallclaude:refine` |
+| 3+ domains, multi-jurisdiction, or complexity ≥ 7 | **Briefing** | `/bettercallclaude:briefing` |
 | `--skip-briefing` flag | Refine (forced) | any |
 | `--quick` flag | Refine quick (no dialogue) | `/bettercallclaude:refine --quick` |
 

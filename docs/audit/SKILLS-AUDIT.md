@@ -48,7 +48,7 @@
 
 | Pair | Overlap Scenario | Ambiguous Request Example |
 |------|-----------------|--------------------------|
-| `legal-query-refinement` ↔ `legal-briefing` | Both activated by vague/incomplete queries; boundary is complexity score (≥8 → briefing) | "Ich muss mich um eine Restrukturierung kümmern" (could be single-domain refine or multi-domain briefing) |
+| `legal-query-refinement` ↔ `legal-briefing` | Both activated by vague/incomplete queries; boundary is complexity score (≥7 → briefing) | "Ich muss mich um eine Restrukturierung kümmern" (could be single-domain refine or multi-domain briefing) |
 | `swiss-document-analysis` ↔ `swiss-legal-drafting` | "rivedi questo contratto" could mean analyze OR revise/redraft | "Can you review and fix this contract?" |
 | `swiss-legal-research` ↔ `swiss-citation-formats` | Citation-heavy research query could trigger either | "Verify these BGE citations and find related precedents" |
 | `swiss-legal-translation` ↔ `swiss-citation-formats` | Citation conversion is described in both descriptions | "Convert these German citations to French format" |

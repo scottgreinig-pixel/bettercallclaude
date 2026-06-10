@@ -1,3 +1,52 @@
+## Federal Statute Database
+
+| Statute | DE Abbr. | Articles | Key Content |
+|---------|----------|----------|-------------|
+| Civil Code | ZGB | Art. 11-977 | Persons (11-89), Family (90-456), Succession (457-640), Property (641-977) |
+| Code of Obligations | OR | Art. 1-964 | General obligations (1-183), Specific contracts (184-551), Commercial law (552-964) |
+| Criminal Code | StGB | Art. 1-392 | General provisions (1-110), Specific offenses (111-392) |
+| Federal Constitution | BV | Art. 1-197 | Federal structure (1-6), Fundamental rights (7-36), Competences (42-135) |
+| Civil Procedure | ZPO | Art. 1-408 | General provisions, ordinary/simplified/summary proceedings, evidence, appeals |
+| Criminal Procedure | StPO | Art. 1-457 | Investigation, prosecution, trial, appeals |
+| Administrative Procedure | VwVG | Art. 1-72 | Federal administrative proceedings, appeals to Federal Administrative Court |
+| Direct Federal Tax | DBG | Art. 1-233 | Income and profit tax at federal level |
+| Tax Harmonization | StHG | Art. 1-73 | Cantonal/municipal tax harmonization framework |
+| VAT | MWSTG | Art. 1-113 | Federal value-added tax |
+| Data Protection | nDSG | Art. 1-69 | Privacy, data subject rights, cross-border transfers (in force 1.9.2023) |
+| Financial Market Supervision | FINMAG | Art. 1-61 | FINMA mandate, supervision of banks/securities/insurance |
+| Banking Act | BankG | Art. 1-58 | Banking licensing, capital requirements, resolution |
+| AML/KYC | GwG | Art. 1-50 | Anti-money laundering, due diligence obligations |
+| AHVG (Old Age Insurance) | AHVG | Art. 1-112 | Federal social insurance — old age and survivors |
+| Disability Insurance | IVG | Art. 1-83 | Federal disability insurance |
+| Spatial Planning | RPG | Art. 1-37 | Federal zoning framework; cantons implement via Baugesetz |
+
+## Federal vs. Cantonal Competence Matrix
+
+| Legal Area | Federal | Cantonal | Notes |
+|------------|---------|----------|-------|
+| Civil law (ZGB, OR) | **Exclusive** | -- | Art. 122 BV |
+| Criminal law (StGB) | **Exclusive** | Execution only | Art. 123 BV |
+| Intellectual property | **Exclusive** | -- | Art. 122 Abs. 1 BV |
+| Civil procedure | **Framework** (ZPO) | Details, court organization | Federal ZPO + cantonal rules |
+| Criminal procedure | **Primary** (StPO) | Execution | Federal StPO framework |
+| Administrative procedure | **Federal** (VwVG) | **Cantonal** (e.g., VRPG BE, VRG ZH) | Each level has its own APA |
+| Tax law | Federal taxes (DBG, MWSTG) | **Cantonal taxes** | Parallel systems, StHG harmonization |
+| Construction / zoning | Federal framework (RPG) | **Primary** | Cantonal Baugesetze |
+| Education | Coordination only | **Primary** | Art. 62 BV |
+| Police law | Limited | **Primary** | Cantonal competence |
+| Administrative law | Federal matters | **Cantonal matters** | Divided competence |
+| Environmental law | **Framework** (USG) | Execution | Federal standards, cantonal enforcement |
+| Health law | **Framework** (KVG) | Execution | Federal insurance, cantonal hospitals |
+| Data protection | **Federal** (nDSG) | Cantonal public-sector laws | Cantonal: IDG ZH, DSG BS, LIPAD GE, etc. |
+| Banking / financial markets | **Exclusive** (FINMAG, BankG) | -- | FINMA is sole regulator |
+| Social insurance | **Exclusive** (AHVG, IVG, ALV) | Implementation only | Federal benefits, cantonal SVA offices |
+| AML / GwG | **Federal** (GwG) | -- | FINMA + SRO supervision |
+| Land register | Federal rules (ZGB Art. 942ff) | **Cantonal** administration | Cantonal Grundbuchämter |
+| Labor inspection | Federal framework | **Cantonal** execution | Kantonal Arbeitsinspektorate |
+| Sports arbitration | CAS/TAS (Lausanne, VD) | -- | International arbitration under PIL |
+
+---
+
 ## Canton Profiles
 
 ### Zurich (ZH)
