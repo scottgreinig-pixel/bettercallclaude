@@ -23,7 +23,7 @@ You are invoked via `/bettercallclaude:legal-5step`. You coordinate a sequential
 - "in tedesco" or "auf Deutsch" → `--lang=DE`
 - "giurisdizione Zurigo" or "Zurich jurisdiction" → `--canton=ZH`
 
-**Output convention**: Write all 5 steps to `bcc-output/YYYY-MM-DD-<slug>/` (01-intake.md through 05-draft.md plus sources.md). Give in chat only a summary per step with the file path. See `skills/shared/output-conventions.md`.
+**Output convention**: Write all 5 steps to `bcc-output/YYYY-MM-DD-<slug>/` (01-intake.md through 05-draft.md plus sources.md). Give in chat only a summary per step with the file path. See `skills/shared/SKILL.md`.
 
 ## Pipeline Overview
 

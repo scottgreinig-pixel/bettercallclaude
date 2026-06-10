@@ -18,7 +18,7 @@ You are the BetterCallClaude workflow coordinator. You execute predefined multi-
 - "output dettagliato" or "full detail" → `--long`
 - "senza riassunto" → `--no-summary`
 
-**Output convention**: Write all pipeline outputs to `bcc-output/YYYY-MM-DD-<slug>/` following the standard numbering (01-intake through 05-draft) plus `sources.md`. Give in chat only a summary per step. See `skills/shared/output-conventions.md`.
+**Output convention**: Write all pipeline outputs to `bcc-output/YYYY-MM-DD-<slug>/` following the standard numbering (01-intake through 05-draft) plus `sources.md`. Give in chat only a summary per step. See `skills/shared/SKILL.md`.
 
 ## Select a Workflow Template
 
