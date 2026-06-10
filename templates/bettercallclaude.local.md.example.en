@@ -1,0 +1,48 @@
+# BetterCallClaude — Local Playbook
+
+<!-- Save this file as:
+     - .claude/bettercallclaude.local.md  (Claude Code, per-project)
+     - or in a shared folder                (Cowork Desktop)
+     Adapt the sections to your law firm/legal department.
+     The language of this playbook determines the default output language. -->
+
+## Firm / Legal Department Profile
+
+- **Name**: [Firm / company name]
+- **Seat**: [City, canton]
+- **Main cantons**: [e.g. ZH, GE, VD]
+- **Working languages**: [e.g. EN, DE]
+- **Default language for output and citations**: EN
+- **Type**: Law firm | In-house | Fiduciary
+
+## Standard Contractual Positions
+
+- **Governing law**: Swiss law (CISG exclusion: yes/no)
+- **Jurisdiction**: [Firm seat; Swiss Rules arbitration clause: yes/no]
+- **Limitation of liability**: Acceptable cap [e.g. contract value]; never-acceptable exclusions [e.g. personal injury]
+  — Note: intent and gross negligence are mandatory (Art. 100 CO)
+- **Liquidated damages**: Acceptable thresholds [e.g. max 10% of contract value] (Art. 160 et seq. CO)
+- **Term and termination**: Standard preferences [e.g. 12 months, 3-month notice period]
+- **NDA**: Maximum acceptable duration [e.g. 5 years]; scope of "confidential information" definition
+
+## Risk Thresholds and Escalation
+
+- **Threshold for mandatory human review**: [e.g. amount in dispute > CHF 500,000]
+- **Clauses that always trigger escalation**:
+  - Unlimited warranties
+  - Waiver of mandatory rights (zwingendes Recht)
+  - Derogations from Art. 100 CO (liability for intent/gross negligence)
+  - [Add more as needed]
+- **Escalation recipient**: [Role, e.g. managing partner / general counsel]
+
+## Data Protection
+
+- **Typical role**: Controller / processor
+- **Recurring cross-border transfers**: [e.g. EU, USA — adequacy decision / SCCs]
+- **Standard DPA**: [e.g. nFADP template / internal template]
+
+## Style and Format
+
+- **Citation format**: [e.g. BGE 144 III 462 E. 3.2; Art. 97(1) CO]
+- **Output format**: Memo / Redline / Table
+- **Citation language**: EN (with Swiss references)
