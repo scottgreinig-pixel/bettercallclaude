@@ -6,6 +6,8 @@ description: "Triage NDAs against Swiss law — classify as GREEN (standard) / Y
 
 You are invoked via `/bettercallclaude:nda-triage`. Apply the swiss-document-analysis skill in **NDA triage mode** to analyze one or more NDAs against Swiss legal criteria and the user's local playbook.
 
+**Output convention**: Write triage reports to `bcc-output/YYYY-MM-DD-<slug>/nda-triage-<doc>.md`. In batch mode, also write a summary table. Give in chat only the verdict (GREEN/YELLOW/RED) with a 2–3 line summary per NDA. See `skills/shared/SKILL.md`.
+
 ## Playbook Loading
 
 Before starting the triage, search for the local playbook in this order:

@@ -4,6 +4,34 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.8.1] - 2026-06-10
+
+### Added
+- **`/bettercallclaude:start` command**: Cowork-first onboarding — language detection, MCP connectivity check (reuses `doctor` logic), guided playbook creation through natural-language questions, profile-specific usage examples (law firm / in-house / fiduciary). Absorbs all functionality of `/setup`.
+- **`/bettercallclaude:doctor` command**: MCP server diagnostics — tests each of the 9 servers with lightweight calls, reports status and user-impact in plain language (no technical jargon), suggests concrete fixes when servers are unavailable.
+- **Deliverable-as-file convention** (`bcc-output/`): long outputs (memos, research, strategy, drafts, triage) are now written as files in `bcc-output/YYYY-MM-DD-<slug>/` with numbered phases and `sources.md` for citation trails. Chat shows only a 3–5 line summary. Output folder configurable in playbook. Defined once in `skills/shared/SKILL.md` and referenced by all commands.
+- **Reduced mode** declared in 10 MCP-dependent skills: `swiss-legal-drafting`, `swiss-legal-strategy`, `swiss-document-analysis`, `swiss-citation-formats`, `swiss-legal-translation`, `adversarial-analysis`, `compliance-frameworks`, `data-protection-law`, `swiss-jurisdictions`. Each includes an explicit degradation table showing what works and what doesn't when MCP servers are unavailable.
+- **Privacy-routing Cowork fallback**: skill-level privacy check added to `privacy-routing` SKILL.md as defense-in-depth when `PreToolUse` hook is absent. Same pattern-matching logic (strong/weak markers, file paths) applied via Claude's instruction-following.
+- **Natural language flag equivalents**: `legal`, `legal-5step`, `workflow`, `briefing`, `adversarial` commands now include plain-language alternatives for all flags (e.g. "analisi breve" → `--short`, "salta il briefing" → `--skip-briefing`).
+- **Output convention references** added to: `research`, `strategy`, `draft`, `adversarial`, `translate`, `doc-analyze`, `nda-triage`, `precedent`, `workflow`, `legal-5step`, `briefing`, `legal`.
+- **Cowork audit matrix** (`docs/audit/COWORK-AUDIT.md`): systematic review of all 24 commands and 15 skills — terminal assumptions, output mode, overlap, Cowork compatibility, and action taken. Serves as regression register for future releases.
+- **Quickstart guide** (`docs/QUICKSTART-COWORK.md`): one-page, zero-jargon guide in DE/FR/IT/EN — install, share folder, `/start`, first NDA triage. Includes mini-glossary (command, skill, MCP server, playbook).
+- **Hooks verification** documented in `COWORK-AUDIT.md`: `PreToolUse` privacy hook and 5-step workflow enforcement both verified for Cowork compatibility. Skill-level fallback added as defense-in-depth.
+
+### Changed
+- **`/bettercallclaude:setup`** → deprecated alias of `/start`. Displays deprecation notice and executes `/start`. Alias remains active through v4.x, removed in v5.0.
+- **README**: Cowork-first ordering — "Getting Started (Cowork Desktop)" section before advanced installation. Usage examples include law firm, in-house counsel, and fiduciary profiles. "Renamed Commands" section added.
+- **`/bettercallclaude:version`**: updated to v4.8.1, shows `start` and `doctor` commands, references `/doctor` instead of `/setup` for connectivity.
+- **`/bettercallclaude:help`**: added `start` and `doctor` to command table, `setup` marked as alias.
+- **`/bettercallclaude:privacy`**: removed bash/CLI jargon from implementation notes (no more `cat`, `grep`, `mkdir -p` instructions).
+- **Command count**: 22 → 24 (added `start`, `doctor`).
+
+### Command Overlap Resolution (D7 Policy)
+- **Policy**: one command per scope; new command absorbs old; old becomes alias with deprecation notice for v4.x; removed only at v5.0.
+- **Applied**: `setup` → absorbed by `start`. All `setup` functionality (MCP connectivity check, health endpoint, backend error diagnostics) preserved in `start` + `doctor`.
+
+---
+
 ## [4.8.0] - 2026-06-10
 
 ### Added

@@ -57,7 +57,7 @@ After plugin installation, verify with `/mcp` that all 5 servers appear. Restart
 
 #### Cowork Desktop (Guided Setup)
 
-Cowork Desktop may not auto-register MCP servers from the plugin's `.mcp.json`. Run `/bettercallclaude:setup` to:
+Cowork Desktop may not auto-register MCP servers from the plugin's `.mcp.json`. Run `/bettercallclaude:start` (or `/bettercallclaude:doctor` for diagnostics) to:
 
 1. Check which servers are connected
 2. Get a ready-to-paste configuration with absolute paths for your environment
@@ -67,7 +67,7 @@ The setup command replaces `${CLAUDE_PLUGIN_ROOT}` with the actual plugin instal
 
 #### Without MCP Servers
 
-BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:setup` to configure.
+BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:doctor` to check connectivity.
 
 ---
 

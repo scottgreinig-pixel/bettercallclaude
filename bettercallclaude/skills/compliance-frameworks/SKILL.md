@@ -262,3 +262,16 @@ SR numbers for key statutes: BankG = 952.0, FINMAG = 956.1, GwG = 955.0, FIDLEG 
 - All analysis carries a professional disclaimer: compliance assessment does not substitute for formal legal or regulatory advice
 - Citation format follows Swiss legal standards: Art. X Abs. Y [Statute abbreviation]
 - Cross-border analysis must distinguish Swiss domestic requirements from international obligations
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Statute text | Live from `fedlex-sparql` | From model knowledge; mark as *(non verificato da Fedlex)* |
+| Regulatory precedents | Via `entscheidsuche` | Known decisions from training data only |
+| Commentary | Via `onlinekommentar` | Not available; omit commentary references |
+
+In reduced mode, add a notice:
+> **Nota**: analisi di compliance in modalità ridotta. I riferimenti normativi richiedono verifica manuale.

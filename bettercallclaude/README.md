@@ -6,7 +6,7 @@ BetterCallClaude is a plugin for legal professionals working in Cowork or Claude
 
 The plugin covers the full spectrum of Swiss legal work: BGE/ATF/DTF precedent research, case strategy development with risk assessment, adversarial legal analysis, compliance and data protection advisory, fiscal and corporate law expertise, real estate law, legal drafting with jurisdiction-aware templates, legal translation, and citation verification across all 26 Swiss cantons. Privacy compliance with Anwaltsgeheimnis (Art. 321 StGB) is enforced automatically through a pre-tool-use hook that detects privileged content before it leaves the local environment.
 
-**Version**: 4.5.0 -- 20 agents, 19 commands, 14 skills, 9 MCP servers.
+**Version**: 4.8.1 -- 20 agents, 24 commands, 15 skills, 9 MCP servers.
 
 > Love BetterCallClaude? Support the project — [**Buy me a coffee**](https://buymeacoffee.com/federicocesconi) ☕
 
@@ -98,7 +98,9 @@ claude --plugin-dir bettercallclaude/
 | `/bettercallclaude:help` | Show complete command reference, available agents, skills, and usage examples. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
-| `/bettercallclaude:setup` | Check MCP server status and auto-install servers to Claude Desktop if needed. |
+| `/bettercallclaude:start` | Welcome and onboarding — checks connectivity, guides playbook creation, shows usage examples. |
+| `/bettercallclaude:doctor` | Diagnose MCP server connectivity — tests each server, reports status and impact. |
+| `/bettercallclaude:setup` | ⚠ Alias for `/start` — will be removed in v5.0. |
 
 ### Usage examples
 

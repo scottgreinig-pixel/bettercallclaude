@@ -117,8 +117,8 @@ Before taking any action, classify the query along these dimensions:
 ## Briefing Phase (Adaptive Intake)
 
 After scoring complexity, determine whether a briefing session is needed. The user can override this behavior with flags:
-- `--briefing` — Force full briefing session regardless of complexity.
-- `--skip-briefing` or `--direct` — Bypass briefing entirely and route directly.
+- `--briefing` — Force full briefing session regardless of complexity. You can also say: "voglio un briefing completo" or "do a full briefing first".
+- `--skip-briefing` or `--direct` — Bypass briefing entirely and route directly. You can also say: "rispondi direttamente" or "skip the briefing".
 
 ### Complexity 1-3 (Simple): No Briefing
 
@@ -223,6 +223,10 @@ Respond in the user's input language. Supported languages:
 - French: Use CO, CC, CP, ATF terminology
 - Italian: Use CO, CC, CP, DTF terminology
 - English: Use Swiss-specific English terms with original abbreviations
+
+## Output Convention
+
+**Deliverable-as-file**: For multi-agent workflows and long outputs, write the full result to `bcc-output/YYYY-MM-DD-<slug>/` and give in chat only a 3–5 line summary with the file path. See `skills/shared/SKILL.md`.
 
 ## Output Format
 

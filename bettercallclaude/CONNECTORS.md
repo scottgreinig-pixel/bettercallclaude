@@ -25,25 +25,15 @@ The ollama privacy classifier runs locally via stdio to ensure sensitive content
 
 After plugin installation, verify with `/mcp` that all 6 servers appear. Restart Claude Code or Cowork if needed.
 
-#### Local mode (optional -- stdio transport)
+#### Local mode (optional -- stdio transport, Claude Code only)
 
-For lower latency or offline capability, you can switch the 5 HTTP servers to local stdio transport:
+For lower latency or offline capability in Claude Code, you can switch the HTTP servers to local stdio transport. This feature is not available in Cowork Desktop (which uses HTTP-only transport).
 
-```
-/bettercallclaude:setup --local
-```
-
-This registers user-scoped stdio servers that override the plugin's HTTP defaults. Requires Node.js 18+ and the plugin's bundled server files.
-
-To switch back to HTTP:
-
-```
-/bettercallclaude:setup --restore-http
-```
+Refer to the Claude Code CLI edition ([fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli)) for local transport setup instructions.
 
 #### Without MCP Servers
 
-BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:setup` to check connectivity.
+BetterCallClaude operates in reduced mode when servers are unavailable. Commands fall back to built-in Swiss law knowledge but cannot search live databases, verify citation existence, or access current legislation. Run `/bettercallclaude:doctor` to check connectivity.
 
 ---
 

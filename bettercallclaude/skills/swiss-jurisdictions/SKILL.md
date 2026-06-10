@@ -671,3 +671,16 @@ During a conversation, jurisdiction context may change. Follow these rules:
 - Always note federal-cantonal interplay when both levels are relevant
 - Track the active jurisdiction context throughout the conversation
 - If jurisdiction becomes ambiguous, ask the user rather than assuming
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers (`entscheidsuche`) are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Cantonal decision search | Via `entscheidsuche` with canton filter | Not available; rely on model knowledge of cantonal court structure |
+| Federal decision search | Via `entscheidsuche` with bundesgericht filter | Not available; use known landmark BGE |
+| Jurisdiction tables | From this skill (unchanged) | Unchanged |
+| Court hierarchy mapping | From this skill (unchanged) | Unchanged |
+
+In reduced mode, jurisdiction resolution and court hierarchy mapping remain fully functional (they are skill-internal). Only live case search is degraded.

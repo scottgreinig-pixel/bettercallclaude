@@ -181,6 +181,17 @@ This ensures that privileged content is never accidentally written to files, com
 - **Bash file paths**: The hook checks file path names against directory discriminators but does not read file contents. A file in a non-privileged directory containing privileged content will not be flagged.
 - **Config file downgrade protection**: The `~/.betterask/config.yaml` file can only raise the privacy mode (e.g. balanced → strict), never lower it (e.g. balanced → cloud). The `CLAUDE_PLUGIN_USER_CONFIG` env var from Cowork Desktop is trusted and can set any mode.
 
+## Cowork Fallback (Skill-Level Privacy Check)
+
+If the `PreToolUse` hook is not active (e.g. the hook mechanism is unavailable or not supported in the current environment), apply these rules at the skill level as a defense-in-depth fallback:
+
+1. **Before any tool call that sends content externally** (MCP calls, WebFetch, Write to shared folders), scan the content for the privacy patterns listed in this skill.
+2. If **strong patterns** are detected (Anwaltsgeheimnis, Art. 321 StGB, segreto professionale, etc.), **pause and ask the user** before proceeding: *"This content may be protected by attorney-client privilege (Art. 321 StGB). Proceed with external transmission?"*
+3. If **weak patterns with legal context** are detected, similarly pause and ask.
+4. For **file operations**, check the file path against privileged directory patterns (`/klienten/`, `/mandanten/`, `/clienti/`, `/clients/`).
+
+This fallback ensures that Art. 321 StGB protection does not depend solely on the hook mechanism. The hook provides automated enforcement; this skill-level check provides the same protection via Claude's instruction-following when the hook is absent.
+
 ## Professional Disclaimer
 
 > Privacy routing is an assistive technology and does not guarantee compliance with Art. 321 StGB or Art. 13 BGFA. Lawyers remain professionally responsible for protecting client confidentiality. Always verify that appropriate privacy measures are in place before processing sensitive legal content. When in doubt, use local processing exclusively.

@@ -18,7 +18,7 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 
 ---
 
-## Commands (22)
+## Commands (24)
 
 ### Core Commands
 
@@ -55,12 +55,19 @@ BetterCallClaude provides Swiss legal intelligence through three interfaces:
 | `/bettercallclaude:briefing` | Structured pre-execution briefing with specialist panel and plan building |
 | `/bettercallclaude:translate` | Translate legal documents between DE, FR, IT, EN |
 
+### Onboarding & Diagnostics
+
+| Command | Description |
+|---------|-------------|
+| `/bettercallclaude:start` | Welcome and onboarding — checks connectivity, guides playbook creation, shows usage examples |
+| `/bettercallclaude:doctor` | Diagnose MCP server connectivity — tests each server, reports status and impact |
+
 ### Reference Commands
 
 | Command | Description |
 |---------|-------------|
 | `/bettercallclaude:cite` | Format and verify individual Swiss legal citations |
-| `/bettercallclaude:setup` | Check MCP server connectivity |
+| `/bettercallclaude:setup` | ⚠ Alias for `/start` — will be removed in v5.0 |
 | `/bettercallclaude:refine` | Refine vague legal queries into precise, effective prompts |
 | `/bettercallclaude:version` | Display plugin version, components, and system status |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output with length control (--short/--medium/--long) |
@@ -204,7 +211,7 @@ Skills activate automatically when Claude detects relevant context.
 
 ---
 
-**BetterCallClaude v4.8.0 -- Swiss Legal Intelligence for Cowork Desktop**
+**BetterCallClaude v4.8.1 -- Swiss Legal Intelligence for Cowork Desktop**
 
 If the user provided additional input, respond to it in the context of this help reference.
 

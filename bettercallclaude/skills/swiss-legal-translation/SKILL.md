@@ -184,3 +184,16 @@ If the user requests a parallel format, output a two-column table:
 - Maintain absolute consistency: the same source term must always produce the same translation within a document.
 - Verify that citation conversions follow the official format for the target language.
 - Preserve the legal meaning above all else. Stylistic fluency is secondary to accuracy.
+
+## Reduced Mode (MCP Unavailable)
+
+When MCP servers are not available, the following degradation applies:
+
+| Capability | Full Mode | Reduced Mode |
+|------------|-----------|--------------|
+| Citation conversion | Via `legal-citations` → `convert_citation` | Apply conversion rules from swiss-citation-formats skill manually |
+| Statute text verification | Via `fedlex-sparql` | From model knowledge; mark as *(non verificato)* |
+| Terminology precision | Unchanged (terminology tables are in skill) | Unchanged |
+
+In reduced mode, add a notice to the translation output:
+> **Nota**: traduzione effettuata in modalità ridotta. Le conversioni delle citazioni e i riferimenti legislativi richiedono verifica manuale.
