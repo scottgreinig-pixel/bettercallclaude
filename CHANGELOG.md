@@ -4,6 +4,27 @@ All notable changes to BetterCallClaude will be documented in this file.
 
 ---
 
+## [4.8.0] - 2026-06-10
+
+### Added
+- **Local playbook pattern** (`bettercallclaude.local.md`): firm-specific contractual positions, risk thresholds, escalation rules, citation format, and output language. Four language templates provided (DE/FR/IT/EN) in `templates/`. Playbook search order: `.claude/bettercallclaude.local.md` → shared folder → `.claude/legal.local.md` (Anthropic compat) → Swiss defaults.
+- **`/bettercallclaude:nda-triage` command**: Classify NDAs as GREEN (standard approval) / YELLOW (legal review) / RED (substantive issues) against Swiss law criteria and local playbook thresholds. Supports single file and batch (folder) mode. Swiss criteria include Art. 160 ff. OR (Konventionalstrafe), Lugano Convention (forum), zwingendes Recht (mandatory law).
+- **Playbook-aware contract review**: `swiss-document-analysis` skill compares contract clauses against playbook standard positions with deviation classification (conforme / scostamento accettabile / scostamento da negoziare / inaccettabile). Redline suggestions reflect playbook positions.
+- **Playbook integration in drafting**: `swiss-legal-drafting` skill applies playbook preferences for governing law, jurisdiction, liability caps, and citation format when drafting contracts.
+- **Coexistence with Anthropic Legal plugin**: `legal.local.md` compatibility (permanent, no deprecation), explicit plugin boundary lines in `swiss-document-analysis` and `swiss-legal-drafting` skills.
+- **Positioning section** in README with comparison table vs Anthropic Legal plugin.
+- `docs/PLAYBOOK.md` — playbook pattern documentation.
+- `docs/MIGRATION-FROM-ANTHROPIC-LEGAL.md` — migration and coexistence guide.
+- `docs/listing-copy-en.txt` — plugin listing copy for claude.com/plugins.
+- Playbook integration added to `swiss-legal-strategy` skill (escalation thresholds).
+
+### Notes
+- No MCP server changes.
+- No new skills (NDA triage logic integrated into `swiss-document-analysis`).
+- Command count: +1 (`/bettercallclaude:nda-triage`). Now 22 commands total.
+
+---
+
 ## [4.7.0] - 2026-05-31
 
 ### Added

@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.7.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.8.0-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -11,9 +11,30 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 21 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, and CAS/TAS sports arbitration across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 22 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, NDA triage, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
+
+---
+
+## Swiss Law, Not Delaware
+
+Anthropic's official Legal plugin (`anthropics/knowledge-work-plugins`) provides contract review and NDA triage for US law (Delaware, New York, California). **BetterCallClaude covers Switzerland**: federal law, all 26 cantons, four national languages, verified citations from official sources, and attorney-client privilege protection.
+
+The two plugins coexist. For Swiss-law matters, BetterCallClaude takes precedence. For US-law matters, the Anthropic plugin applies.
+
+| | Anthropic Legal Plugin | BetterCallClaude Swiss |
+|---|---|---|
+| **Jurisdiction** | US (DE/NY/CA default) | Switzerland (federal + 26 cantons) |
+| **Primary sources** | Model knowledge | 8+ MCP servers on official sources (BGE, Fedlex, entscheidsuche, ...) |
+| **Languages** | EN | DE/FR/IT/EN |
+| **Citations** | -- | Swiss standards verified via MCP (BGE/ATF/DTF) |
+| **Attorney-client privilege** | -- | Privacy-routing hook (Art. 321 StGB) |
+| **Adversarial analysis** | -- | 3-agent advocate/adversary/judge with probability scores |
+| **NDA triage** | GREEN/YELLOW/RED (US criteria) | GREEN/YELLOW/RED (Swiss criteria: Art. 160 ff. OR, Lugano, zwingendes Recht) |
+| **Local playbook** | `legal.local.md` | `bettercallclaude.local.md` (+ `legal.local.md` compat) |
+
+See [MIGRATION-FROM-ANTHROPIC-LEGAL.md](docs/MIGRATION-FROM-ANTHROPIC-LEGAL.md) for the full migration and coexistence guide.
 
 ---
 
@@ -25,14 +46,17 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.7.0
+## What's New in v4.8.0
 
-**v4.7.0 — Plugin scope enforcement.** All 17 legal commands now include an explicit instruction that legal work (research, strategy, drafting, translation, citation, adversarial analysis) must use **exclusively** BetterCallClaude agents, skills, and MCP servers. This prevents Claude from delegating legal tasks to generic or external skills outside the plugin. Infrastructure operations (file generation via pandoc, file reading, computation) remain exempt.
+**v4.8.0 — Repositioning vs Anthropic Legal plugin + playbook pattern + NDA triage.**
 
-- **Plugin scope constraint** added to: `legal`, `legal-5step`, `draft`, `research`, `strategy`, `adversarial`, `translate`, `cite`, `validate`, `doc-analyze`, `summarize`, `workflow`, `refine`, `briefing`, `cantonal`, `federal`, `precedent`.
-- **No changes to MCP servers, agents, or skills.**
+- **Local playbook pattern** (`bettercallclaude.local.md`): firm-specific contractual positions, risk thresholds, escalation rules, citation format, and output language. Templates in DE/FR/IT/EN. Compatible with Anthropic's `legal.local.md` format (read in compat mode if no BCC playbook exists).
+- **NDA triage** (`/bettercallclaude:nda-triage`): classify NDAs as GREEN (standard) / YELLOW (review) / RED (issues) against Swiss law criteria and playbook thresholds. Supports single file and batch (folder) mode.
+- **Playbook-aware contract review**: `swiss-document-analysis` skill now compares contract clauses against playbook positions with deviation classification (conforme / scostamento accettabile / da negoziare / inaccettabile).
+- **Coexistence with Anthropic Legal plugin**: migration guide, `legal.local.md` compatibility, explicit plugin boundary lines in skills.
+- **Positioning**: new README section with comparison table, `docs/PLAYBOOK.md`, `docs/MIGRATION-FROM-ANTHROPIC-LEGAL.md`.
 
-**Content counts**: 20 agents, 21 commands, 15 skills, 9 MCP servers in `.mcp.json` (7 remote HTTP on `mcp.bettercallclaude.ch` + `swiss-caselaw` SSE on `mcp.opencaselaw.ch` + `ollama` local STDIO).
+**Content counts**: 20 agents, 22 commands, 15 skills, 9 MCP servers.
 
 [Full changelog →](CHANGELOG.md)
 
@@ -74,7 +98,8 @@ MCP servers connect automatically via HTTP. No Node.js, no local setup, no API k
 | `/bettercallclaude:briefing` | Structured pre-execution briefing -- assembles a specialist panel, collects case context, and builds an execution plan before agents start working. |
 | `/bettercallclaude:workflow` | Define and execute multi-agent legal workflows (due diligence, litigation prep, contract lifecycle, real estate closing). |
 | `/bettercallclaude:translate` | Translate Swiss legal documents between DE, FR, IT, and EN while preserving legal terminology precision. |
-| `/bettercallclaude:doc-analyze` | Analyze Swiss legal documents -- identify legal issues, extract key clauses, verify citations, assess compliance. |
+| `/bettercallclaude:doc-analyze` | Analyze Swiss legal documents -- identify legal issues, extract key clauses, verify citations, assess compliance. Playbook-aware deviation analysis when `bettercallclaude.local.md` is present. |
+| `/bettercallclaude:nda-triage` | Triage NDAs against Swiss law: GREEN (standard) / YELLOW (review) / RED (issues). Single file or batch mode. Uses playbook thresholds. |
 | `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output -- deduplicate disclaimers, terminology, and citations with length control (`--short`/`--medium`/`--long`). |
 | `/bettercallclaude:setup` | Check MCP server connectivity and display status for all 9 servers. |
 | `/bettercallclaude:version` | Display plugin version, installed components, and system status. |

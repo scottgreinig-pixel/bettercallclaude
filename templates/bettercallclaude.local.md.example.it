@@ -1,0 +1,48 @@
+# BetterCallClaude — Playbook locale
+
+<!-- Salvare questo file come:
+     - .claude/bettercallclaude.local.md  (Claude Code, per progetto)
+     - oppure in una cartella condivisa      (Cowork Desktop)
+     Adattare le sezioni al proprio studio/servizio giuridico.
+     La lingua di questo playbook determina la lingua di output predefinita. -->
+
+## Profilo studio / servizio giuridico
+
+- **Nome**: [Nome dello studio / dell'azienda]
+- **Sede**: [Citta, cantone]
+- **Cantoni principali**: [es. TI, GR]
+- **Lingue di lavoro**: [es. IT, DE, EN]
+- **Lingua predefinita per output e citazioni**: IT
+- **Tipo**: Studio legale | In-house | Fiduciaria
+
+## Posizioni contrattuali standard
+
+- **Diritto applicabile**: Diritto svizzero (esclusione CISG: si/no)
+- **Foro competente**: [Sede dello studio; clausola arbitrale Swiss Rules: si/no]
+- **Limitazione di responsabilita**: Cap accettabile [es. valore del contratto]; esclusioni mai accettabili [es. danni alla persona]
+  — Nota: dolo e colpa grave sono inderogabili (art. 100 CO)
+- **Penale convenzionale**: Soglie accettabili [es. max. 10% del valore del mandato] (art. 160 segg. CO)
+- **Durata e disdetta**: Preferenze standard [es. 12 mesi, preavviso di 3 mesi]
+- **NDA**: Durata massima accettabile [es. 5 anni]; perimetro della definizione "informazioni confidenziali"
+
+## Soglie di rischio ed escalation
+
+- **Soglia per revisione umana obbligatoria**: [es. valore litigioso > CHF 500'000]
+- **Clausole che attivano sempre escalation**:
+  - Garanzie illimitate
+  - Rinuncia preventiva a diritti inderogabili (diritto imperativo)
+  - Deroghe all'art. 100 CO (responsabilita per dolo/colpa grave)
+  - [Completare secondo necessita]
+- **Destinatario escalation**: [Ruolo, es. managing partner / responsabile legale]
+
+## Protezione dati
+
+- **Ruolo tipico**: Titolare del trattamento / responsabile del trattamento
+- **Trasferimenti esteri ricorrenti**: [es. UE, USA — decisione di adeguatezza / SCC]
+- **DPA standard**: [es. modello nLPD / modello interno]
+
+## Stile e formato
+
+- **Formato citazioni**: [es. DTF 144 III 462 consid. 3.2; art. 97 cpv. 1 CO]
+- **Formato output**: Memo / Redline / Tabella
+- **Lingua delle citazioni**: IT (formato DTF)
