@@ -1,3 +1,8 @@
+---
+name: output-conventions
+description: Shared deliverable-as-file output conventions for all BetterCallClaude commands. Defines the bcc-output folder structure, file naming, and chat summary template.
+---
+
 # BetterCallClaude Output Conventions
 
 This document defines the standard output behavior for all BetterCallClaude commands that produce deliverables longer than approximately one page (~500 words).

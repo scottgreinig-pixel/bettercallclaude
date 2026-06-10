@@ -226,7 +226,7 @@ Respond in the user's input language. Supported languages:
 
 ## Output Convention
 
-**Deliverable-as-file**: For multi-agent workflows and long outputs, write the full result to `bcc-output/YYYY-MM-DD-<slug>/` and give in chat only a 3–5 line summary with the file path. See `skills/shared/output-conventions.md`.
+**Deliverable-as-file**: For multi-agent workflows and long outputs, write the full result to `bcc-output/YYYY-MM-DD-<slug>/` and give in chat only a 3–5 line summary with the file path. See `skills/shared/SKILL.md`.
 
 ## Output Format
 

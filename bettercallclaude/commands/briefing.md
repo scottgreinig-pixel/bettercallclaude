@@ -40,7 +40,7 @@ Parse flags from the user's input to determine the mode:
 
 **Flag parsing tip**: Flags appear anywhere in the input. Extract them before passing the query text to the briefing coordinator. Example: `"Advise on termination --depth quick"` → flag: `--depth quick`, query: `"Advise on termination"`.
 
-**Output convention**: Write the briefing plan to `bcc-output/YYYY-MM-DD-<slug>/briefing-plan.md` and give in chat only a summary. See `skills/shared/output-conventions.md`.
+**Output convention**: Write the briefing plan to `bcc-output/YYYY-MM-DD-<slug>/briefing-plan.md` and give in chat only a summary. See `skills/shared/SKILL.md`.
 
 ---
 
