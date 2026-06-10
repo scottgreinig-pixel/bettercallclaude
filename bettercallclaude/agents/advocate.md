@@ -115,4 +115,4 @@ Append to every output: "This advocate analysis is produced for adversarial work
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-citation-formats`, `swiss-jurisdictions`
+- `swiss-legal-research`, `swiss-citation-formats`

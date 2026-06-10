@@ -249,4 +249,4 @@ When on briefing panel, contributes questions about:
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-jurisdictions`, `swiss-citation-formats`, `privacy-routing`
+- `swiss-legal-research`, `swiss-citation-formats`, `privacy-routing`

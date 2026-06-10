@@ -132,4 +132,4 @@ Conclusion: Permit [required / not required]
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-jurisdictions`, `swiss-citation-formats`
+- `swiss-legal-research`, `swiss-citation-formats`

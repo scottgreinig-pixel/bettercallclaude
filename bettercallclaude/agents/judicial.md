@@ -139,4 +139,4 @@ Append to every output: "This judicial analysis is produced for adversarial work
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-legal-strategy`, `swiss-citation-formats`, `swiss-jurisdictions`
+- `swiss-legal-research`, `swiss-legal-strategy`, `swiss-citation-formats`

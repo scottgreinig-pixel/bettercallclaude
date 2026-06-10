@@ -119,4 +119,4 @@ You are a Swiss fiscal law specialist. You analyze tax implications at federal, 
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-jurisdictions`, `swiss-citation-formats`
+- `swiss-legal-research`, `swiss-citation-formats`

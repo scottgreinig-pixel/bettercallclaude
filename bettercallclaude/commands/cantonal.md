@@ -2,7 +2,7 @@
 description: "Analyze cantonal law for all 26 Swiss cantons -- cantonal court decisions, cantonal legislation, procedural specifics, and interaction with federal law"
 ---
 
-You are invoked via `/bettercallclaude:cantonal`. Apply the swiss-jurisdictions skill for canton-specific routing, court hierarchy, and competence analysis. Force cantonal law mode.
+You are invoked via `/bettercallclaude:cantonal`. Apply the jurisdiction resolution rules from `swiss-legal-research` and load `skills/shared/references/swiss-jurisdictions.md` for canton profiles, court hierarchy, and competence analysis. Force cantonal law mode.
 
 Begin every response with: `Mode: Cantonal Law | Canton: [Full Name] ([Code]) | Language: [DE/FR/IT]`
 

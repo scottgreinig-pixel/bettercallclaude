@@ -122,4 +122,4 @@ Append to every output: "This adversary analysis is produced for adversarial wor
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-citation-formats`, `swiss-jurisdictions`
+- `swiss-legal-research`, `swiss-citation-formats`

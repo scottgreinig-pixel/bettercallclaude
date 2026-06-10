@@ -1,5 +1,5 @@
 ---
-description: "Primary entry point for all BetterCallClaude requests — classifies intent, resolves jurisdiction (via swiss-jurisdictions skill), runs inline briefing for complexity 4–6, activates full briefing session when complexity ≥ 7 (via legal-briefing skill), and routes to specialist agents or workflow pipelines. Invoked explicitly as /bettercallclaude:legal or as the default when no other command matches. Supports --refine, --briefing, --skip-briefing/--direct, --no-framework flags."
+description: "Primary entry point for all BetterCallClaude requests — classifies intent, resolves jurisdiction (via swiss-legal-research), runs inline briefing for complexity 4–6, activates full briefing session when complexity ≥ 7 (via legal-intake skill), and routes to specialist agents or workflow pipelines. Invoked explicitly as /bettercallclaude:legal or as the default when no other command matches. Supports --refine, --briefing, --skip-briefing/--direct, --no-framework flags."
 ---
 
 # Intelligent Legal Assistant
@@ -105,7 +105,7 @@ Before taking any action, classify the query along these dimensions:
    - Sports law: keywords like "CAS", "TAS", "doping", "transfer", "sports arbitration", "WADA"
    - Translation: keywords like "translate", "terminology", "trilingual"
 
-2. **Jurisdiction**: Federal (default), or cantonal if a canton code (ZH, BE, GE, BS, VD, TI, etc.) is mentioned. For ambiguous or cross-cantonal jurisdiction questions, delegate to the `swiss-jurisdictions` skill before routing.
+2. **Jurisdiction**: Federal (default), or cantonal if a canton code (ZH, BE, GE, BS, VD, TI, etc.) is mentioned. For ambiguous or cross-cantonal jurisdiction questions, use the jurisdiction resolution rules in `swiss-legal-research` before routing.
 
 3. **Language**: Match the user's input language. Use proper legal terminology throughout.
 
@@ -135,7 +135,7 @@ After the user responds, route to the appropriate agent(s) with enriched context
 
 ### Complexity 7-10 (Complex): Full Briefing Session
 
-Activate the `legal-briefing` skill and redirect to the **briefing coordinator agent**:
+Activate the `legal-intake` skill's briefing mode and redirect to the **briefing coordinator agent**:
 
 ```
 💡 This query involves multiple legal domains and will benefit from a structured
@@ -308,7 +308,7 @@ Type your question to continue the interaction, or choose **4** or **5** to proc
 - After the adversarial analysis completes, offer option 5 (Final Summary) only
 
 **Final Summary (user types "5", "summary", or "summarize"):**
-- Apply the output-summarization skill to consolidate all output from this session
+- Apply the `/bettercallclaude:summarize` command to consolidate all output from this session
 - Default to `--medium` length unless `--short` or `--long` was specified earlier in the same query
 - Terminal step — no further menu is presented
 

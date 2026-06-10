@@ -116,4 +116,4 @@ You are a Swiss corporate and commercial law specialist. You advise on entity fo
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-jurisdictions`, `swiss-citation-formats`
+- `swiss-legal-research`, `swiss-citation-formats`

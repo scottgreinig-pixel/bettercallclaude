@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-4.8.1-blue)](https://github.com/fedec65/bettercallclaude/releases)
+[![Version](https://img.shields.io/badge/version-4.8.2-blue)](https://github.com/fedec65/bettercallclaude/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Cowork%20Desktop-orange)](https://claude.ai)
 [![Website](https://img.shields.io/badge/web-bettercallclaude.ch-brightgreen)](https://bettercallclaude.ch)
@@ -11,7 +11,7 @@
 
 <p align="center"><strong>Swiss Legal Intelligence Plugin for Cowork Desktop</strong></p>
 
-BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 24 commands, 15 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, NDA triage, and CAS/TAS sports arbitration across all 26 Swiss cantons.
+BetterCallClaude transforms legal research, case strategy, and document drafting for Swiss lawyers. It provides deep integration with Swiss legal databases, multi-lingual analysis (DE/FR/IT/EN), and built-in Anwaltsgeheimnis (attorney-client privilege) protection -- 20 agents, 24 commands, 12 skills, and 9 MCP servers covering BGE/ATF/DTF precedent research, litigation strategy, adversarial analysis, legal drafting, citation verification, document intelligence, NDA triage, and CAS/TAS sports arbitration across all 26 Swiss cantons.
 
 > **Claude Code CLI users**: this repository is Cowork Desktop only. The CLI version is at [fedec65/bettercallclaude-cli](https://github.com/fedec65/bettercallclaude-cli).
 
@@ -46,21 +46,20 @@ BetterCallClaude provides a structured methodology for handling legal work with 
 
 ---
 
-## What's New in v4.8.1
+## What's New in v4.8.2
 
-**v4.8.1 — Cowork-first audit and adaptation.**
+**v4.8.2 — Skills audit and context tax reduction (Spec D).**
 
-- **Cowork audit** (`docs/audit/COWORK-AUDIT.md`): systematic review of all 24 commands and 15 skills for Cowork compatibility. Terminal assumptions identified and fixed.
-- **`/bettercallclaude:start`**: new onboarding command — language detection, MCP connectivity check, guided playbook creation, profile-specific examples. Absorbs `/setup`.
-- **`/bettercallclaude:doctor`**: MCP diagnostics — tests each server, reports status and impact in plain language, suggests fixes.
-- **Deliverable-as-file convention** (`bcc-output/`): long outputs are saved as files with a chat summary. Standard folder structure with `sources.md` for citation trails.
-- **Reduced mode** declared in all 10 MCP-dependent skills: explicit degradation table when servers are unavailable.
-- **Privacy-routing Cowork fallback**: skill-level privacy check as defense-in-depth when the `PreToolUse` hook is absent.
-- **Natural language flag equivalents**: all commands with flags now include plain-language alternatives (e.g. "analisi breve" instead of `--short`).
-- **Command overlap policy**: `setup` → alias of `start` with deprecation notice (removed in v5.0). Policy documented for future overlaps.
-- **Quickstart guide** (`docs/QUICKSTART-COWORK.md`): one-page, zero-jargon guide in DE/FR/IT/EN.
+- **Skill consolidation**: 15 → 12 skills. Three skills absorbed with zero capability loss:
+  - `output-summarization` → embedded in `/summarize` command (process step, not domain knowledge)
+  - `swiss-jurisdictions` → routing logic absorbed by `swiss-legal-research`, canton profiles moved to `skills/shared/references/swiss-jurisdictions.md` (loaded on demand)
+  - `legal-query-refinement` + `legal-briefing` → merged into `legal-intake` with two modes (refine / briefing)
+- **Description budget**: all descriptions trimmed to ~80 words (from 100-167). Reduced permanent context tax.
+- **Citation delegation**: `swiss-legal-translation` now delegates citation conversion to `swiss-citation-formats` (eliminated boundary duplication).
+- **Progressive disclosure**: large reference data loaded on demand instead of always in context.
+- **Skills audit**: `docs/audit/SKILLS-AUDIT.md` — full inventory, token measurements, consolidation decisions with rationale.
 
-**Content counts**: 20 agents, 24 commands, 15 skills, 9 MCP servers.
+**Content counts**: 20 agents, 24 commands, 12 skills, 9 MCP servers.
 
 [Full changelog →](CHANGELOG.md)
 

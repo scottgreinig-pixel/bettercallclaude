@@ -254,4 +254,4 @@ When all stages are complete:
 
 ## Skills Referenced
 
-- `swiss-legal-research`, `swiss-citation-formats`, `swiss-jurisdictions`, `swiss-legal-drafting`, `swiss-legal-strategy`, `privacy-routing`
+- `swiss-legal-research`, `swiss-citation-formats`, `swiss-legal-drafting`, `swiss-legal-strategy`, `privacy-routing`

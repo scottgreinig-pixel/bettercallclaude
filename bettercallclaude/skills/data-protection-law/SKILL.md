@@ -1,6 +1,6 @@
 ---
 name: data-protection-law
-description: "Swiss data protection law analysis — applies the nDSG/FADP framework (in force 1.9.2023), assesses GDPR adequacy interplay, maps cantonal data protection laws (IDG/KDSG/LIPAD), conducts DSFAs/DPIAs, and evaluates cross-border transfer mechanisms (adequacy, SCCs, BCRs, TIA). Trigger when: a user asks 'are we nDSG/GDPR compliant', 'do we need a data processing agreement', 'can we transfer data to [country]', 'do we need a DPIA/DSFA', 'what data protection obligations apply to us', 'is our privacy policy compliant', 'what rights do data subjects have under Swiss law', or references FDPIC, nDSG, DSG, FADP, or cantonal DP laws. Also triggered when the data-protection agent is invoked. Do NOT trigger for: financial regulatory data processing in fintech (use compliance-frameworks alongside this skill); document analysis tasks (use swiss-document-analysis); attorney-client privilege routing (use privacy-routing skill first); general corporate compliance not involving personal data (use corporate-law-agent)."
+description: "Swiss data protection — nDSG/FADP framework, GDPR adequacy, cantonal DP laws (IDG/KDSG/LIPAD), DSFA/DPIA, cross-border transfers. Trigger when: user asks about nDSG/GDPR compliance, DPAs, data transfers, DPIA, data subject rights, or references FDPIC/nDSG/FADP. Do NOT trigger for: fintech regulatory compliance (use compliance-frameworks), document analysis (swiss-document-analysis), or privilege routing (privacy-routing)."
 ---
 
 # Swiss Data Protection Law

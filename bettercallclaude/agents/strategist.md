@@ -57,4 +57,4 @@ Case Assessment Summary, Strengths/Weaknesses, Risk Quantification (probability 
 
 ## Skills Referenced
 
-- `swiss-legal-strategy`, `swiss-jurisdictions`
+- `swiss-legal-strategy`
