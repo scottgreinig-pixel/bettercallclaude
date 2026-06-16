@@ -20,10 +20,6 @@
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/onlinekommentar/mcp"
     },
-    "legal-persona": {
-      "type": "http",
-      "url": "https://mcp.bettercallclaude.ch/legal-persona/mcp"
-    },
     "tas-jurisprudence": {
       "type": "http",
       "url": "https://mcp.bettercallclaude.ch/tas-jurisprudence/mcp"
